@@ -4,12 +4,9 @@ import supply
 import player
 import card
 
-
-def reloadAll():
+def reAll():
     reload(turn)
     reload(baseCards)
     reload(card)
     reload(player)
     reload(supply)
-
-reloadAll()

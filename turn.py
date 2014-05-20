@@ -1,4 +1,3 @@
-from card import Card
 class Turn():
     def __init__(self, player):
         self.player = player
@@ -47,9 +46,6 @@ class Turn():
             card = self.promptCards(self.hand)
             if card is None:
                 return
-            if not isinstance(card, Card):
-                print "That is not a valid number. Try again."
-                continue
             if not card.isAction():
                 print "That is not an action card. Please pick another: \n"
                 continue
@@ -59,6 +55,7 @@ class Turn():
     def buyPhase(self):
         print "Buy Phase"
         numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
+        print self.hand,[card.isTreasure() for card in self.player.hand],"my hand Bitch"
         while numberOfTreasure > 0:
             print "Pick a Treasure card from your hand, or input 'all': \n"
             card = self.promptCards(self.hand)
@@ -68,12 +65,11 @@ class Turn():
                 for card in self.player.treasuresInHand():
                     card.play(self)
                     self.hand.remove(card)
+                    print card.coin, card, self.coins
+                break
 
             if card is None:
                 break
-            if not isinstance(card, Card):
-                print "That is not a valid number. Try again."
-                continue
             if not card.isTreasure():
                 print "That is not a Treasure card. Please pick another: \n"
                 continue

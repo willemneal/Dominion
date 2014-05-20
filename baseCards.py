@@ -8,7 +8,6 @@ estate   = Card('Estate',   2, vp = 1)
 duchy    = Card('Duchy',    5, vp = 3)
 province = Card('Province', 8, vp = 6)
 
-global copper
 copper   = TreasureCard('Copper',  0, coin = 1)
 silver   = TreasureCard('Silver',  3, coin = 2)
 gold     = TreasureCard('Gold',    6, coin = 3)

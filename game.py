@@ -1,18 +1,13 @@
-from baseCards import *
-from player import *
-from supply import *
-from turn import *
+from baseCards import base
+from player import Player
+from supply import BaseSupply
+from turn import Turn
 from random import sample
 from random import shuffle
-from card import *
-import turn
-import baseCards
-import supply
-import player
-import card
-
-
+from  __init__ import *
+"""
 def reloadAll():
+    
     reload(turn)
     reload(baseCards)
     reload(card)
@@ -20,6 +15,7 @@ def reloadAll():
     reload(supply)
 
 reloadAll()
+"""
 
 class Game():
     def __init__(self, playerList,sets):

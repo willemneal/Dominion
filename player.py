@@ -34,7 +34,7 @@ class Player():
         return res
 
     def printHand(self):
-        print self.name,":",self.hand
+        print self.name,":",self.hand,[card.isTreasure() for card in self.hand]
 
     def getAllCards(self):
         res = []
