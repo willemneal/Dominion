@@ -1,9 +1,14 @@
 from baseCards import *
-from player import Player
-from supply import BaseSupply
-from turn import Turn
+from player import *
+from supply import *
+from turn import *
 from random import sample
 from random import shuffle
+from card import *
+
+from __init__ import *
+
+reloadAll()
 
 
 class Game():
