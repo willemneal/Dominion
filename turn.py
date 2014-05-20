@@ -40,7 +40,7 @@ class Turn():
         return cards.pop(cardindex)
 
     def actionPhase(self):
-        print "Action Phase again!"
+        print "Action Phase!"
         print self.hand,"player's hand"
         while self.actions > 0 and self.player.hasAction():
             print "Pick an action card from your hand: \n"
