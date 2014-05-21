@@ -7,9 +7,6 @@ class Player():
         self.name     = name
         self.allCardPiles = []
         self.deck     = Deck()
-        self.setup()
-
-    def setup(self):
         self.played     = []
         self.discard    = []
         self.hand       = []
@@ -21,73 +18,31 @@ class Player():
         self.drawHand()
         self.printHand()
 
-	def __str__(self):
-		return str(self.name)
+    def __repr__(self):
+        return self.name
 
-    def numOfVictoryPoints(self):
-        return sum([card.vp for card in self.getAllCards()])
+    def __str__(self):
+        return str(self.name) 
 
-    def numOfCards(self):
-        res = 0
-        for cards in self.allCardPiles:
-            res += len(cards)
-        return res
-
-    def printHand(self):
-        print self.name,":",self.hand,[card.isTreasure() for card in self.hand]
-
-    def getAllCards(self):
-        res = []
-        for Set in self.allCardPiles:
-            res.extend(Set)
-        return res
+    def coinInHand(self):
+        return sum([card.coin for card in self.treasuresInHand()])
 
     def discardCard(self,card):
         self.discard.append(card)
 
-    def discardList(self,pile):
-        self.discard.extend(pile)
-        pile = []
-
-    def drawHand(self):
-        assert 0 == len(self.hand)
-        self.drawToHand(5)
-
-    def drawToHand(self,num):
-        self.hand.extend(self.drawCards(num))
-
-    def printPlayed(self):
-        print len(self.played),self.played
-
-    def printDiscard(self):
-        print len(self.discard),self.discard
+    def discardDeck(self):
+        self.discardList(self.played)
 
     def discardHand(self):
         self.discard.extend(self.hand)
         self.hand = []
 
+    def discardList(self,pile):
+        self.discard.extend(pile)
+        pile = []
+
     def discardPlayed(self):
         self.discardList(self.played)
-
-    def discardDeck(self):
-        self.discardList(self.played)
-
-    def hasAction(self):
-        for card in self.hand:
-            if card.isAction():
-                return True
-        return False
-
-    def treasuresInHand(self):
-        treasures = []
-        for card in self.hand:
-            if card.isTreasure():
-                treasures.append(card)
-        return treasures
-
-    def coinInHand(self):
-        return sum([card.coin for card in self.treasuresInHand()])
-
 
     def drawCards(self,num):
         '''
@@ -105,5 +60,46 @@ class Player():
             drawnCards.append(newcard)
         return drawnCards
 
-    def __repr__(self):
-        return self.name
+    def drawHand(self):
+        assert 0 == len(self.hand)
+        self.drawToHand(5)
+
+    def drawToHand(self,num):
+        self.hand.extend(self.drawCards(num))
+
+    def getAllCards(self):
+        res = []
+        for Set in self.allCardPiles:
+            res.extend(Set)
+        return res         
+
+    def hasAction(self):
+        for card in self.hand:
+            if card.isAction():
+                return True
+        return False  
+
+    def numOfCards(self):
+        res = 0
+        for cards in self.allCardPiles:
+            res += len(cards)
+        return res
+
+    def numOfVictoryPoints(self):
+        return sum([card.vp for card in self.getAllCards()])
+
+    def printDiscard(self):
+        print len(self.discard),self.discard
+
+    def printHand(self):
+        print self.name,":",self.hand,[card.isTreasure() for card in self.hand]
+
+    def printPlayed(self):
+        print len(self.played),self.played
+
+    def treasuresInHand(self):
+        treasures = []
+        for card in self.hand:
+            if card.isTreasure():
+                treasures.append(card)
+        return treasures
