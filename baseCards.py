@@ -25,13 +25,26 @@ def adventurerAction(turn):
 			tmp.append(card)
 	self.player.discard.extend(tmp)
 
-	#FIXME ADD ACTION
-
 def bureaucratAction(turn):
-	#FIXME ADD ACTION
+	turn.player.deck.addCardOnTop(turn.player.supply.gainCard(silver))
+	for player in turn.otherPlayers:
+		for card in player.hand:
+			if card.isVictory():
+				print player," please select a victory card."	
+				cardindex = turn.promptCardsIndex(player.hand)
+				while not player.hand[cardindex].isVictory():
+					cardindex = turn.promptCardsIndex(player.hand)
+				player.deck.addCardOnTop(player.hand.pop(cardindex))
+				break
 
 def cellarAction(turn):
-	#FIXME ADD ACTION
+	turn.updateActions(1)
+	cardIndex = 0
+	while cardIndex is not None:
+		cardIndex = turn.promptCardsIndex(turn.player.hand)
+		turn.player.discard()
+
+
 
 def chancellorAction(turn):
 	#FIXME ADD ACTION

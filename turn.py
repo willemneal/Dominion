@@ -37,7 +37,7 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        if cardindex.lower() == "a" and cardindex.lower() == "all":
+        if cardindex.lower() == "a" or cardindex.lower() == "all":
             return "all"
         cardindex = int(cardindex)
         cardindex -= 1
@@ -47,11 +47,30 @@ class Turn():
             return False
         return cards.pop(cardindex)
 
+    def promptCardsIndex(self,cards,kind=Card):
+        s = ""
+        for (i,card) in enumerate(cards):
+            if i % 5 ==4:
+                s += " %s-(%i)\n" % (card,i+1)
+            else:
+                s += " %s-(%i)" % (card,i+1)
+        print s+'\n'
+        cardindex = raw_input('Which Card? (0 to skip): ')
+        if cardindex.lower() == "a" or cardindex.lower() == "all":
+            return "all"
+        cardindex = int(cardindex)
+        cardindex -= 1
+        if cardindex < 0:
+            return None
+        if not isinstance(cards[cardindex],kind):
+            return False
+        return cardindex
+
     def actionPhase(self):
         print "Action Phase!"
         print self.hand,"player's hand"
         while self.actions > 0 and self.player.hasAction():
-            print "Pick an action card from your hand: \n"
+            print "Actions:",self.actions,"Pick an action card from your hand: \n"
             card = self.promptCards(self.hand,ActionCard)
             if card is None:
                 return
