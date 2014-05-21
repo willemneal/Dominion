@@ -61,7 +61,7 @@ class Player():
         card = self.deck.draw()
         while(card):
             self.discardCard(card)
-            card = self.deck
+            card = self.deck.draw()
 
     def hasAction(self):
         for card in self.hand:
