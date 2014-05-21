@@ -100,8 +100,9 @@ class Turn():
     def cleanupPhase(self):
         self.player.discardHand()
         self.player.discardPlayed()
+        assert 0 == len(self.player.hand)
         self.player.drawHand()
-
+        assert 5 == len(self.player.hand)
 
 
 

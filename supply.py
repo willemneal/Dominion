@@ -34,7 +34,7 @@ class BaseSupply():
     def __str__(self):
         s =''
         for card in self.supply:
-            s+= "%s(%d)\n" % (card,len(self.supply[card]))
+            s+= "%s(%d$, %d left)\n" % (card,len(self.supply[card]),card.cost)
         return s[:-1]
 
     def gameOver(self):
