@@ -40,17 +40,13 @@ class Card(object):
 
 class ActionCard(Card):
     
-    def __init__(self, name, cost, desc, attack=False,
-        isDefense = False, vp = 0,  action=(),
-         reaction = False, actions=0, plusCards=0):
+    def __init__(self, name, cost, desc, attack=False, isDefense = False, vp = 0,  action=(), reaction = False):
 
         Card.__init__(self,name,cost,desc,vp)
 
         self.isDefense          = isDefense
         self.attack             = attack
         self.reaction           = reaction
-        self.actions            = plusCards
-        self.action             = action
  
 
     def isAttack(self):
