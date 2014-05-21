@@ -95,7 +95,7 @@ def workshopAction(turn):
 
 #card = Card Type ("Name",Cost,"Description","action = action function")
 adventurer = ActionCard("Adventurer",6,"Reveal cards from your deck until you reveal 2 Treasure cards. Put those Tresure cards into your hand and discard the other revealed cards.", action = adventurerAction)
-bureaucrat = ActionCard("Bureaucrat",4,"Gain a Silver card; put it on top of your deck. Each other player reveals a Victory card from his hand and puts it on his deck (or reveals a hand with no Victory cards)", attack=True, action = bureacratAction)
+bureaucrat = ActionCard("Bureaucrat",4,"Gain a Silver card; put it on top of your deck. Each other player reveals a Victory card from his hand and puts it on his deck (or reveals a hand with no Victory cards).", attack=True, action = bureacratAction)
 cellar = ActionCard("Cellar",2,"+1 Action, Discard and number of cards. +1 Card per card discarded.", action = cellarAction) 
 chancellor = ActionCard("Chancellor",3,"+$2, You may immediately put your deck into your discard pile.", action = chancellorAction) 
 chapel = ActionCard("Chapel",2,"Trash up to 4 cards from your hand.", action = chapelAction)
@@ -107,18 +107,18 @@ laboratory = ActionCard("Laboratory", 5, "+2 Cards, +1 Action", action = laborat
 library = ActionCard("Library", 5, "Draw until you have 7 cards in hand. You may set aside any Action cards drawn this way, as you draw them; discard the set aside cards after you finish drawing.", action = libraryAction)
 market = ActionCard("Market", 5, "+1 Card, +1 Action, +1 Buy, +$1", action = marketAction)
 militia = ActionCard("Militia", 5, "+$2, Each other player discards down to 3 cards in his hand.", attack=True, action = militiaAction)
-mine = ActionCard("Mine", 5, "Trash a Treasure card from your hand. Gain a Treasure card costing up to $3 more; put it into your hand", action = mineAction)
-moat = ActionCard("Moat",2, "+2 Cards, Reaction: When another player plays an Attack card, you may reveal this from your hand. If you do, you are unaffected by that Attack", isDefense=True, action = moatAction, reaction=True) 
+mine = ActionCard("Mine", 5, "Trash a Treasure card from your hand. Gain a Treasure card costing up to $3 more; put it into your hand.", action = mineAction)
+moat = ActionCard("Moat",2, "+2 Cards, Reaction: When another player plays an Attack card, you may reveal this from your hand. If you do, you are unaffected by that Attack.", isDefense=True, action = moatAction, reaction=True) 
 moneylender = ActionCard("Moneylender", 4, "Trash a Copper card from your hand. If you do, +$3.", action = moneylenderAction)
 remodel = ActionCard("Remodel", 4, "Trash a card from your hand. Gain a card costing up to $2 more than the trashed card.", action = remodelAction)
 smithy = ActionCard("Smithy", 4,"+3 Cards", action = smithyAction)
-spy = ActionCard("Spy", 4, "+1 Card, +1 Action, Each player (including you) reveals the top card of his deck and either discards it or puts it back, your choice", attack=True, action = spyAction)
-theif = 
-throneRoom = 
+spy = ActionCard("Spy", 4, "+1 Card, +1 Action, Each player (including you) reveals the top card of his deck and either discards it or puts it back, your choice.", attack=True, action = spyAction)
+theif = ActionCard("Theif", 4, "Each other player reveals the top 2 cards of his deck. If they revealed any Treasure cards, they trash one of them that you choose. You may gain any or all of these trashed cards. They discard the other revealed cards.", attack=True, action = theifAction)
+throneRoom = ActionCard("Throne Room", 4, "Choose and Action card in your hand. Play it twice.", action = throneRoomAction)
 village = ActionCard("Village",3,"+1 Card, +2 Actions", action = villageAction) 
-witch = 
-woodcutter = ActionCard("Woodcutter",3,"+1 Card, +2 Actions", action = villageAction) 
-workshop = ActionCard("Workshop",3,"+1 Card, +2 Actions", action = villageAction) 
+witch = ActionCard("Witch", 5, "+2 Cards, Each other player gains a Curse card.", attack=True, action = witchAction)
+woodcutter = ActionCard("Woodcutter",3,"+1 Buy, +$2", action = woodcutterAction) 
+workshop = ActionCard("Workshop",3,"Gain a card costing up to $4.", action = workshopAction) 
  
 
 
