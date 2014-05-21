@@ -37,7 +37,7 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        if cardindex.lower() == "a":
+        if cardindex.lower() == "a" and cardindex.lower() == "all":
             return "all"
         cardindex = int(cardindex)
         cardindex -= 1
@@ -120,9 +120,9 @@ class Turn():
         s = ""
         for (i,card) in enumerate(cards):
             if i % 5 ==4:
-                s += " %s-$%d(%i)\n" % (card,card.cost,i+1)
+                s += " %s-$%d,%d left(%i)\n" % (card,card.cost,turn.player.supply.cardsLeft(),i+1)
             else:
-                s += " %s-$%d(%i)" % (card,card.cost,i+1)
+                s += " %s-$%d,%d left(%i)" % (card,card.cost,turn.player.supply.cardsLeft(),i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
         if cardindex.lower() == "a" or cardindex.lower()=="all":

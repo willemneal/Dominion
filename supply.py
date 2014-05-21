@@ -28,6 +28,9 @@ class BaseSupply():
     def trashCard(self,card):
         self.trash.append(card)
 
+    def cardsLeft(self,card):
+        return len(self.supply[card])
+
     def addPile(self,card):
         self.supply[card] = [card]*10
 
