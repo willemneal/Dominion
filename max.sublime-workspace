@@ -1,0 +1,214 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"v",
+				"village"
+			],
+			[
+				"smith",
+				"smithy"
+			],
+			[
+				"play",
+				"playerList"
+			],
+			[
+				"Actio",
+				"ActionCard"
+			],
+			[
+				"pla",
+				"player"
+			],
+			[
+				"r",
+				"return"
+			],
+			[
+				"crr",
+				"currentPlayer"
+			],
+			[
+				"upd",
+				"updateBuys"
+			],
+			[
+				"Gan",
+				"gainedCard"
+			],
+			[
+				"co",
+				"coins"
+			],
+			[
+				"villag",
+				"villageAction"
+			],
+			[
+				"updat",
+				"updateActions"
+			],
+			[
+				"chapel",
+				"chapelAction"
+			],
+			[
+				"card",
+				"card"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 146.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/Max/Programming/Dominion/player.py",
+		"/Users/Max/Programming/Dominion/game.py",
+		"/Users/Max/Programming/Dominion/turn.py",
+		"/Users/Max/.bash_profile",
+		"/Users/Max/Gdrive/Academics/Research/ParticleResearch/Geant/geant4.10.00/examples/extended/electromagnetic/TestEm7/src/G4LindhardPartition.cc",
+		"/Users/Max/.ipython/profile_default/startup/0.py",
+		"/Users/Max/.ipython/profile_default/startup/README",
+		"/Users/Max/Programming/Dominion/supply.py",
+		"/Users/Max/Programming/Dominion/card.py",
+		"/Users/Max/Programming/Dominion/sets.py",
+		"/C/Users/willem/Documents/WD/baseCards.py",
+		"/C/Users/willem/Documents/WD/supply.py",
+		"/C/Users/willem/Documents/WD/sets.py",
+		"/C/Users/willem/Documents/WD/player.py",
+		"/C/Users/willem/Documents/WD/game.py",
+		"/C/Users/willem/Documents/WD/deck.py",
+		"/C/Users/willem/Documents/WD/turn.py",
+		"/C/Users/willem/Documents/WD/Dominion.sublime-project",
+		"/C/Users/willem/Documents/WD/Dominion.sublime-workspace",
+		"/C/Users/willem/Documents/WD/card.py"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"<open files>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"duration"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 118.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 297.0,
+	"status_bar_visible": true
+}
