@@ -114,7 +114,7 @@ remodel = ActionCard("Remodel", 4, "Trash a card from your hand. Gain a card cos
 smithy = ActionCard("Smithy", 4,"+3 Cards", action = smithyAction)
 spy = ActionCard("Spy", 4, "+1 Card, +1 Action, Each player (including you) reveals the top card of his deck and either discards it or puts it back, your choice.", attack=True, action = spyAction)
 theif = ActionCard("Theif", 4, "Each other player reveals the top 2 cards of his deck. If they revealed any Treasure cards, they trash one of them that you choose. You may gain any or all of these trashed cards. They discard the other revealed cards.", attack=True, action = theifAction)
-throneRoom = ActionCard("Throne Room", 4, "Choose and Action card in your hand. Play it twice.", action = throneRoomAction)
+throneRoom = ActionCard("Throne Room", 4, "Choose an Action card in your hand. Play it twice.", action = throneRoomAction)
 village = ActionCard("Village",3,"+1 Card, +2 Actions", action = villageAction) 
 witch = ActionCard("Witch", 5, "+2 Cards, Each other player gains a Curse card.", attack=True, action = witchAction)
 woodcutter = ActionCard("Woodcutter",3,"+1 Buy, +$2", action = woodcutterAction) 
