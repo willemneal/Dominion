@@ -1,3 +1,5 @@
+from card import *
+
 class Turn():
     def __init__(self, player):
         self.player = player
@@ -11,7 +13,7 @@ class Turn():
 
 
     def updateActions(self,num):
-        self.action += num
+        self.actions += num
     
     def updateBuys(self, num):
         self.buys += num
@@ -24,10 +26,14 @@ class Turn():
                 player.supply.trashCard(cardToTrash)
             num-=1
 
-    def promptCards(self,cards):
+
+    def promptCards(self,cards,kind=Card):
         s = ""
         for (i,card) in enumerate(cards):
-            s += " %s (%i)" % (card,i+1)
+            if i % 5 ==4:
+                s += " %s-(%i)\n" % (card,i+1)
+            else:
+                s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
         if cardindex.lower() == "a":
@@ -36,6 +42,8 @@ class Turn():
         cardindex -= 1
         if cardindex < 0:
             return None
+        if not isinstance(cards[cardindex],kind):
+            return False
         return cards.pop(cardindex)
 
     def actionPhase(self):
@@ -43,13 +51,14 @@ class Turn():
         print self.hand,"player's hand"
         while self.actions > 0 and self.player.hasAction():
             print "Pick an action card from your hand: \n"
-            card = self.promptCards(self.hand)
+            card = self.promptCards(self.hand,ActionCard)
             if card is None:
                 return
-            if not card.isAction():
+            if not card: ## promptCards returns false if not an action card
                 print "That is not an action card. Please pick another: \n"
                 continue
             card.play(self)
+            self.player.played.append(card)
             self.updateActions(-1)
             
     def buyPhase(self):
@@ -58,23 +67,25 @@ class Turn():
         print self.hand,[card.isTreasure() for card in self.player.hand],"my hand Bitch"
         while numberOfTreasure > 0:
             print "Pick a Treasure card from your hand, or input 'all': \n"
-            card = self.promptCards(self.hand)
+            card = self.promptCards(self.hand,TreasureCard)
             if card == "all":
                 ##this is play all treasure option
                 ## added the two necessary functions in the player object
                 for card in self.player.treasuresInHand():
                     card.play(self)
                     self.hand.remove(card)
+                    self.player.played.append(card)
                     print card.coin, card, self.coins
                 break
 
             if card is None:
                 break
-            if not card.isTreasure():
+            if not card: ##promptCards returns false if not a treasure
                 print "That is not a Treasure card. Please pick another: \n"
                 continue
             else:
                 card.play(self)
+                self.player.played.append(card)
             numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
 
         while self.buys > 0:
@@ -82,7 +93,7 @@ class Turn():
                 print "you have %d buys and %d coin"%(self.buys,self.coins)
             else:
                 print "you have %d buy and %d coin"%(self.buys,self.coins)
-            card = self.promptCards(self.player.supply.supply.keys())
+            card = self.promptBuy(self.player.supply.getPiles())
             if card is None:
                 break
             if card.cost > self.coins:
@@ -103,6 +114,28 @@ class Turn():
         assert 0 == len(self.player.hand)
         self.player.drawHand()
         assert 5 == len(self.player.hand)
+
+    def promptBuy(self,cards,kind=Card):
+        s = ""
+        for (i,card) in enumerate(cards):
+            if i % 5 ==4:
+                s += " %s-$%d(%i)\n" % (card,card.cost,i+1)
+            else:
+                s += " %s-$%d(%i)" % (card,card.cost,i+1)
+        print s+'\n'
+        cardindex = raw_input('Which Card? (0 to skip): ')
+        if cardindex.lower() == "a" or cardindex.lower()=="all":
+            return "all"
+        cardindex = int(cardindex)
+        cardindex -= 1
+        if cardindex < 0:
+            return None
+        if not isinstance(cards[cardindex],kind):
+            return False
+        return cards.pop(cardindex)
+
+
+
 
 
 

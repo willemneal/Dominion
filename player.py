@@ -45,6 +45,10 @@ class Player():
     def discardCard(self,card):
         self.discard.append(card)
 
+    def discardList(self,pile):
+        self.discard.extend(pile)
+        pile = []
+
     def drawHand(self):
         assert 0 == len(self.hand)
         self.drawCards(5)
@@ -55,14 +59,10 @@ class Player():
         self.hand = []
 
     def discardPlayed(self):
-        for card in self.played:
-           self.discardCard(self.played.pop())
+        self.discardList(self.played)
 
     def discardDeck(self):
-        card = self.deck.draw()
-        while(card):
-            self.discardCard(card)
-            card = self.deck.draw()
+        self.discardList(self.played)
 
     def hasAction(self):
         for card in self.hand:

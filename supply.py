@@ -40,6 +40,9 @@ class BaseSupply():
     def gameOver(self):
         return  len(self.supply[province]) == 0 or self.numberOfPilesGone == 3
 
+    def getPiles(self):
+        return sorted(self.supply.keys())
+
 # class ProsperitySupply(BaseSupply):
 #     def __init__(self,numOfPlayers=4):
 #         BaseSupply.__init__(numOfPlayers)

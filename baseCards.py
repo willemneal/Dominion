@@ -21,7 +21,7 @@ def smithyAction(turn):
 
 def villageAction(turn):
 	turn.player.drawCards(1)
-	turn.player.updateActions(2)
+	turn.updateActions(2)
 
 cellar = ActionCard("Cellar",3,"+1 Card, +2 Actions", action = villageAction) 
 moat   = ActionCard("Moat",3,"+1 Card, +2 Actions", action = villageAction) 

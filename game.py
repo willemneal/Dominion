@@ -17,6 +17,7 @@ def reloadAll():
 reloadAll()
 """
 
+
 class Game():
     def __init__(self, playerList,sets):
         allCards = []
@@ -33,6 +34,7 @@ class Game():
         	## this adds the card to the supply
 
         self.players = [Player(name,self.supply) for name in playerList]
+        
         shuffle(self.players)
         print self.players
 
