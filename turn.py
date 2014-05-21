@@ -1,8 +1,9 @@
 from card import *
 
 class Turn():
-    def __init__(self, player):
+    def __init__(self, player,otherPlayers):
         self.player = player
+        self.otherPlayers = otherPlayers
         self.actions = 1
         self.buys = 1
         self.coins = 0

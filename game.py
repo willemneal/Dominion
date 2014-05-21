@@ -43,7 +43,7 @@ class Game():
         while not self.supply.gameOver():
             currentPlayer = self.players.pop(0)
             print "It is %s's turn." % (currentPlayer)
-            currentTurn = Turn(currentPlayer)
+            currentTurn = Turn(currentPlayer,self.players)
             currentTurn.actionPhase()
             currentTurn.buyPhase()
             currentTurn.cleanupPhase()

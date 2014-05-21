@@ -13,6 +13,18 @@ silver   = TreasureCard('Silver',  3, coin = 2)
 gold     = TreasureCard('Gold',    6, coin = 3)
 
 def adventurerAction(turn):
+	tmp = []
+	numOfTreasures = 0
+	
+	while numOfTreasures<2:
+		card = turn.player.drawCards(1)[0] #draw one card
+		if card.isTreasure():
+			numOfTreasures+=1
+			self.player.hand.append(card)
+		else:
+			tmp.append(card)
+	self.player.discard.extend(tmp)
+
 	#FIXME ADD ACTION
 
 def bureaucratAction(turn):
@@ -57,7 +69,7 @@ def remodelAction(turn):
 	#FIXME ADD ACTION
 
 def smithyAction(turn):
-	turn.player.drawCards(3)
+	turn.player.drawToHand(3)
 
 def spyAction(turn):
 	#FIXME ADD ACTION
@@ -69,7 +81,7 @@ def throneRoomAction(turn):
 	#FIXME ADD ACTION
 
 def villageAction(turn):
-	turn.player.drawCards(1)
+	turn.player.drawToHand(1)
 	turn.updateActions(2)
 
 def witchAction(turn):

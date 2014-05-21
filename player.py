@@ -51,8 +51,16 @@ class Player():
 
     def drawHand(self):
         assert 0 == len(self.hand)
-        self.drawCards(5)
+        self.drawToHand(5)
 
+    def drawToHand(self,num):
+        self.hand.extend(self.drawCards(num))
+
+    def printPlayed(self):
+        print len(self.played),self.played
+
+    def printDiscard(self):
+        print len(self.discard),self.discard
 
     def discardHand(self):
         self.discard.extend(self.hand)
@@ -86,6 +94,7 @@ class Player():
         If deck is empty the discard is shuffled
         into deck.
         '''
+        drawnCards = []
         for i in range(num):
             newcard = self.deck.draw()
             if (not newcard):
@@ -93,7 +102,8 @@ class Player():
                 self.discard=[]
                 self.deck.shuffle()
                 newcard = self.deck.draw()
-            self.hand.append(newcard)
+            drawnCards.append(newcard)
+        return drawnCards
 
     def __repr__(self):
         return self.name
