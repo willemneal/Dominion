@@ -39,30 +39,40 @@ def bureaucratAction(turn):
 
 def cellarAction(turn):
 	turn.updateActions(1)
-	cardIndex = 0
+	cardIndex = turn.promptCardsIndex(turn.player.hand)
+	numCardsDiscarded = 0
 	while cardIndex is not None:
 		cardIndex = turn.promptCardsIndex(turn.player.hand)
-		turn.player.discard()
-
-
+		turn.player.discardCard(turn.player.hand.pop(cardindex))
+		numCardsDiscarded +=1
+	turn.player.drawToHand(numCardsDiscarded)
 
 def chancellorAction(turn):
-	#FIXME ADD ACTION
+	turn.coins += 2
+	choice = raw_input("Discard your Deck? y/n ")
+	if choice.lower() == "y":
+		turn.player.discardDeck()
 
 def chapelAction(turn):
 	turn.chooseTrash(4, turn.player)
 
 def councilRoomAction(turn):
-	#FIXME ADD ACTION
+	turn.player.drawToHand(4)
+	turn.updateBuys(1)
+	for player in turn.otherPlayers:
+		player.drawToHand(1)
 
 def feastAction(turn):
 	#FIXME ADD ACTION
 
 def festivalAction(turn):
-	#FIXME ADD ACTION
+	turn.updateActions(2)
+	turn.updateBuys(1)
+	turn.coins += 2
 
 def laboratoryAction(turn):
-	#FIXME ADD ACTION
+	turn.player.drawToHand(2)
+	turn.updateActions(1)
 
 def libraryAction(turn):
 	#FIXME ADD ACTION
@@ -74,6 +84,7 @@ def mineAction(turn):
 	#FIXME ADD ACTION
 
 def moatAction(turn):
+	#FIXME ADD ACTION
 
 def moneylenderAction(turn):
 	#FIXME ADD ACTION
@@ -98,10 +109,13 @@ def villageAction(turn):
 	turn.updateActions(2)
 
 def witchAction(turn):
-	#FIXME ADD ACTION
+	turn.player.drawToHand(2)
+	for player in turn.otherPlayers:
+		player.discardCard(curse)
 
 def woodcutterAction(turn):
-	#FIXME ADD ACTION
+	turn.updateBuys(1)
+	turn.coins +=2
 
 def workshopAction(turn):
 	#FIXME ADD ACTION
