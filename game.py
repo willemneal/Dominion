@@ -21,7 +21,6 @@ reloadAll()
 class Game():
     def __init__(self, playerList,sets):
         allCards = []
-        print sets
         for Set in sets:
             allCards.extend(Set)
 
@@ -33,6 +32,7 @@ class Game():
             self.supply.addPile(card) 
         	## this adds the card to the supply
 
+        print self.supply
         self.players = [Player(name,self.supply) for name in playerList]
         
         shuffle(self.players)

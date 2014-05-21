@@ -64,6 +64,7 @@ def councilRoomAction(turn):
 
 def feastAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def festivalAction(turn):
 	turn.updateActions(2)
@@ -75,34 +76,49 @@ def laboratoryAction(turn):
 	turn.updateActions(1)
 
 def libraryAction(turn):
+	return
 	#FIXME ADD ACTION
+
+def marketAction(turn):
+	turn.player.drawToHand(1)
+	turn.updateActions(1)
+	turn.updateBuys(1)
+	turn.coins += 1
 
 def militiaAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def mineAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def moatAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def moneylenderAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def remodelAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def smithyAction(turn):
 	turn.player.drawToHand(3)
 
 def spyAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def theifAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def throneRoomAction(turn):
 	#FIXME ADD ACTION
+	return
 
 def villageAction(turn):
 	turn.player.drawToHand(1)
@@ -119,15 +135,16 @@ def woodcutterAction(turn):
 
 def workshopAction(turn):
 	#FIXME ADD ACTION
+	return
 
 #card = Card Type ("Name",Cost,"Description","action = action function")
 adventurer = ActionCard("Adventurer",6,"Reveal cards from your deck until you reveal 2 Treasure cards. Put those Tresure cards into your hand and discard the other revealed cards.", action = adventurerAction)
-bureaucrat = ActionCard("Bureaucrat",4,"Gain a Silver card; put it on top of your deck. Each other player reveals a Victory card from his hand and puts it on his deck (or reveals a hand with no Victory cards).", attack=True, action = bureacratAction)
+bureaucrat = ActionCard("Bureaucrat",4,"Gain a Silver card; put it on top of your deck. Each other player reveals a Victory card from his hand and puts it on his deck (or reveals a hand with no Victory cards).", attack=True, action = bureaucratAction)
 cellar = ActionCard("Cellar",2,"+1 Action, Discard and number of cards. +1 Card per card discarded.", action = cellarAction) 
 chancellor = ActionCard("Chancellor",3,"+$2, You may immediately put your deck into your discard pile.", action = chancellorAction) 
 chapel = ActionCard("Chapel",2,"Trash up to 4 cards from your hand.", action = chapelAction)
 councilRoom = ActionCard("Council Room", 5, "+4 Cards, +1 Buy, Each other player draws a card.", action = councilRoomAction)
-feast = ActionCard("Feast",3,"Trash this card. Gain a card costing up to 5.", action = feastAction) 
+feast = ActionCard("Feast",4,"Trash this card. Gain a card costing up to 5.", action = feastAction) 
 festival = ActionCard("Festival", 5, "+2 Actions, +1 Buy, +$2", action = festivalAction)
 garden = Card("Garden", 4, "Worth 1VP for every 10 cards in your deck (rounded down).", vp=True) 
 laboratory = ActionCard("Laboratory", 5, "+2 Cards, +1 Action", action = laboratoryAction)

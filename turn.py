@@ -6,7 +6,7 @@ class Turn():
         self.otherPlayers = otherPlayers
         self.actions = 1
         self.buys = 1
-        self.coins = 0
+        self.coins = 5
         self.hand = player.hand
         currentPlayer = player
         
@@ -106,6 +106,7 @@ class Turn():
             else:
                 card.play(self)
                 self.player.played.append(card)
+            print "you bought",card
             numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
 
         while self.buys > 0:
@@ -123,6 +124,7 @@ class Turn():
             if gainedCard is None:
                 print "Please choose another. \n"
                 continue
+            assert isinstance(gainedCard,ActionCard)
             self.player.discardCard(gainedCard)
             self.coins -= card.cost
             self.updateBuys(-1)
@@ -139,9 +141,9 @@ class Turn():
         s = ""
         for (i,card) in enumerate(cards):
             if i % 5 ==4:
-                s += " %s-$%d,%d left(%i)\n" % (card,card.cost,turn.player.supply.cardsLeft(),i+1)
+                s += " %s-$%d,%d left(%i)\n" % (card,card.cost,self.player.supply.cardsLeft(card),i+1)
             else:
-                s += " %s-$%d,%d left(%i)" % (card,card.cost,turn.player.supply.cardsLeft(),i+1)
+                s += " %s-$%d,%d left(%i)" % (card,card.cost,self.player.supply.cardsLeft(card),i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
         if cardindex.lower() == "a" or cardindex.lower()=="all":

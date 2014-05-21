@@ -36,8 +36,8 @@ class BaseSupply():
 
     def __str__(self):
         s =''
-        for card in self.supply:
-            s+= "%s(%d$, %d left)\n" % (card,len(self.supply[card]),card.cost)
+        for card in self.getPiles():
+            s+= "%s(%d$, %d left)\n" % (card,card.cost,len(self.supply[card]))
         return s[:-1]
 
     def gameOver(self):

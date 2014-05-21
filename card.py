@@ -29,24 +29,19 @@ class Card(object):
 
     def __repr__(self):
         return self.name
-
-    def __cmp__(self,other):
-        if self.cost > other.cost:
-            return 1
-        elif self.cost < other.cost:
-            return -1
-        return 0
 	
 
 class ActionCard(Card):
     
-    def __init__(self, name, cost, desc, attack=False, isDefense = False, vp = 0,  action=(), reaction = False):
-
+    def __init__(self, name, cost, desc, attack=False,
+        isDefense = False, vp = 0,  action=(),
+         reaction = False, actions=0, plusCards=0):
         Card.__init__(self,name,cost,desc,vp)
-
         self.isDefense          = isDefense
         self.attack             = attack
         self.reaction           = reaction
+        self.actions            = plusCards
+        self.action             = action
  
 
     def isAttack(self):
