@@ -4,7 +4,8 @@ from supply import BaseSupply
 from turn import Turn
 from random import sample
 from random import shuffle
-from  __init__ import *
+
+
 """
 def reloadAll():
     

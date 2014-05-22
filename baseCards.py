@@ -20,10 +20,10 @@ def adventurerAction(turn):
 		card = turn.player.drawCards(1)[0] #draw one card
 		if card.isTreasure():
 			numOfTreasures+=1
-			self.player.hand.append(card)
+			turn.player.hand.append(card)
 		else:
 			tmp.append(card)
-	self.player.discard.extend(tmp)
+	turn.player.discard.extend(tmp)
 
 def bureaucratAction(turn):
 	turn.player.deck.addCardOnTop(turn.player.supply.gainCard(silver))
