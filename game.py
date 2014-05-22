@@ -37,8 +37,8 @@ class Game():
         self.players = [Player(name,self.supply) for name in playerList]
         
         shuffle(self.players)
-        print self.players
-
+        players = ''
+        print players
 
     def playGame(self):
         while not self.supply.gameOver():

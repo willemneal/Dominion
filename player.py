@@ -11,12 +11,12 @@ class Player():
         self.discard    = []
         self.hand       = []
         self.allCardPiles   = [self.deck.deck,
+                            self.played,
                             self.discard, 
                             self.hand]
         self.coinTokens = 0
         self.vpTokens   = 0
         self.drawHand()
-        self.printHand()
 
     def __repr__(self):
         return self.name
