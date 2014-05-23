@@ -113,6 +113,9 @@ class Player():
     def printPlayed(self):
         print len(self.played),self.played
 
+    def trashCard(self,card):
+        self.supply.trashCard(card)
+
     def treasuresInHand(self):
         treasures = []
         for card in self.hand:

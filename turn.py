@@ -1,5 +1,6 @@
 from card import *
 from game import gameLog
+from baseCards import feast
 
 class Turn():
     def __init__(self, player,otherPlayers):
@@ -11,8 +12,6 @@ class Turn():
         self.hand = player.hand
         currentPlayer = player
         
-        
-
 
     def updateActions(self,num):
         self.actions += num
@@ -28,6 +27,13 @@ class Turn():
                 player.supply.trashCard(cardToTrash)
             num-=1
 
+    def handleReactions(self,player):
+        blocked = False
+        reactionCards = player.getReactionCards()
+        for card in reactionCards:
+            if card.reaction(player):
+                blocked = True
+        return blocked
 
     def promptCards(self,cards,kind=Card):
         s = ""
@@ -78,10 +84,7 @@ class Turn():
             if not card: ## promptCards returns false if not an action card
                 print "That is not an action card. Please pick another: \n"
                 continue
-            if card.play(self) == "trash":
-                self.player.trash.append(card)
-            else:
-                self.player.played.append(card)
+            card.play(self)
             self.updateActions(-1)
             
     def buyPhase(self):
@@ -131,6 +134,9 @@ class Turn():
 
     def cleanupPhase(self):
         self.player.discardHand()
+        while feast in self.player.played:
+            self.player.played.remove(feast)
+            self.player.trashCard(feast)
         self.player.discardPlayed()
         assert 0 == len(self.player.hand)
         self.player.drawHand()

@@ -70,7 +70,6 @@ def feastAction(turn):
 		print "Too expensive Try again"
 		card = turn.promptGain(5)
 	turn.player.discardCard(card)
-	return "trash"
 
 
 
@@ -104,12 +103,7 @@ def marketAction(turn):
 def militiaAction(turn):
 	turn.player.drawToHand(2)
 	for player in turn.otherPlayers:
-		blocked = False
-		reactionCards = player.getReactionCards()
-		for card in reactionCards:
-			if card.reaction(player):
-				blocked = True
-		if blocked:
+		if turn.handleReactions(player):
 			continue
 		while len(player.hand)>3:
 			print "%s please choose a card to discard" % (player)
@@ -132,28 +126,75 @@ def moatReaction(player):
 	return True
 
 def moneylenderAction(turn):
-	if copper in turn.hand
-	print "choose"
+	if copper in turn.player.hand:
+		print "Pick a copper to trash."
+		cardindex = promptCardsIndex(turn.player.hand)
+		while self.player.hand[cardindex] != copper:
+			print "That's not a copper"
+			cardindex = promptCardsIndex(turn.player.hand)
+		card = turn.player.hand.pop(cardindex)
+		turn.player.trashCard(card)
+		turn.coins += 3
+	else:
+		print "SORRY no copper to trash"
 	return
 
 def remodelAction(turn):
-	#FIXME ADD ACTION
-	return
+	print "pick card to trash and gain one up to three more"
+	card = turn.promptCards(turn.player.hand)
+	turn.player.trashCard(card)
+	gainedCard = turn.promptGain(card.cost + 3)
+	turn.player.hand.append(gainedCard)
 
 def smithyAction(turn):
 	turn.player.drawToHand(3)
 
 def spyAction(turn):
-	#FIXME ADD ACTION
-	return
+	turn.player.drawToHand(1)
+	allplayers = [
+	for player in otherPlayers+[turn.player]:
+		if turn.handleReactions(player):
+			continue
+		card = player.drawCard()
+		ans = raw_input("%s, do you want to discard %s's %s? y/n "%(turn.player,player,card))
+		if "y"== ans:
+			player.discardCard(card)
+		else:
+			player.deck.addCardOnTop(card)
 
 def theifAction(turn):
-	#FIXME ADD ACTION
+	for player in turn.otherPlayers:
+		if turn.handleReactions(player):
+			continue
+		cards = player.drawCards(2)
+		if sum([card.isTreasure() for card in cards])==2:
+			print "%s which of %s's Treasure do you want to trash" % (turn.player,player)
+			card = turn.promptCards(cards)
+			player.trashCard(card)
+		elif sum([card.isTreasure() for card in cards])==1:
+			for c in cards:
+				if c.isTreasure():
+					card = c
+			cards.remove(card)
+			player.trashCard(card)
+		else:
+			player.discardList(cards)
+
+		if len(cards) == 1:
+			ans = raw_input("%s would you like a copy of %s? y/n" % (turn.player,card))
+			if "y" == ans:
+				turn.player.discardCard(card)
+
+			
+
+
+
 	return
 
 def throneRoomAction(turn):
-	#FIXME ADD ACTION
-	return
+	card = turn.promptCards(turn.player.hand,ActionCard)
+	card.play(turn)
+	card.play(turn)
 
 def villageAction(turn):
 	turn.player.drawToHand(1)
@@ -162,6 +203,8 @@ def villageAction(turn):
 def witchAction(turn):
 	turn.player.drawToHand(2)
 	for player in turn.otherPlayers:
+		if turn.handleReactions(player):
+			continue
 		player.discardCard(curse)
 
 def woodcutterAction(turn):
@@ -169,8 +212,7 @@ def woodcutterAction(turn):
 	turn.coins +=2
 
 def workshopAction(turn):
-	#FIXME ADD ACTION
-	return
+	turn.player.discardCard(turn.promptGain(4))
 
 #card = Card Type ("Name",Cost,"Description","action = action function")
 adventurer = ActionCard("Adventurer",6,"Reveal cards from your deck until you reveal 2 Treasure cards. Put those Tresure cards into your hand and discard the other revealed cards.", action = adventurerAction)
@@ -198,16 +240,6 @@ village = ActionCard("Village",3,"+1 Card, +2 Actions", action = villageAction)
 witch = ActionCard("Witch", 5, "+2 Cards, Each other player gains a Curse card.", attack=True, action = witchAction)
 woodcutter = ActionCard("Woodcutter",3,"+1 Buy, +$2", action = woodcutterAction) 
 workshop = ActionCard("Workshop",3,"Gain a card costing up to $4.", action = workshopAction) 
- 
 
-
-
-
-
-
-
-
-
-
-
+##The master list
 base = [adventurer, bureaucrat, cellar, chancellor, chapel, councilRoom, feast, festival, garden, laboratory, library, market, militia, mine, moat, moneylender, remodel, smithy, spy, theif, throneRoom, village, witch, woodcutter, workshop]

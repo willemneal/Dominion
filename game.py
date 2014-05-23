@@ -26,33 +26,24 @@ class Game():
         allCards = []
         for Set in sets:
             allCards.extend(Set)
-
         gameCards = sample(allCards,10) ## gets 10 random cards from inluded sets
         numOfPlayers = len(playerList)
         self.supply  = BaseSupply(numOfPlayers)
-        
-        for card in gameCards:
-            self.supply.addPile(card) 
-        	## this adds the card to the supply
-
         print self.supply
         self.players = [Player(name,self.supply) for name in playerList]
-        
         shuffle(self.players)
-        line = 'Today '
-        for i,player in self.players:
-            %
         
 
     def playGame(self):
+
         while not self.supply.gameOver():
-            currentPlayer = self.players.pop(0)
-            print "It is %s's turn." % (currentPlayer)
-            currentTurn = Turn(currentPlayer,self.players)
+            self.currentPlayer = self.players.pop(0)
+            print "It is %s's turn." % (self.currentPlayer)
+            currentTurn = Turn(self.currentPlayer,self.players)
             currentTurn.actionPhase()
             currentTurn.buyPhase()
             currentTurn.cleanupPhase()
-            self.players.append(currentPlayer)
+            self.players.append(self.currentPlayer)
 
         print "The game is over!! The scores are:\n"
         winner = [0,""]
@@ -64,7 +55,7 @@ class Game():
         print "And the Winner is: %s with %d Victory Points. The rest of you suck ass." %(winner[1],winner[0])
 
 
-playerList = ["Max","Willem"]
+playerList = ["Max","Willem, Ari, Blaine"]
 
 G = Game(playerList, [base])
 G.playGame()
