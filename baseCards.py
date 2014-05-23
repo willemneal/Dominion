@@ -1,7 +1,7 @@
 from card import Card
 from card import ActionCard
 from card import TreasureCard
-from game import gameLog
+from gameLog import GameLog
 
 
 curse    = Card('Curse',    0, vp = -1)
@@ -85,7 +85,7 @@ def laboratoryAction(turn):
 def libraryAction(turn):
 	while len(turn.player.hand)<7:
 		card = turn.player.drawCard()
-		if card.isAction:
+		if card.isAction():
 			ans = raw_input("would you like to discard %s? (y/n)" % (card))
 			if ans == "y":
 				turn.player.discardCard(card)
@@ -151,7 +151,6 @@ def smithyAction(turn):
 
 def spyAction(turn):
 	turn.player.drawToHand(1)
-	allplayers = [
 	for player in otherPlayers+[turn.player]:
 		if turn.handleReactions(player):
 			continue

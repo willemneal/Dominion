@@ -1,5 +1,5 @@
 from card import *
-from game import gameLog
+from gameLog import GameLog
 from baseCards import feast
 
 class Turn():
@@ -90,7 +90,7 @@ class Turn():
     def buyPhase(self):
         print "Buy Phase"
         numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
-        print self.hand,[card.isTreasure() for card in self.player.hand],"my hand Bitch"
+        print self.hand, " is your hand Bitch"
         while numberOfTreasure > 0:
             print "Pick a Treasure card from your hand, or input 'all': \n"
             card = self.promptCards(self.hand,TreasureCard)
@@ -120,7 +120,7 @@ class Turn():
             card = self.promptGain(self.coins)
             if card is None:
                 break
-            if False == Card
+            if False == card:
                 print "Too exspensive. Need more money Bitch!!! \n"
                 continue
             gainedCard  = self.player.supply.gainCard(card)
@@ -142,7 +142,8 @@ class Turn():
         self.player.drawHand()
         assert 5 == len(self.player.hand)
 
-    def promptGain(self,coinsToSpend,cards =self.player.supply.getPiles(),kind=Card):
+    def promptGain(self,coinsToSpend,kind=Card):
+        cards=self.player.supply.getPiles()
         s = ""
         for (i,card) in enumerate(cards):
             if i % 5 ==4:
@@ -161,11 +162,3 @@ class Turn():
             if cards[cardindex].cost >coinsToSpend:
                 return False
             return cards.pop(cardindex)
-
-
-
-
-
-
-
-

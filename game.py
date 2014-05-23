@@ -18,8 +18,6 @@ def reloadAll():
 reloadAll()
 """
 
-gameLog = ''
-
 class Game():
     def __init__(self, playerList,sets):
         global gameLog
@@ -28,7 +26,7 @@ class Game():
             allCards.extend(Set)
         gameCards = sample(allCards,10) ## gets 10 random cards from inluded sets
         numOfPlayers = len(playerList)
-        self.supply  = BaseSupply(numOfPlayers)
+        self.supply  = BaseSupply(gameCards,numOfPlayers)
         print self.supply
         self.players = [Player(name,self.supply) for name in playerList]
         shuffle(self.players)
@@ -55,7 +53,7 @@ class Game():
         print "And the Winner is: %s with %d Victory Points. The rest of you suck ass." %(winner[1],winner[0])
 
 
-playerList = ["Max","Willem, Ari, Blaine"]
+playerList = ["Max","Willem"]
 
 G = Game(playerList, [base])
 G.playGame()
