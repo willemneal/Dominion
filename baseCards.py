@@ -112,7 +112,7 @@ def militiaAction(turn):
 def mineAction(turn):
 	if turn.player.coinInHand()>0:
 		print "choose a treasure to trash"
-		card = turn.player.promptCards(turn.player.hand,TreasureCard)
+		card = turn.promptCards(turn.player.hand,TreasureCard)
 		turn.player.supply.trashCard(card)
 		gainedCard = turn.promptGain(card.cost+3,kind=TreasureCard)
 		turn.player.hand.append(gainedCard)
@@ -144,7 +144,7 @@ def remodelAction(turn):
 	card = turn.promptCards(turn.player.hand)
 	turn.player.trashCard(card)
 	gainedCard = turn.promptGain(card.cost + 3)
-	turn.player.hand.append(gainedCard)
+	turn.player.discardCard(gainedCard)
 
 def smithyAction(turn):
 	turn.player.drawToHand(3)

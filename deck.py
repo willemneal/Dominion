@@ -12,7 +12,7 @@ class Deck(object):
         self.shuffle()
 
     def addCardOnTop(self, card):
-        self.deck.insert(card, 0)
+        self.deck.insert(0, card)
 
     def addCards(self,cards):
         self.deck.extend(cards)
