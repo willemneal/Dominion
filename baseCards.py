@@ -1,6 +1,7 @@
 from card import Card
 from card import ActionCard
 from card import TreasureCard
+from game import gameLog
 
 
 curse    = Card('Curse',    0, vp = -1)
@@ -63,8 +64,15 @@ def councilRoomAction(turn):
 		player.drawToHand(1)
 
 def feastAction(turn):
-	#FIXME ADD ACTION
-	return
+	print "Choose a card to gain which costs 5 or less"
+	card = turn.promptGain(5)
+	while not card:
+		print "Too expensive Try again"
+		card = turn.promptGain(5)
+	turn.player.discardCard(card)
+	return "trash"
+
+
 
 def festivalAction(turn):
 	turn.updateActions(2)
@@ -76,7 +84,15 @@ def laboratoryAction(turn):
 	turn.updateActions(1)
 
 def libraryAction(turn):
-	return
+	while len(turn.player.hand)<7:
+		card = turn.player.drawCard()
+		if card.isAction:
+			ans = raw_input("would you like to discard %s? (y/n)" % (card))
+			if ans == "y":
+				turn.player.discardCard(card)
+				continue
+		turn.player.hand.append(card)
+
 	#FIXME ADD ACTION
 
 def marketAction(turn):
@@ -86,19 +102,38 @@ def marketAction(turn):
 	turn.coins += 1
 
 def militiaAction(turn):
-	#FIXME ADD ACTION
-	return
+	turn.player.drawToHand(2)
+	for player in turn.otherPlayers:
+		blocked = False
+		reactionCards = player.getReactionCards()
+		for card in reactionCards:
+			if card.reaction(player):
+				blocked = True
+		if blocked:
+			continue
+		while len(player.hand)>3:
+			print "%s please choose a card to discard" % (player)
+			player.discardCard(promptCards(player.hand))
 
 def mineAction(turn):
-	#FIXME ADD ACTION
-	return
+	if turn.player.coinInHand()>0:
+		print "choose a treasure to trash"
+		card = turn.player.promptCards(turn.player.hand,TreasureCard)
+		turn.player.supply.trashCard(card)
+		gainedCard = turn.promptGain(card.cost+3,kind=TreasureCard)
+		turn.player.hand.append(gainedCard)
+	else:
+		print "sorry, there is no Treasure to Trash"
 
 def moatAction(turn):
-	#FIXME ADD ACTION
-	return
+	turn.player.drawToHand(2)
+
+def moatReaction(player):
+	return True
 
 def moneylenderAction(turn):
-	#FIXME ADD ACTION
+	if copper in turn.hand
+	print "choose"
 	return
 
 def remodelAction(turn):

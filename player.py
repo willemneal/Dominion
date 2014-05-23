@@ -44,6 +44,9 @@ class Player():
     def discardPlayed(self):
         self.discardList(self.played)
 
+    def drawCard(self):
+        return self.drawCards(1)[0]
+
     def drawCards(self,num):
         '''
         If deck is empty the discard is shuffled
@@ -78,6 +81,19 @@ class Player():
             if card.isAction():
                 return True
         return False  
+
+    def getReactionCards(self):
+        reactionCards = []
+        for card in self.hand:
+            if card.isAction():
+                if card.isReaction:
+                    reactionCards.append(card)
+        return reactionCards
+
+
+    def minimalHand(self):
+        hand = set(self.hand)
+        hand = list(hand)
 
     def numOfCards(self):
         res = 0

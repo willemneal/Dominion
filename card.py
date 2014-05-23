@@ -35,20 +35,23 @@ class ActionCard(Card):
     
     def __init__(self, name, cost, desc, attack=False,
         isDefense = False, vp = 0,  action=(),
-         reaction = False, actions=0, plusCards=0):
+         reaction = False, actions=0, plusCards=0,reactionAction = ()):
         Card.__init__(self,name,cost,desc,vp)
         self.isDefense          = isDefense
         self.attack             = attack
         self.reaction           = reaction
         self.actions            = plusCards
         self.action             = action
- 
+        self.reactionAction     = reactionAction
 
     def isAttack(self):
         return self.attack
 
     def isReaction(self):
         return self.reaction
+
+    def reaction(self, player):
+        return self.reactionAction(player)
 
     def play(self,turn):
         self.action(turn)

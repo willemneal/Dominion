@@ -1,4 +1,5 @@
 from card import *
+from game import gameLog
 
 class Turn():
     def __init__(self, player,otherPlayers):
@@ -77,8 +78,10 @@ class Turn():
             if not card: ## promptCards returns false if not an action card
                 print "That is not an action card. Please pick another: \n"
                 continue
-            card.play(self)
-            self.player.played.append(card)
+            if card.play(self) == "trash":
+                self.player.trash.append(card)
+            else:
+                self.player.played.append(card)
             self.updateActions(-1)
             
     def buyPhase(self):
@@ -110,21 +113,17 @@ class Turn():
             numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
 
         while self.buys > 0:
-            if self.buys > 1:
-                print "you have %d buys and %d coin"%(self.buys,self.coins)
-            else:
-                print "you have %d buy and %d coin"%(self.buys,self.coins)
-            card = self.promptBuy(self.player.supply.getPiles())
+            print "%s has %d buy(s) and %d coin"%(self.player,self.buys,self.coins)
+            card = self.promptGain(self.coins)
             if card is None:
                 break
-            if card.cost > self.coins:
+            if False == Card
                 print "Too exspensive. Need more money Bitch!!! \n"
                 continue
             gainedCard  = self.player.supply.gainCard(card)
             if gainedCard is None:
                 print "Please choose another. \n"
                 continue
-            assert isinstance(gainedCard,ActionCard)
             self.player.discardCard(gainedCard)
             self.coins -= card.cost
             self.updateBuys(-1)
@@ -137,7 +136,7 @@ class Turn():
         self.player.drawHand()
         assert 5 == len(self.player.hand)
 
-    def promptBuy(self,cards,kind=Card):
+    def promptGain(self,coinsToSpend,cards =self.player.supply.getPiles(),kind=Card):
         s = ""
         for (i,card) in enumerate(cards):
             if i % 5 ==4:
@@ -145,16 +144,17 @@ class Turn():
             else:
                 s += " %s-$%d,%d left(%i)" % (card,card.cost,self.player.supply.cardsLeft(card),i+1)
         print s+'\n'
-        cardindex = raw_input('Which Card? (0 to skip): ')
-        if cardindex.lower() == "a" or cardindex.lower()=="all":
-            return "all"
-        cardindex = int(cardindex)
-        cardindex -= 1
-        if cardindex < 0:
-            return None
-        if not isinstance(cards[cardindex],kind):
-            return False
-        return cards.pop(cardindex)
+        while True:
+            cardindex = raw_input('Which Card? (0 to skip): ')
+            cardindex = int(cardindex)
+            cardindex -= 1
+            if cardindex < 0:
+                return None
+            if not isinstance(cards[cardindex],kind):
+                continue
+            if cards[cardindex].cost >coinsToSpend:
+                return False
+            return cards.pop(cardindex)
 
 
 

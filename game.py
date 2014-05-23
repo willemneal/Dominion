@@ -18,9 +18,11 @@ def reloadAll():
 reloadAll()
 """
 
+gameLog = ''
 
 class Game():
     def __init__(self, playerList,sets):
+        global gameLog
         allCards = []
         for Set in sets:
             allCards.extend(Set)
@@ -37,8 +39,10 @@ class Game():
         self.players = [Player(name,self.supply) for name in playerList]
         
         shuffle(self.players)
-        players = ''
-        print players
+        line = 'Today '
+        for i,player in self.players:
+            %
+        
 
     def playGame(self):
         while not self.supply.gameOver():
