@@ -44,8 +44,9 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        if cardindex.lower() == "a" or cardindex.lower() == "all":
-            return "all"
+        while not is_number(cardindex):
+            print "That is not a number. Try again."
+            cardindex = raw_input('Which Card? (0 to skip): ')
         cardindex = int(cardindex)
         cardindex -= 1
         if cardindex < 0:
@@ -63,8 +64,9 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        if cardindex.lower() == "a" or cardindex.lower() == "all":
-            return "all"
+        while not is_number(cardindex):
+            print "That is not a number. Try again."
+            cardindex = raw_input('Which Card? (0 to skip): ')
         cardindex = int(cardindex)
         cardindex -= 1
         if cardindex < 0:
@@ -162,3 +164,12 @@ class Turn():
             if cards[cardindex].cost >coinsToSpend:
                 return False
             return cards.pop(cardindex)
+
+    ## Fuction to check if string is a number
+    @staticmethod 
+    def is_number(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False

@@ -15,6 +15,9 @@ class Card(object):
     def __str__(self):
         return self.name
 
+    def getImageLocation(self):
+        return "images/%s" % (self.name.lower())
+
     def isVictory(self):
     	return self.vp > 0
 
