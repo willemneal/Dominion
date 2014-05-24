@@ -44,7 +44,7 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        while not is_number(cardindex):
+        while not self.is_number(cardindex):
             print "That is not a number. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
         cardindex = int(cardindex)
@@ -64,7 +64,9 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        while not is_number(cardindex):
+        if cardindex.lower() == "a" or cardindex.lower()=="all":
+            return "all"
+        while not self.is_number(cardindex):
             print "That is not a number. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
         cardindex = int(cardindex)
