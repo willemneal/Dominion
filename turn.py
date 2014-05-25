@@ -44,7 +44,12 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
+        if (cardindex.lower() == "a" or cardindex.lower()=="all") and isinstance(kind,ActionCard):
+            return "all"
         while not self.is_number(cardindex):
+            print "That is not a number. Try again."
+            cardindex = raw_input('Which Card? (0 to skip): ')
+        while int(cardindex) >= len(cards):
             print "That is not a number. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
         cardindex = int(cardindex)
@@ -64,8 +69,6 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        if cardindex.lower() == "a" or cardindex.lower()=="all":
-            return "all"
         while not self.is_number(cardindex):
             print "That is not a number. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
@@ -79,7 +82,6 @@ class Turn():
 
     def actionPhase(self):
         print "Action Phase!"
-        print self.hand,"player's hand"
         while self.actions > 0 and self.player.hasAction():
             print "Actions:",self.actions,"Pick an action card from your hand: \n"
             card = self.promptCards(self.hand,ActionCard)
@@ -94,7 +96,6 @@ class Turn():
     def buyPhase(self):
         print "Buy Phase"
         numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
-        print self.hand, " is your hand Bitch"
         while numberOfTreasure > 0:
             print "Pick a Treasure card from your hand, or input 'all': \n"
             card = self.promptCards(self.hand,TreasureCard)
@@ -113,9 +114,8 @@ class Turn():
             if not card: ##promptCards returns false if not a treasure
                 print "That is not a Treasure card. Please pick another: \n"
                 continue
-            else:
-                card.play(self)
-                self.player.played.append(card)
+            card.play(self)
+            self.player.played.append(card)
             print "you bought",card
             numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
 
@@ -124,9 +124,6 @@ class Turn():
             card = self.promptGain(self.coins)
             if card is None:
                 break
-            if False == card:
-                print "Too exspensive. Need more money Bitch!!! \n"
-                continue
             gainedCard  = self.player.supply.gainCard(card)
             if gainedCard is None:
                 print "Please choose another. \n"
@@ -134,6 +131,7 @@ class Turn():
             self.player.discardCard(gainedCard)
             self.coins -= card.cost
             self.updateBuys(-1)
+            print "%s bought a %s" % (self.player, card)
 
 
     def cleanupPhase(self):
@@ -145,18 +143,19 @@ class Turn():
         assert 0 == len(self.player.hand)
         self.player.drawHand()
         assert 5 == len(self.player.hand)
+        self.player.played = []
 
     def promptGain(self,coinsToSpend,kind=Card):
         cards=self.player.supply.getPiles()
         s = ""
         for (i,card) in enumerate(cards):
-            if i % 5 ==4:
-                s += " %s-$%d,%d left(%i)\n" % (card,card.cost,self.player.supply.cardsLeft(card),i+1)
+            if i % 2 ==0:
+                s += "(%i) $%d, %d -%s\t\t" % (i+1,card.cost,self.player.supply.cardsLeft(card),card)
             else:
-                s += " %s-$%d,%d left(%i)" % (card,card.cost,self.player.supply.cardsLeft(card),i+1)
+                s += "(%i) $%d, %d -%s\n" % (i+1,card.cost,self.player.supply.cardsLeft(card),card)
         print s+'\n'
         while True:
-            cardindex = raw_input('Which Card? (0 to skip): ')
+            cardindex = raw_input('Pick a card %d or less (0 to skip): '%( coinsToSpend))
             cardindex = int(cardindex)
             cardindex -= 1
             if cardindex < 0:
@@ -166,6 +165,23 @@ class Turn():
             if cards[cardindex].cost >coinsToSpend:
                 return False
             return cards.pop(cardindex)
+    
+    def printAllCards(self):
+        for player in self.otherPlayers + [self.player]:
+            print player
+            print "hand\t%s" % (self.printSet(player.hand))
+            print "played\t%s" % (self.printSet(player.hand))
+            print "discard\t%s" % (self.printSet(player.discard))
+            print "deck\t%s" % (self.printSet(player.deck.deck))
+        print player.supply.getPiles()
+
+    @staticmethod #this means that it doesn't take self as a parameter. In other words it is just a vanilia function.
+    def printSet(List):
+        s = ''
+        for i,element in enumerate(set(List)):
+            s += "(%d) %s \t "% (List.count(element),element)
+
+        return s+'\n'
 
     ## Fuction to check if string is a number
     @staticmethod 

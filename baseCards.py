@@ -151,7 +151,8 @@ def smithyAction(turn):
 
 def spyAction(turn):
 	turn.player.drawToHand(1)
-	for player in otherPlayers+[turn.player]:
+	print turn.otherPlayers+[turn.player]
+	for player in turn.otherPlayers+[turn.player]:
 		if turn.handleReactions(player):
 			continue
 		card = player.drawCard()
@@ -191,9 +192,12 @@ def theifAction(turn):
 	return
 
 def throneRoomAction(turn):
-	card = turn.promptCards(turn.player.hand,ActionCard)
-	card.play(turn)
-	card.play(turn)
+	if turn.player.hasAction():
+		card = turn.promptCards(turn.player.hand,ActionCard)
+		card.play(turn)
+		card.play(turn)
+	else:
+		print "sorry you have no actions to play."
 
 def villageAction(turn):
 	turn.player.drawToHand(1)

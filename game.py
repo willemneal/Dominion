@@ -4,7 +4,10 @@ from supply import BaseSupply
 from turn import Turn
 from random import sample
 from random import shuffle
+import logging
 
+logging.basicConfig(filename='example.log',level=logging.DEBUG)
+##logging.debug('This message should go to the log file')
 
 """
 def reloadAll():
@@ -33,14 +36,19 @@ class Game():
         
 
     def playGame(self):
+        global logging
 
         while not self.supply.gameOver():
             self.currentPlayer = self.players.pop(0)
             print "It is %s's turn." % (self.currentPlayer)
             currentTurn = Turn(self.currentPlayer,self.players)
             currentTurn.actionPhase()
+            logging.debug(currentTurn.printAllCards())
+            print currentTurn.printAllCards()
             currentTurn.buyPhase()
+            logging.debug(currentTurn.printAllCards())
             currentTurn.cleanupPhase()
+            logging.debug(currentTurn.printAllCards())
             self.players.append(self.currentPlayer)
 
         print "The game is over!! The scores are:\n"
