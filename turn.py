@@ -170,7 +170,7 @@ class Turn():
         for player in self.otherPlayers + [self.player]:
             print player
             print "hand\t%s" % (self.printSet(player.hand))
-            print "played\t%s" % (self.printSet(player.hand))
+            print "played\t%s" % (self.printSet(player.played))
             print "discard\t%s" % (self.printSet(player.discard))
             print "deck\t%s" % (self.printSet(player.deck.deck))
         print player.supply.getPiles()
