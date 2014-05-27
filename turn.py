@@ -35,6 +35,7 @@ class Turn():
                 blocked = True
         return blocked
 
+
     def promptCards(self,cards,kind=Card):
         s = ""
         for (i,card) in enumerate(cards):
@@ -44,8 +45,10 @@ class Turn():
                 s += " %s-(%i)" % (card,i+1)
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
-        if (cardindex.lower() == "a" or cardindex.lower()=="all") and isinstance(kind,ActionCard):
-            return "all"
+        print cardindex, "cardindex",self.is_number(cardindex)
+        if isinstance(kind,TreasureCard):
+            if (cardindex.lower() == "a" or cardindex.lower()=="all"):
+                return "all"
         while not self.is_number(cardindex):
             print "That is not a number. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
@@ -83,7 +86,7 @@ class Turn():
     def actionPhase(self):
         print "Action Phase!"
         while self.actions > 0 and self.player.hasAction():
-            print "Actions:",self.actions,"Pick an action card from your hand: \n"
+            print "Actions:",self.actions,"\nPick an action card from your hand: \n"
             card = self.promptCards(self.hand,ActionCard)
             if card is None:
                 return
@@ -150,7 +153,10 @@ class Turn():
         s = ""
         for (i,card) in enumerate(cards):
             if i % 2 ==0:
-                s += "(%i) $%d, %d -%s\t\t" % (i+1,card.cost,self.player.supply.cardsLeft(card),card)
+                s += "(%i) $%d, %d -%s\t\t" % (i+1,
+                                                card.cost,
+                                                self.player.supply.cardsLeft(card),
+                                                card)
             else:
                 s += "(%i) $%d, %d -%s\n" % (i+1,card.cost,self.player.supply.cardsLeft(card),card)
         print s+'\n'
@@ -167,13 +173,14 @@ class Turn():
             return cards.pop(cardindex)
     
     def printAllCards(self):
+        s = ""
         for player in self.otherPlayers + [self.player]:
-            print player
-            print "hand\t%s" % (self.printSet(player.hand))
-            print "played\t%s" % (self.printSet(player.played))
-            print "discard\t%s" % (self.printSet(player.discard))
-            print "deck\t%s" % (self.printSet(player.deck.deck))
-        print player.supply.getPiles()
+            s += "%s\n" % player
+            s += "hand\t%s\n" % (self.printSet(player.hand))
+            s += "played\t%s\n" % (self.printSet(player.played))
+            s +=  "discard\t%s\n" % (self.printSet(player.discard))
+            s += "deck\t%s\n" % (self.printSet(player.deck.deck))
+        s += ("%s" % player.supply.getPiles()) + "\n"
 
     @staticmethod #this means that it doesn't take self as a parameter. In other words it is just a vanilia function.
     def printSet(List):

@@ -40,12 +40,14 @@ def bureaucratAction(turn):
 
 def cellarAction(turn):
 	turn.updateActions(1)
+	print "choose a card to discard"
 	cardIndex = turn.promptCardsIndex(turn.player.hand)
 	numCardsDiscarded = 0
 	while cardIndex is not None:
-		cardIndex = turn.promptCardsIndex(turn.player.hand)
 		turn.player.discardCard(turn.player.hand.pop(cardindex))
 		numCardsDiscarded +=1
+		cardIndex = turn.promptCardsIndex(turn.player.hand)
+		print "choose a card to discard"
 	turn.player.drawToHand(numCardsDiscarded)
 
 def chancellorAction(turn):
@@ -143,7 +145,7 @@ def remodelAction(turn):
 	print "pick card to trash and gain one up to three more"
 	card = turn.promptCards(turn.player.hand)
 	turn.player.trashCard(card)
-	gainedCard = turn.promptGain(card.cost + 3)
+	gainedCard = turn.promptGain(card.cost + 2)
 	turn.player.discardCard(gainedCard)
 
 def smithyAction(turn):
