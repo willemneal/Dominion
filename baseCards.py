@@ -130,10 +130,10 @@ def moatReaction(player):
 def moneylenderAction(turn):
 	if copper in turn.player.hand:
 		print "Pick a copper to trash."
-		cardindex = promptCardsIndex(turn.player.hand)
+		cardindex = turn.promptCardsIndex(turn.player.hand)
 		while self.player.hand[cardindex] != copper:
 			print "That's not a copper"
-			cardindex = promptCardsIndex(turn.player.hand)
+			cardindex = turn.promptCardsIndex(turn.player.hand)
 		card = turn.player.hand.pop(cardindex)
 		turn.player.trashCard(card)
 		turn.coins += 3
@@ -187,11 +187,6 @@ def theifAction(turn):
 			if "y" == ans:
 				turn.player.discardCard(card)
 
-			
-
-
-
-	return
 
 def throneRoomAction(turn):
 	if turn.player.hasAction():
