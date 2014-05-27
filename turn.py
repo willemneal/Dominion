@@ -46,14 +46,14 @@ class Turn():
         print s+'\n'
         cardindex = raw_input('Which Card? (0 to skip): ')
         print cardindex, "cardindex",self.is_number(cardindex)
-        if isinstance(kind,TreasureCard):
+        if TreasureCard == kind:
             if (cardindex.lower() == "a" or cardindex.lower()=="all"):
                 return "all"
         while not self.is_number(cardindex):
             print "That is not a number. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
         while int(cardindex) >= len(cards):
-            print "That is not a number. Try again."
+            print "That is out of range. Try again."
             cardindex = raw_input('Which Card? (0 to skip): ')
         cardindex = int(cardindex)
         cardindex -= 1

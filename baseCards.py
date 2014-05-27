@@ -131,7 +131,7 @@ def moneylenderAction(turn):
 	if copper in turn.player.hand:
 		print "Pick a copper to trash."
 		cardindex = turn.promptCardsIndex(turn.player.hand)
-		while self.player.hand[cardindex] != copper:
+		while turn.player.hand[cardindex] != copper:
 			print "That's not a copper"
 			cardindex = turn.promptCardsIndex(turn.player.hand)
 		card = turn.player.hand.pop(cardindex)
