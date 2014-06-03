@@ -223,7 +223,7 @@ chapel = ActionCard("Chapel",2,"Trash up to 4 cards from your hand.", action = c
 councilRoom = ActionCard("Council Room", 5, "+4 Cards, +1 Buy, Each other player draws a card.", action = councilRoomAction)
 feast = ActionCard("Feast",4,"Trash this card. Gain a card costing up to 5.", action = feastAction) 
 festival = ActionCard("Festival", 5, "+2 Actions, +1 Buy, +$2", action = festivalAction)
-garden = Card("Garden", 4, "Worth 1VP for every 10 cards in your deck (rounded down).", vp=True) 
+gardens = Card("Gardens", 4, "Worth 1VP for every 10 cards in your deck (rounded down).", vp=True) 
 laboratory = ActionCard("Laboratory", 5, "+2 Cards, +1 Action", action = laboratoryAction)
 library = ActionCard("Library", 5, "Draw until you have 7 cards in hand. You may set aside any Action cards drawn this way, as you draw them; discard the set aside cards after you finish drawing.", action = libraryAction)
 market = ActionCard("Market", 5, "+1 Card, +1 Action, +1 Buy, +$1", action = marketAction)
