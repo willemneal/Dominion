@@ -33,6 +33,11 @@ class Game():
         print self.supply
         self.players = [Player(name,self.supply) for name in playerList]
         shuffle(self.players)
+
+        self.playerDict = dict()
+        for player in self.players:
+            self.playerDict[player.name] = player
+
         
 
     def playGame(self):
@@ -63,5 +68,5 @@ class Game():
 
 playerList = ["Max","Willem"]
 
-G = Game(playerList, [base])
-G.playGame()
+#G = Game(playerList, [base])
+#G.playGame()

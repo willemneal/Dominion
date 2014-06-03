@@ -122,7 +122,7 @@ class Turn():
             print "you bought",card
             numberOfTreasure = sum([card.isTreasure() for card in self.player.hand])
 
-        while self.buys > 0:
+        while self.buys > 0 and self.coins > 0:
             print "%s has %d buy(s) and %d coin"%(self.player,self.buys,self.coins)
             card = self.promptGain(self.coins)
             if card is None:

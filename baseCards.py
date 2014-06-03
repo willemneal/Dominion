@@ -164,7 +164,7 @@ def spyAction(turn):
 		else:
 			player.deck.addCardOnTop(card)
 
-def theifAction(turn):
+def thiefAction(turn):
 	for player in turn.otherPlayers:
 		if turn.handleReactions(player):
 			continue
@@ -234,7 +234,7 @@ moneylender = ActionCard("Moneylender", 4, "Trash a Copper card from your hand. 
 remodel = ActionCard("Remodel", 4, "Trash a card from your hand. Gain a card costing up to $2 more than the trashed card.", action = remodelAction)
 smithy = ActionCard("Smithy", 4,"+3 Cards", action = smithyAction)
 spy = ActionCard("Spy", 4, "+1 Card, +1 Action, Each player (including you) reveals the top card of his deck and either discards it or puts it back, your choice.", attack=True, action = spyAction)
-theif = ActionCard("Theif", 4, "Each other player reveals the top 2 cards of his deck. If they revealed any Treasure cards, they trash one of them that you choose. You may gain any or all of these trashed cards. They discard the other revealed cards.", attack=True, action = theifAction)
+thief = ActionCard("Thief", 4, "Each other player reveals the top 2 cards of his deck. If they revealed any Treasure cards, they trash one of them that you choose. You may gain any or all of these trashed cards. They discard the other revealed cards.", attack=True, action = thiefAction)
 throneRoom = ActionCard("Throne Room", 4, "Choose an Action card in your hand. Play it twice.", action = throneRoomAction)
 village = ActionCard("Village",3,"+1 Card, +2 Actions", action = villageAction) 
 witch = ActionCard("Witch", 5, "+2 Cards, Each other player gains a Curse card.", attack=True, action = witchAction)
@@ -242,4 +242,4 @@ woodcutter = ActionCard("Woodcutter",3,"+1 Buy, +$2", action = woodcutterAction)
 workshop = ActionCard("Workshop",3,"Gain a card costing up to $4.", action = workshopAction) 
 
 ##The master list
-base = [adventurer, bureaucrat, cellar, chancellor, chapel, councilRoom, feast, festival, garden, laboratory, library, market, militia, mine, moat, moneylender, remodel, smithy, spy, theif, throneRoom, village, witch, woodcutter, workshop]
+base = [adventurer, bureaucrat, cellar, chancellor, chapel, councilRoom, feast, festival, garden, laboratory, library, market, militia, mine, moat, moneylender, remodel, smithy, spy, thief, throneRoom, village, witch, woodcutter, workshop]

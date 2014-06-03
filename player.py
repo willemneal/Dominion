@@ -5,12 +5,11 @@ class Player():
     def __init__(self,name,supply):
         self.supply = supply
         self.name     = name
-        self.allCardPiles = []
-        self.deck     = Deck()
+        self.deck       = Deck()
         self.played     = []
         self.discard    = []
         self.hand       = []
-        self.allCardPiles   = [self.deck.deck,
+        self.allCards   = [self.deck.deck,
                             self.played,
                             self.discard, 
                             self.hand]
@@ -25,7 +24,8 @@ class Player():
         return str(self.name) 
 
     def coinInHand(self):
-        return sum([card.coin for card in self.treasuresInHand()])
+        return sum([card.coin for 
+                        card in self.treasuresInHand()])
 
     def discardCard(self,card):
         self.discard.append(card)
@@ -72,7 +72,7 @@ class Player():
 
     def getAllCards(self):
         res = []
-        for Set in self.allCardPiles:
+        for Set in self.allCards:
             res.extend(Set)
         return res         
 
@@ -97,7 +97,7 @@ class Player():
 
     def numOfCards(self):
         res = 0
-        for cards in self.allCardPiles:
+        for cards in self.allCards:
             res += len(cards)
         return res
 

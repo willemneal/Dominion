@@ -1,0 +1,8 @@
+<!doctype html>
+
+<h1>{{ name }}'s hand!</h1>
+{% for group in hand|groupby('type') %}
+	{% for card in group.list %}
+    <img id = {{card}} src = "/static/{{card.getImageLocation()}}" class ="{{card.type}}" >
+    {% endfor %}
+{% endfor %}

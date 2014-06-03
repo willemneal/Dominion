@@ -11,12 +11,13 @@ class Card(object):
     	self.cost = cost
     	self.desc = desc
     	self.vp   = vp
+        self.type = self.getType()
 
     def __str__(self):
         return self.name
 
     def getImageLocation(self):
-        return "images/%s" % (self.name.lower())
+        return "images/%s.png" % (self.name.lower().replace(" ", ""))
 
     def isVictory(self):
     	return self.vp > 0
@@ -29,6 +30,9 @@ class Card(object):
 
     def isAction(self):
 		return isinstance(self, ActionCard)
+
+    def getType(self):
+        return str(type(self)).split(".")[1]
 
     def __repr__(self):
         return self.name
@@ -46,6 +50,7 @@ class ActionCard(Card):
         self.actions            = plusCards
         self.action             = action
         self.reactionAction     = reactionAction
+        self.type = self.getType()
 
     def isAttack(self):
         return self.attack
@@ -67,6 +72,7 @@ class TreasureCard(Card):
                 coin = 0):
         Card.__init__(self, name, cost, desc=desc, vp=vp)
         self.coin     = coin
+        self.type = self.getType()
 
 
     def play(self,turn):
