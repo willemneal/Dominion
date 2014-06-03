@@ -1,7 +1,7 @@
 from baseCards import *
 
 class BaseSupply():
-    def __init__(self,gameCards,numOfPlayers=4):
+    def __init__(self,kingdomCards,numOfPlayers=4):
 
         numOfVictories =12
         if (numOfPlayers == 2):
@@ -15,9 +15,14 @@ class BaseSupply():
                     silver: [silver]*40,
                     gold: [gold]*30
                     }
+        self.victoryCards  = [estate, duchy, province]
+        self.treasureCards = [copper, silver, gold]
+        self.miscCards     = [curse]
+        self.nonSupplyCards= []
 
         #add in cards we are playing with.
-        self.addPile(gameCards)
+        self.addPiles(kingdomCards)
+        self.kingdomCards = kingdomCards
         self.trash = []
     
                     
@@ -35,7 +40,7 @@ class BaseSupply():
     def cardsLeft(self,card):
         return len(self.supply[card])
 
-    def addPile(self,cards):
+    def addPiles(self,cards):
         for card in cards:
             self.supply[card] = [card]*10
 
