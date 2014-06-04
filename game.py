@@ -23,7 +23,6 @@ reloadAll()
 
 class Game():
     def __init__(self, playerList,sets):
-        global gameLog
         allCards = []
         for Set in sets:
             allCards.extend(Set)
@@ -41,14 +40,14 @@ class Game():
         
 
     def playGame(self):
-        global logging
+
 
         while not self.supply.gameOver():
             self.currentPlayer = self.players.pop(0)
             print "It is %s's turn." % (self.currentPlayer)
             currentTurn = Turn(self.currentPlayer,self.players)
             currentTurn.actionPhase()
-            logging.debug(currentTurn.printAllCards())
+            ##logging.debug(currentTurn.printAllCards())
             print currentTurn.printAllCards()
             currentTurn.buyPhase()
             logging.debug(currentTurn.printAllCards())
