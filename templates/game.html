@@ -3,15 +3,22 @@
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+
 <head>
   <meta charset="utf-8">
-  <title>Lobby</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Game</title>
+  <!--<link rel="stylesheet" href="css/style.css">-->
   <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 </head>
 <body>
-  {% include 'supply.html' %}
-  {% include 'hand.html'   %}
+  <div id="supply"> 
+    {% include 'supply.html' %}
+  </div>
+  <div id="hand">
+    {% include 'hand.html'   %}
+  </div>
+  
 </body>
 </html>

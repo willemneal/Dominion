@@ -47,10 +47,11 @@ def login():
         return redirect(url_for('lobby'))
     return render_template("/login.html")
 
-@app.route('/<gameid>/player/<name>/hand')
-def player(gameid,name):
+@app.route('/hand/<int:gameid')
+def player(gameid):
     if Games[gameid]:
         G = Games[gameid]
+        name = session['username']
         return render_template('/hand.html',name =name, hand=G.playerDict[name].hand)
     return redirect(url_for('/'))
 
