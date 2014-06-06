@@ -53,10 +53,14 @@
             $scope.updateHand();
 
             $scope.playCard = function(card) {
-                $http.post('play/'+card+'/'+window.gameid).success(
+                if ($scope.actions == 0){
+                    return
+                }
+                $http.post('/play/'+card+'/'+window.gameid).success(
                     function(data) {
                         $scope.hand = data;
                     });
+                $scope.updateHand();
             };
 
             $scope.discardCard = function() {

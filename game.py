@@ -45,14 +45,14 @@ class Game():
         while not self.supply.gameOver():
             self.currentPlayer = self.players.pop(0)
             print "It is %s's turn." % (self.currentPlayer)
-            currentTurn = Turn(self.currentPlayer,self.players)
-            currentTurn.actionPhase()
+            self.currentTurn = Turn(self.currentPlayer,self.players)
+            self.currentTurn.actionPhase()
             ##logging.debug(currentTurn.printAllCards())
-            print currentTurn.printAllCards()
-            currentTurn.buyPhase()
-            logging.debug(currentTurn.printAllCards())
-            currentTurn.cleanupPhase()
-            logging.debug(currentTurn.printAllCards())
+            print self.currentTurn.printAllCards()
+            self.currentTurn.buyPhase()
+            logging.debug(self.currentTurn.printAllCards())
+            self.currentTurn.cleanupPhase()
+            logging.debug(self.currentTurn.printAllCards())
             self.players.append(self.currentPlayer)
 
         print "The game is over!! The scores are:\n"

@@ -37,7 +37,7 @@
 
   </frame>
   <div id="Hand" ng-controller = "handController">
-    <img ng-src="{{card.src}}" ng-repeat="card in hand">
+    <img ng-src="{{card.src}}" ng-click="playCard(card.name)" ng-repeat="card in hand">
   </div>  
 </body>
 </html>

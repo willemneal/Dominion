@@ -84,6 +84,7 @@ def game(gameid=None):
 @app.route('/play/<card>/<int:gameid>',methods=['GET','POST'])
 def playCard(gameid,card):
     if request.method == 'POST':
+        card = card.lower()
         player = Games[gameid].playerDict[session['username']]
         if player is not Games[gameid].currentPlayer:
             return "Not your Turn"
