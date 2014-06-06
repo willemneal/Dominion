@@ -19,11 +19,6 @@
             $scope.kingdomCards = [];
             $scope.nonSupplyCards =[];
             $scope.miscCards = [];
-            $scope.piles = ["victoryCards",
-            "treasureCards",
-            "kingdomCards",
-            "nonSupplyCards",
-            "miscCards"];
 
             $scope.updateSupply = function(){
                 $http.get('/supply/'+window.gameid).success(
