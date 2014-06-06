@@ -15,14 +15,10 @@
 
 </head>
 <body>
-  <div id="supply" ng-controller="supplyController">
-    <img ng-src="{{card.src}}" ng-repeat="card in victoryCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in treasureCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in miscCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in nonSupplyCards">
+  <div id="supply">
   </div>
   <div id="Hand" ng-controller = "handController">
-    <img ng-src="{{card.src}}" ng-repeat="card in hand">
+  {{hand}}
   </div>  
 </body>
 </html>

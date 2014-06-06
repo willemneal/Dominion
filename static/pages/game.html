@@ -16,10 +16,18 @@
 </head>
 <body>
   <div id="supply" ng-controller="supplyController">
+    <div>
     <img ng-src="{{card.src}}" ng-repeat="card in victoryCards">
+  </div>
+  <div>
     <img ng-src="{{card.src}}" ng-repeat="card in treasureCards">
+  </div>
+  <div>
     <img ng-src="{{card.src}}" ng-repeat="card in miscCards">
+  </div>
+  <div>
     <img ng-src="{{card.src}}" ng-repeat="card in nonSupplyCards">
+  </div>
   </div>
   <div id="Hand" ng-controller = "handController">
     <img ng-src="{{card.src}}" ng-repeat="card in hand">

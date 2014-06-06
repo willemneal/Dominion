@@ -19,12 +19,19 @@ class BaseSupply():
         self.treasureCards = [copper, silver, gold]
         self.miscCards     = [curse]
         self.nonSupplyCards= []
+        self.cardDict = {}
+
 
         #add in cards we are playing with.
         self.addPiles(kingdomCards)
         self.kingdomCards = kingdomCards
+
+        for card in self.supply:
+            self.cardDict[card.name] = card
         self.trash = []
     
+    def strToCard(card):
+        return self.cardDict[card]
                     
     def gainCard(self,card):
         if len(self.supply[card])==0:
@@ -36,6 +43,13 @@ class BaseSupply():
 
     def trashCard(self,card):
         self.trash.append(card)
+
+    def toDict(self):
+        return {"kingdomCards":[card.getAttr() for card in self.kingdomCards],
+                "treasureCards":[card.getAttr() for card in self.treasureCards],
+                "victoryCards":[card.getAttr() for card in self.victoryCards],
+                "miscCards":[card.getAttr() for card in self.miscCards],
+                "nonSupplyCards":[card.getAttr() for card in self.nonSupplyCards]}
 
     def cardsLeft(self,card):
         return len(self.supply[card])

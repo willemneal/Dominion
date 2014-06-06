@@ -12,12 +12,13 @@ class Card(object):
     	self.desc = desc
     	self.vp   = vp
         self.type = self.getType()
+        self.src  = self.getImageLocation()
 
     def __str__(self):
         return self.name
 
     def getImageLocation(self):
-        return "images/%s.png" % (self.name.lower().replace(" ", ""))
+        return "/static/images/%s.png" % (self.name.lower().replace(" ", ""))
 
     def isVictory(self):
     	return self.vp > 0
@@ -33,6 +34,11 @@ class Card(object):
 
     def getType(self):
         return str(type(self)).split(".")[1]
+
+    def getAttr(self):
+        return {"name":self.name,"src":self.src,
+                "type":self.type[:-2],"cost":self.cost,
+                "desc":self.desc,"vp":self.vp}
 
     def __repr__(self):
         return self.name

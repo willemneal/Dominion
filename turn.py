@@ -172,6 +172,14 @@ class Turn():
                 return False
             return cards.pop(cardindex)
     
+    def playCard(self,card):
+        if isinstance(card, basestring):
+            card = self.player.supply.strToCard(card)
+        self.hand.remove(card)
+        card.play(self)
+        self.player.played.append(card)
+        self.updateActions(-1)
+
     def printAllCards(self):
         s = ""
         for player in self.otherPlayers + [self.player]:
