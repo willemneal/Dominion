@@ -24,7 +24,8 @@ class BaseSupply():
 
         #add in cards we are playing with.
         self.addPiles(kingdomCards)
-        self.kingdomCards = kingdomCards
+        print kingdomCards,"kingdomCards"
+        self.kingdomCards = sort(kingdomCards)
 
         for card in self.supply:
             self.cardDict[card.name] = card
@@ -45,11 +46,16 @@ class BaseSupply():
         self.trash.append(card)
 
     def toDict(self):
-        return {"kingdomCards":[card.getAttr() for card in self.kingdomCards],
+
+        dic = {"kingdomCards":[card.getAttr() for card in self.kingdomCards],
                 "treasureCards":[card.getAttr() for card in self.treasureCards],
                 "victoryCards":[card.getAttr() for card in self.victoryCards],
                 "miscCards":[card.getAttr() for card in self.miscCards],
                 "nonSupplyCards":[card.getAttr() for card in self.nonSupplyCards]}
+        for card in self.supply:
+            dic[card.name] = card.getAttr()
+            if card not in dic["nonSupplyCards"]:
+                dic[card.name]["numberLeft"] = self.cardsLeft(card)
 
     def cardsLeft(self,card):
         return len(self.supply[card])

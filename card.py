@@ -42,6 +42,13 @@ class Card(object):
 
     def __repr__(self):
         return self.name
+
+    def __cmp__(self,other):
+        if self.other.cost> self.cost:
+            return -1
+        elif self.other.cost <self.cost:
+            return  1
+        return 0
 	
 
 class ActionCard(Card):

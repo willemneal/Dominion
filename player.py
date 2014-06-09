@@ -80,7 +80,13 @@ class Player():
         for card in self.hand:
             if card.isAction():
                 return True
-        return False  
+        return False
+
+    def hasTreasure(self):
+        for card in self.hand:
+            if card.isTreasure():
+                return True
+        return False
 
     def getReactionCards(self):
         reactionCards = []
