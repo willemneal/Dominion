@@ -47,17 +47,25 @@ def getUserID(username):
         return False
     return userid[0]
 
+def
+
+
 def createUser(username, password, firstName,lastName):
     db = get_db()
-    values = (None,username, password, firstName, lastName,0,0,datetime.utcnow())
+    values = (None, username, password, firstName, lastName, 0, 0, datetime.utcnow())
     print len(values)
     db.cursor().execute(''' insert into users values(?,?,?,?,?,?,?,?)''',
         values)
     db.commit()
 
-def createGame(creator,sets):
+def createReadyGame(creator,sets=[base]):
     db = get_db()
-    db.cursor().execute('insert into games values(?,?,?,?)',(gameid,pickle.dumps([base]),"not Started",datetime.utcnow()),False,False)
+    db.cursor().execute('insert into games values(?,?,?,?)',(None,pickle.dumps(sets),"not Started",datetime.utcnow()),False,False)
+    gameid = db.cursor().lastrowid
+    userid = getUserID(creator)
+    if not userid:
+        abort(402)
+    db.cursor().execute('insert into userGames values(?,?,?,?,?)', (None, gameid, userid, False,0)
     db.commit()
 
 def getPassword(username):
@@ -66,11 +74,14 @@ def getPassword(username):
 
 
 def getCurrentGame(gameid):
-    return pickle.loads(get_db().cursor.execute('''
+    pointer = get_db().cursor.execute('''
             select pointer from games
             where gameid = %d
 
-        ''' % gameid).fetchone()[0])
+        ''' % gameid).fetchone()
+    if pointer is None:
+        return False
+    return pickle.loads(pointer[0])
 
 Games = {}
 GAMESIZE = 1
@@ -105,11 +116,6 @@ def lobby():
         #return redirect(url_for('ready'))
     return render_template("/lobby.welcome.html")
 
-@app.route('/player/hand', methods = ['GET'])
-def hand():
-    name = session['username']
-    G = Games[session['gameid']]
-    return render_template("/hand.html",name =name, hand=G.playerDict[name].hand)
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
@@ -119,7 +125,9 @@ def login():
         if not getUserID(username):
             return render_template("/login.html",username=True)
         
-        if hashPassword(password,username[-2:]) == getPassword(username):
+        print hashPassword(password,username[-2:]) , getPassword(username)
+        if hashPassword(password,username[-2:]) != getPassword(username):
+
             return render_template('/login.html',password=True)
         session['username'] = request.form['username']
         if request.form['remember_me'] == "on":
@@ -130,8 +138,8 @@ def login():
 
 @app.route('/hand/<int:gameid>')
 def player(gameid):
-    if Games[gameid]:
-        G = Games[gameid]
+    G = getCurrentGame(gameid)
+    if G:
         name = session['username']
         #return render_template('/hand.html',name =name, hand=G.playerDict[name].hand)
         return json.dumps([card.getAttr() for card in G.playerDict[name].hand])    
@@ -145,26 +153,17 @@ def ready():
 
 @app.route('/supply/<int:gameid>')
 def supply(gameid):
-    global Games
-    db = get_db()
-    pointer = db.cursor().execute('select pointer from games where gameid=%d'%gameid)
-    game = pickle.loads(pointer.fetchone()[0])
-    print type(game)
-    if gameid in Games:
-        supply = Games[gameid].supply
-    else:
-        supply = game.supply
+    game = getCurrentGame(gameid)
+    if not game:
+        return abort(401)
+    supply = game.supply
     return jsonify(supply.toDict())
-    return render_template('/supply.html', game = Games[gameid])
 
 @app.route('/game')
 @app.route('/game/<int:gameid>', methods=['GET','POST'])
 def game(gameid=None):
-    print "hello"
     if gameid is None:
         gameid = session['gameid']
-    g = Games[gameid]
-    print gameid,"about to render_template"
     print '/static/pages/game.html'
     return app.send_static_file('pages/game.html')
     return render_template('/game.html',game=Games[gameid])
@@ -204,7 +203,7 @@ def players():
     print Games
     return jsonify.dumps(Games)
 
-@app.route('/newUser', methods = ['GET','POST'])
+@app.route('/new/User', methods = ['GET','POST'])
 def newUser():
     if request.method == "POST":
         if getUserID(request.form['username']):
@@ -212,7 +211,7 @@ def newUser():
         if request.form['password']!=request.form['password2']:
             return render_template('/newuser.html',password=True)
         createUser(username = request.form['username'],
-                      password = hashPassword(request.form['username'],request.form['username'][-2:]),
+                      password = hashPassword(request.form['password'],request.form['username'][-2:]),
                       firstName = request.form['firstName'],
                       lastName  = request.form['lastName'])
         return redirect(url_for('lobby'))
