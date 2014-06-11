@@ -1,6 +1,6 @@
 from baseCards import *
 
-class BaseSupply():
+class BaseSupply(object):
     def __init__(self,kingdomCards,numOfPlayers=4):
 
         numOfVictories =12
@@ -25,7 +25,8 @@ class BaseSupply():
         #add in cards we are playing with.
         self.addPiles(kingdomCards)
         print kingdomCards,"kingdomCards"
-        self.kingdomCards = sort(kingdomCards)
+        self.kingdomCards = kingdomCards
+        self.kingdomCards.sort()
 
         for card in self.supply:
             self.cardDict[card.name] = card
@@ -56,6 +57,7 @@ class BaseSupply():
             dic[card.name] = card.getAttr()
             if card not in dic["nonSupplyCards"]:
                 dic[card.name]["numberLeft"] = self.cardsLeft(card)
+        return dic
 
     def cardsLeft(self,card):
         return len(self.supply[card])

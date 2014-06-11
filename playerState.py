@@ -1,11 +1,13 @@
-from game import Game
 
-def GameState(Object):
+
+class GameState(object):
 	def __init__(self,game):
 		self.game = game
 		self.state = {}
 		self.state["supply"]= game.supply.toDict()
 		self.state["log"]	= game.log
+
+
 
 class PlayerState(GameState):
 	def __init__(self,player,game):

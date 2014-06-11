@@ -5,6 +5,7 @@ from turn import Turn
 from random import sample
 from random import shuffle
 import logging
+from playerState import PlayerState
 
 logging.basicConfig(filename='example.log',level=logging.DEBUG)
 ##logging.debug('This message should go to the log file')
@@ -21,7 +22,7 @@ def reloadAll():
 reloadAll()
 """
 
-class Game():
+class Game(object):
     def __init__(self, playerList,sets):
         self.log = []
         allCards = []
@@ -35,12 +36,16 @@ class Game():
         shuffle(self.players)
 
         self.playerDict = dict()
-        for player in self.players:
-            self.playerDict[player.name] = player
+        self.playerStates = dict()
+        
+
 
         
 
     def playGame(self):
+        for player in self.players:
+            self.playerDict[player.name] = player
+            self.playerStates[player.name] = PlayerState(player,self)
         self.round = 1
         self.currentPlayer = self.players.pop(0)
         self.firstPlayer   = self.currentPlayer
@@ -51,7 +56,7 @@ class Game():
         self.currentTurn.cleanupPhase()
         self.players.append(self.currentPlayer)
         self.currentPlayer = self.players.pop(0)
-        if self.currentPlayer = self.firstPlayer:
+        if self.currentPlayer == self.firstPlayer:
             self.round += 1
             self.log.append("Round %d" % (self.round))
         self.currentTurn = Turn(self.currentPlayer, self.players, self.round)

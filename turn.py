@@ -1,7 +1,7 @@
 from card import *
 from baseCards import feast
 
-class Turn():
+class Turn(object):
     def __init__(self, player,otherPlayers,roundNumber,log):
         self.player = player
         self.otherPlayers = otherPlayers

@@ -44,9 +44,9 @@ class Card(object):
         return self.name
 
     def __cmp__(self,other):
-        if self.other.cost> self.cost:
+        if other.cost> self.cost:
             return -1
-        elif self.other.cost <self.cost:
+        elif other.cost <self.cost:
             return  1
         return 0
 	
