@@ -15,7 +15,12 @@ import os
 
 DATABASE = os.path.join(app.root_path, 'database.db')
 
-
+'''
+This is the database code 
+get_db() connects you to the database
+close_connection() is called if the app ever ends
+init_db() creates a blank database with the schema.sql file.
+'''
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -35,20 +40,12 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
-def getUserID(username):
-    db = get_db()
-    print db.cursor().execute('select * from users where username="sirwillem"').fetchall()
+'''
+The following are functions for making it easier to interact with the database.
+Their names make them very easy to understand.
 
-    userid = db.cursor().execute("select * from users where username =:name", {"name":username}).fetchone()
-    
-    print userid
-    if userid is None:
-        print "no User with username %s" % username 
-        return False
-    return userid[0]
-
-def
-
+TODO: Test these functions for bugs
+'''
 
 def createUser(username, password, firstName,lastName):
     db = get_db()
@@ -65,23 +62,112 @@ def createReadyGame(creator,sets=[base]):
     userid = getUserID(creator)
     if not userid:
         abort(402)
-    db.cursor().execute('insert into userGames values(?,?,?,?,?)', (None, gameid, userid, False,0)
+    db.cursor().execute('insert into userGames values(?,?,?,?,?)', (None, gameid, userid, False,0))
     db.commit()
+
+def getCurrentGame(gameid):
+    game = get_db().cursor.execute('''
+            select game from games
+            where gameid = %d
+
+        ''' % gameid).fetchone()
+    if game is None:
+        return False
+    return pickle.loads(game[0])
+
+
+
+def getLiveGames():
+   return getGames(True,False)
+
+def getPendingGames():
+    return getGames(False,False)
+
+def getFinishedGames():
+    return getGames(True,True)
+
+
+def getGames(started, done):
+    db = get_db()
+    games = db.cursor().execute("select gameid from games where started=:Started and finished=:done",{"Started":started,"done":done}).fetchall()
+    gamesList = []
+    for game in games:
+        players = db.cursor().execute('''
+            select userid from users U, userGames uG
+            where U.userid = uG.userid and uG.gameid =:gameid
+
+            ''',{"gameid",game[0]}).fetchall()
+        gamesList.append({"gameid":game[0],"players":players,"cards": pickle.loads(game[1])})
+    return gamesList
+
+def getUser(username=None,userid=None):
+    db = get_db()
+    if username is None:
+        if userid is None:
+            return None
+        user = db.cursor().execute("select * from users where userid =:id",{"id":userid})
+    else:
+        user = db.cursor().execute("select * from users where username =:name",{"name":username})
+    if user is None:
+        return False
+    return user.fetchone()[0]
+
+def getUserID(username):
+    db = get_db()
+    print db.cursor().execute('select * from users where username="sirwillem"').fetchall()
+
+    userid = db.cursor().execute("select * from users where username =:name", {"name":username}).fetchone()
+    
+    print userid
+    if userid is None:
+        print "no User with username %s" % username 
+        return False
+    return userid[0]
+
+def getPlayers(gameid):
+    db = get_db()
+    players = db.cursor().execute('''select username 
+                            from users U, userGames uG
+                            where uG.gameid =: id
+                            ''',{"id":gameid}).fetchall()
+    if players is None:
+        abort(402)
+    return players
 
 def getPassword(username):
     db = get_db()
     return db.cursor().execute("select password from users where username=:name",{"name":username}).fetchone()[0]
 
-
-def getCurrentGame(gameid):
-    pointer = get_db().cursor.execute('''
-            select pointer from games
-            where gameid = %d
-
-        ''' % gameid).fetchone()
-    if pointer is None:
+def joinGame(gameid,username):
+    if username not in getPlayers():
         return False
-    return pickle.loads(pointer[0])
+    db = get_db()
+    if db.cursor().execute('select * from userGames where gameid=:id',{"id":gameid}).fetchone() is None:
+        abort(402)
+    db.cursor().execute('insert into userGames values(?,?,?,?,?)',(None,getUserID(username),gameid,False,0))
+    db.commit()
+
+
+def startGame(gameid):
+    db = get_db()
+    sets = db.cursor().execute("select sets from games where gameid=:id",{"id":gameid}).fetchone()
+    if sets is None:
+        abort(401)
+    sets = pickle.loads(sets[0])
+    players = getPlayers(gameid)
+
+    updateGame(gameid,Game(players,sets))
+
+
+def updateGame(gameid, game):
+    db = get_db()
+    db.cursor().execute('''update games
+        set game =:Game, started =:begin
+        where gameid=:id
+        ''',{"Game": pickle.dumps(game),"id":gameid, "begin": True})
+    db.commit()
+
+
 
 Games = {}
 GAMESIZE = 1
@@ -95,26 +181,14 @@ def lobby():
     if not session.has_key('username'):
         return redirect(url_for('login'))
     if request.method == 'POST':
-        db = get_db()
-        print "lobbypost"
-        gameid = randint(0,1000)
-        while gameid in Games:
-            gameid = randint(0,1000)
-        print 'ready/'+str(gameid)
-        session['gameid'] = gameid
+        if request.form['name']=='pending':
+            redirect(url_for())
 
-        readyPlayers.append(session['username'])
-        ## change this later
-        Games[gameid] = Game(readyPlayers,[base])
-        db.cursor().execute('insert into games values(?,?,?,?)',(gameid,pickle.dumps([base]),pickle.dumps(Games[gameid]),datetime.utcnow()),False)
-        db.commit()
-        print Games
-        thread.start_new_thread(Games[gameid].playGame,())
-        print Games
+        
         return redirect(url_for("game",gameid=gameid))
         #print  "redirect Bitches"
         #return redirect(url_for('ready'))
-    return render_template("/lobby.welcome.html")
+    return render_template("/lobby.html",welcome=True)
 
 
 @app.route('/login',methods=['GET', 'POST'])
@@ -125,12 +199,13 @@ def login():
         if not getUserID(username):
             return render_template("/login.html",username=True)
         
-        print hashPassword(password,username[-2:]) , getPassword(username)
-        if hashPassword(password,username[-2:]) != getPassword(username):
+        print hashPassword(password,username[-2:]) == getPassword(username)
 
+        if hashPassword(password,username[-2:]) != getPassword(username):
             return render_template('/login.html',password=True)
         session['username'] = request.form['username']
-        if request.form['remember_me'] == "on":
+        print session['username']
+        if request.form.has_key('remember_me') and request.form['remember_me'] == "on":
             session.permanent = True
         return redirect(url_for('lobby'))
     return render_template("/login.html")
@@ -197,11 +272,15 @@ def state(gameid):
         continue
     return jsonify.dumps(player.game.state())
 
-@app.route('/games/online')
-def players():
-    global Games
-    print Games
-    return jsonify.dumps(Games)
+@app.route('/games/pending')
+def pending():
+    return jsonify.dumps( getPendingGames())
+
+@app.route('/games/playing')
+def gamesInProgress():
+    return jsonify.dumps(getLiveGames())
+
+
 
 @app.route('/new/User', methods = ['GET','POST'])
 def newUser():

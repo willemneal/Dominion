@@ -13,7 +13,7 @@
         };
     });
     window.gameid = window.location.href.split('/').splice(-1)[0];
-        window.supplyController = function($scope, $http){
+        $scope.supplyController = function($scope, $http){
             $scope.victoryCards =[];
             $scope.treasureCards =[];
             $scope.kingdomCards = [];
@@ -37,7 +37,7 @@
 
         };
 
-        window.handController = function($scope, $http) {
+        $scope.handController = function($scope, $http) {
             $scope.hand = [{"name":"chapel","cost":2,"desc":"","type":"ActionCard","src":"/static/images/chapel.png"}];
             $scope.actions = 1;
             $scope.buys = 1;

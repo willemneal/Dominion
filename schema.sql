@@ -1,22 +1,26 @@
-drop table if exists users;
-create table users (
-  userid integer primary key autoincrement,
-  username text  not null unique,
-  password text,
-  fname text,
-  lname text,
-  wins integer,
-  loses integer,
-  dateJoined date
-);
+-- drop table if exists users;
+
+-- create table users (
+
+--   userid integer primary key autoincrement,
+
+--   username text  not null unique,
+
+--   password text,
+--   fname text,
+--   lname text,
+--   wins integer,
+--   loses integer,
+--   dateJoined date
+-- );
 
 drop table if exists games;
 
 create table games (
 
   gameid integer primary key autoincrement,
-  cards text not null,
-  pointer text,
+  sets text not null,
+  game text,
   dateCreated date,
   started boolean,
   finished boolean
