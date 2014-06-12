@@ -61,7 +61,7 @@ def createPendingGame(creator,sets=[base],numberOfPlayers=4):
     userid = getUserID(creator)
     db.cursor().execute('insert into games values(?,?,?,?,?,?,?,?)',
         (None,pickle.dumps(sets),None,datetime.utcnow(),False,False,numberOfPlayers,userid))
-    gameid = db.cursor().lastrowid
+    gameid = getLastRow("games","gameid")
     print gameid, "lastrowid"
     
     if not userid:
@@ -95,29 +95,27 @@ def getGames(started, done):
     db = get_db()
     games = db.cursor().execute("select * from games where started=:Started and finished=:done",{"Started":started,"done":done}).fetchall()
     gamesList = []
-    print games
     if games is None:
         return gamesList
     for game in games:
-        print game
+        gameid = game[0]
+        creatorid = game[-1]
+        username = getUser(userid=creatorid)[1]
+        sets = pickle.loads(game[1])
         if game is None:
             continue
-        players = db.cursor().execute('''
-            select * from users U, userGames uG
-            where U.userid = uG.userid and uG.gameid =:gameid
-            ''',{"gameid":game[0]}).fetchall()
-        print players
+        players = getPlayers(gameid)
+        print players,"players---"
         if game[2] is None:
             g =None
         else:
             g = pickle.loads(game[2])
-        print pickle.loads(game[1])
         gamesList.append({"game":g ,
-                          "gameid":game[0],
+                          "gameid":gameid,
                           "players":players,
                           "numberOfPlayers":game[6],
-                          "creator":getUser(userid=game[-1])[1],
-                          "sets": pickle.loads(game[1])
+                          "creator":username,
+                          "sets": sets
                         })
     return gamesList
 
@@ -147,9 +145,15 @@ def getUserID(username):
         return False
     return userid[0]
 
+def getLastRow(table,tableID):
+    db = get_db()
+    result = db.cursor().execute("select %s from %s order by %s Desc limit 1"%(tableID, table,tableID)).fetchone()[0]
+    return result
+
 def getPlayers(gameid):
     db = get_db()
-    players = db.cursor().execute("select username from users U, userGames uG where uG.gameid =%d"%int(gameid)).fetchall()
+    players = db.cursor().execute("select username from users U, userGames uG where uG.gameid =%d and uG.userid = U.userid"%int(gameid)).fetchall()
+    print db.cursor().execute("select * from users U, userGames uG where uG.gameid =%d and uG.userid = U.userid"%int(gameid)).fetchall(),"players..."
     if players is None:
         flask.abort(402)
     return players
@@ -175,7 +179,7 @@ def startGame(gameid):
         flask.abort(401)
     sets = [allSets[Set] for Set in pickle.loads(sets[0])]
     players = getPlayers(gameid)
-
+    print players,"players"
     updateGame(gameid,Game(players,sets))
 
 
