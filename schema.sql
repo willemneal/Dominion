@@ -23,7 +23,9 @@ create table games (
   game text,
   dateCreated date,
   started boolean,
-  finished boolean
+  finished boolean,
+  numOfPlayers integer,
+  creatorid integer
 );
 
 drop table if exists userGames;

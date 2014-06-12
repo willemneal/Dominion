@@ -242,4 +242,7 @@ woodcutter = ActionCard("Woodcutter",3,"+1 Buy, +$2", action = woodcutterAction)
 workshop = ActionCard("Workshop",3,"Gain a card costing up to $4.", action = workshopAction) 
 
 ##The master list
-base = [adventurer, bureaucrat, cellar, chancellor, chapel, councilRoom, feast, festival, gardens, laboratory, library, market, militia, mine, moat, moneylender, remodel, smithy, spy, thief, throneRoom, village, witch, woodcutter, workshop]
+## Each set is a tuple, which is an immutable list e.i. you can't change the contents
+base = (adventurer, bureaucrat, cellar, chancellor, chapel, councilRoom, feast, festival, gardens, laboratory, library, market, militia, mine, moat, moneylender, remodel, smithy, spy, thief, throneRoom, village, witch, woodcutter, workshop)
+
+allSets = {"Base Set":base}

@@ -1,4 +1,4 @@
-from baseCards import base
+from baseCards import base, allSets
 from player import Player
 from supply import BaseSupply
 from turn import Turn

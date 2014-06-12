@@ -1,6 +1,6 @@
 from flask import Flask
 import pickle
-from game import Game,base,playerList
+from game import Game,base,playerList,allSets
 from flask import render_template, session, redirect, url_for, escape, request, jsonify
 from random import randint
 import thread, json
@@ -8,6 +8,7 @@ import sqlite3
 from flask import g
 from datetime import datetime
 from hashlib import md5
+
 
 app = Flask(__name__)
 
@@ -55,18 +56,21 @@ def createUser(username, password, firstName,lastName):
         values)
     db.commit()
 
-def createReadyGame(creator,sets=[base]):
+def createPendingGame(creator,sets=[base],numberOfPlayers=4):
     db = get_db()
-    db.cursor().execute('insert into games values(?,?,?,?)',(None,pickle.dumps(sets),"not Started",datetime.utcnow()),False,False)
-    gameid = db.cursor().lastrowid
     userid = getUserID(creator)
+    db.cursor().execute('insert into games values(?,?,?,?,?,?,?,?)',
+        (None,pickle.dumps(sets),None,datetime.utcnow(),False,False,numberOfPlayers,userid))
+    gameid = db.cursor().lastrowid
+    print gameid, "lastrowid"
+    
     if not userid:
-        abort(402)
-    db.cursor().execute('insert into userGames values(?,?,?,?,?)', (None, gameid, userid, False,0))
+        flask.abort(402)
+    db.cursor().execute('insert into userGames values(?,?,?,?,?)', (None, userid, gameid, False,0))
     db.commit()
 
 def getCurrentGame(gameid):
-    game = get_db().cursor.execute('''
+    game = get_db().cursor().execute('''
             select game from games
             where gameid = %d
 
@@ -89,15 +93,32 @@ def getFinishedGames():
 
 def getGames(started, done):
     db = get_db()
-    games = db.cursor().execute("select gameid from games where started=:Started and finished=:done",{"Started":started,"done":done}).fetchall()
+    games = db.cursor().execute("select * from games where started=:Started and finished=:done",{"Started":started,"done":done}).fetchall()
     gamesList = []
+    print games
+    if games is None:
+        return gamesList
     for game in games:
+        print game
+        if game is None:
+            continue
         players = db.cursor().execute('''
-            select userid from users U, userGames uG
+            select * from users U, userGames uG
             where U.userid = uG.userid and uG.gameid =:gameid
-
-            ''',{"gameid",game[0]}).fetchall()
-        gamesList.append({"gameid":game[0],"players":players,"cards": pickle.loads(game[1])})
+            ''',{"gameid":game[0]}).fetchall()
+        print players
+        if game[2] is None:
+            g =None
+        else:
+            g = pickle.loads(game[2])
+        print pickle.loads(game[1])
+        gamesList.append({"game":g ,
+                          "gameid":game[0],
+                          "players":players,
+                          "numberOfPlayers":game[6],
+                          "creator":getUser(userid=game[-1])[1],
+                          "sets": pickle.loads(game[1])
+                        })
     return gamesList
 
 def getUser(username=None,userid=None):
@@ -108,9 +129,11 @@ def getUser(username=None,userid=None):
         user = db.cursor().execute("select * from users where userid =:id",{"id":userid})
     else:
         user = db.cursor().execute("select * from users where username =:name",{"name":username})
+    user = user.fetchone()
+    print user
     if user is None:
         return False
-    return user.fetchone()[0]
+    return user
 
 def getUserID(username):
     db = get_db()
@@ -126,12 +149,9 @@ def getUserID(username):
 
 def getPlayers(gameid):
     db = get_db()
-    players = db.cursor().execute('''select username 
-                            from users U, userGames uG
-                            where uG.gameid =: id
-                            ''',{"id":gameid}).fetchall()
+    players = db.cursor().execute("select username from users U, userGames uG where uG.gameid =%d"%int(gameid)).fetchall()
     if players is None:
-        abort(402)
+        flask.abort(402)
     return players
 
 def getPassword(username):
@@ -143,7 +163,7 @@ def joinGame(gameid,username):
         return False
     db = get_db()
     if db.cursor().execute('select * from userGames where gameid=:id',{"id":gameid}).fetchone() is None:
-        abort(402)
+        flask.abort(402)
     db.cursor().execute('insert into userGames values(?,?,?,?,?)',(None,getUserID(username),gameid,False,0))
     db.commit()
 
@@ -152,8 +172,8 @@ def startGame(gameid):
     db = get_db()
     sets = db.cursor().execute("select sets from games where gameid=:id",{"id":gameid}).fetchone()
     if sets is None:
-        abort(401)
-    sets = pickle.loads(sets[0])
+        flask.abort(401)
+    sets = [allSets[Set] for Set in pickle.loads(sets[0])]
     players = getPlayers(gameid)
 
     updateGame(gameid,Game(players,sets))
@@ -169,9 +189,6 @@ def updateGame(gameid, game):
 
 
 
-Games = {}
-GAMESIZE = 1
-readyPlayers = []
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -180,15 +197,21 @@ def index():
 def lobby():
     if not session.has_key('username'):
         return redirect(url_for('login'))
+    games = getPendingGames()
     if request.method == 'POST':
-        if request.form['name']=='pending':
-            redirect(url_for())
+        if request.form.has_key('pending') and request.form['pending']=='See Pending Games':
+            if len(games) == 0:
+                return redirect(url_for('lobby', _method="GET"))
+            return render_template("/lobby.html", pending = True, games = games)
 
+        if request.form['newGame'] == "Create Game":
+            print "creation"
+            return render_template("/lobby.html",newGame = True,sets = [{"name":Set} for Set in allSets])
         
         return redirect(url_for("game",gameid=gameid))
         #print  "redirect Bitches"
         #return redirect(url_for('ready'))
-    return render_template("/lobby.html",welcome=True)
+    return render_template("/lobby.html",welcome=True,numPending= len(games))
 
 
 @app.route('/login',methods=['GET', 'POST'])
@@ -217,20 +240,27 @@ def player(gameid):
     if G:
         name = session['username']
         #return render_template('/hand.html',name =name, hand=G.playerDict[name].hand)
-        return json.dumps([card.getAttr() for card in G.playerDict[name].hand])    
+        return json.dumps([card.getAttr() for card in G.playerDict[str(name)].hand])    
     return redirect(url_for('/'))
 
-@app.route('/ready/<gameid>')
-def ready():
-    Games[gameid] = Game(readyPlayers,[base])
-    Games[gameid].playGame()
-    return redirect(url_for("game",gameid=gameid))
+
+
+@app.route('/ready/<gameid>',methods=["GET","POST"])
+def ready(gameid):
+    if request.method == "POST":
+        if request.form.has_key("join"):
+            joinGame(gameid,session['username'])
+            return
+        elif request.form.has_key("start"):
+            startGame(gameid)
+            return redirect(url_for("game",gameid=gameid))
+    flask.abort(301)
 
 @app.route('/supply/<int:gameid>')
 def supply(gameid):
     game = getCurrentGame(gameid)
     if not game:
-        return abort(401)
+        return flask.abort(401)
     supply = game.supply
     return jsonify(supply.toDict())
 
@@ -280,6 +310,19 @@ def pending():
 def gamesInProgress():
     return jsonify.dumps(getLiveGames())
 
+
+@app.route('/new/Game', methods = ['GET','POST'])
+def newGame():
+    if request.method == "POST":
+        sets = []
+        for Set in allSets:
+            if Set in request.form:
+                sets.append(Set)
+        username = session['username']
+        createPendingGame(username,sets,request.form['numberOfPlayers'])
+        return redirect(url_for('lobby',_method="POST",pending="See Pending Games"))
+    else:
+        flask.abort(304)
 
 
 @app.route('/new/User', methods = ['GET','POST'])
