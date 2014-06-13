@@ -17,8 +17,9 @@
   <input type="submit" name="pending" value="See Pending Games">
   Number of Pending Games: {{numPending}}
   <div>
-  <input type="submit" name="newGame" value="Create Game">
+  <input type="submit" name="liveGames" value="Live Games">
 </div>
+<input type="submit" name="newGame" value="Create Game">
   </form>
   {% endif %}
 
@@ -57,6 +58,19 @@
   {% endif %}
   </form>
   <div>
+  {% endfor %}
+  {% endif %}
+  {% if liveGames %}
+  {% for game in games %}
+   creator = {{game.creator}}
+    players = {{game.players}}
+    sets = {{game.sets}}
+
+   {% if session['username'] in game.players %} 
+   	<form method="get" action="/game/{{game.gameid}}">
+    <input type="submit" name="start" value="go To">
+   	</form>
+   {% endif %}
   {% endfor %}
   {% endif %}
 

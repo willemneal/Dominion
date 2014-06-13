@@ -16,10 +16,11 @@ class Turn(object):
         if self.player.hasAction():
             self.log.append("Action Phase")
             self.phase = "action"
-            self.playerChoice[self.player]
+            self.playerChoice[self.player] = "action"
         elif self.player.hasTreasure():
             self.log.append("Buy Phase")
             self.phase = "buy"
+            self.playerChoice[self.player] = "treasure"
     
     def toDict(self):
         return {"actions":self.actions,"buys":self.buys,

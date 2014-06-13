@@ -156,7 +156,9 @@ def getPlayers(gameid):
     print db.cursor().execute("select * from users U, userGames uG where uG.gameid =%d and uG.userid = U.userid"%int(gameid)).fetchall(),"players..."
     if players is None:
         flask.abort(402)
-    return players
+    elif len(players)==0:
+        return None
+    return [str(player[0]) for player in players]
 
 def getPassword(username):
     db = get_db()
@@ -179,7 +181,7 @@ def startGame(gameid):
         flask.abort(401)
     sets = [allSets[Set] for Set in pickle.loads(sets[0])]
     players = getPlayers(gameid)
-    print players,"players"
+    print players,"players New Game"
     updateGame(gameid,Game(players,sets))
 
 
@@ -208,10 +210,15 @@ def lobby():
                 return redirect(url_for('lobby', _method="GET"))
             return render_template("/lobby.html", pending = True, games = games)
 
-        if request.form['newGame'] == "Create Game":
+        if request.form.has_key('newGame') and request.form['newGame'] == "Create Game":
             print "creation"
             return render_template("/lobby.html",newGame = True,sets = [{"name":Set} for Set in allSets])
+        if request.form.has_key('liveGames'):
+            games = getLiveGames()
+            print "games---",games
+            return render_template('/lobby.html',liveGames = True, games = games)
         
+
         return redirect(url_for("game",gameid=gameid))
         #print  "redirect Bitches"
         #return redirect(url_for('ready'))
@@ -291,28 +298,31 @@ def playCard(gameid,card):
 @app.route('/discard/<card>/<int:gameid>',methods=['GET','POST'])
 def discard(gameid,card):
     if request.method == 'POST':
-        player = Games[gameid].playerDict[session['username']]
-        if player is not Games[gameid].currentPlayer:
+        game = getCurrentGame(gameid)
+        player = game.playerDict[session['username']]
+        if player is not game.currentPlayer:
             return "Not your Turn"
-        card = Games[gameid].currentTurn.strToCard(card)
+        card = game.currentTurn.strToCard(card)
         player.discardCard(card)
         return json.dumps([card.getAttr() for card in player.hand])
 
 @app.route('/state/<int:gameid>')
 def state(gameid):
-    player = Games[gameid].playerDict[session['username']]
-    turn = Games[gameid].currentTurn
+    game = getCurrentGame(gameid)
+    player = game.playerDict[session['username']]
+    turn = game.currentTurn
     while player not in turn.playerChoice:
         continue
-    return jsonify.dumps(player.game.state())
+    print game.playerStates[player.name].getState()
+    return json.dumps(game.playerStates[player.name].getState())
 
 @app.route('/games/pending')
 def pending():
-    return jsonify.dumps( getPendingGames())
+    return json.dumps( getPendingGames())
 
-@app.route('/games/playing')
+@app.route('/games/live')
 def gamesInProgress():
-    return jsonify.dumps(getLiveGames())
+    return json.dumps(getLiveGames())
 
 
 @app.route('/new/Game', methods = ['GET','POST'])
