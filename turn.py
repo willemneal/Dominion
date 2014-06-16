@@ -12,15 +12,16 @@ class Turn(object):
         self.currentPlayer = player
         self.playerChoice={}
         self.log = log
-        self.log.append("It is %s's turn")
+        self.prompt = ""
+        self.log.append("It is %s's turn"% self.player)
         if self.player.hasAction():
             self.log.append("Action Phase")
             self.phase = "action"
-            self.playerChoice[self.player] = "action"
+            self.playerChoice[self.player.name] = "action"
         elif self.player.hasTreasure():
             self.log.append("Buy Phase")
             self.phase = "buy"
-            self.playerChoice[self.player] = "treasure"
+            self.playerChoice[self.player.name] = "treasure"
     
     def toDict(self):
         return {"actions":self.actions,"buys":self.buys,
@@ -55,14 +56,14 @@ class Turn(object):
     def promtGain(self,cost,kind = None,player=None):
         if player is None:
             player = self.currentPlayer
-        self.playerChoice[player] = {"gain":{"cost":cost}}
+        self.playerChoice[player.name] = {"gain":{"cost":cost}}
         if kind is not None:
-            self.playerChoice[player] = ["gain"]["kind"] = kind
+            self.playerChoice[player.name] = ["gain"]["kind"] = kind
 
     def promptCard(self,cost=100,kind=None,player=None):
         if player is None:
             player = self.currentPlayer
-        self.playerChoice[player] = {""} 
+        self.playerChoice[player.name] = {""} 
 
 
     # def promptCards(self,cards,kind=Card):

@@ -50,12 +50,12 @@ class Game(object):
     def firstTurn(self):
         for player in self.players:
             self.playerDict[player.name] = player
-            self.playerStates[player.name] = PlayerState(player,self)
+            self.playerStates[player.name] = PlayerState(player, self)
         self.round = 1
         self.currentPlayer = self.players.pop(0)
         self.firstPlayer   = self.currentPlayer
-        self.log.append("Ronud 1")
-        self.currentTurn   = Turn(self.currentPlayer,self.players,self.round,self.log)
+        self.log.append("Round 1")
+        self.currentTurn   = Turn(self.currentPlayer, self.players, self.round, self.log)
 
     def nextTurn(self):
         self.currentTurn.cleanupPhase()
@@ -64,7 +64,7 @@ class Game(object):
         if self.currentPlayer == self.firstPlayer:
             self.round += 1
             self.log.append("Round %d" % (self.round))
-        self.currentTurn = Turn(self.currentPlayer, self.players, self.round,self.log)
+        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log)
 
         # while not self.supply.gameOver():
         #     self.currentPlayer = self.players.pop(0)

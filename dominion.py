@@ -164,8 +164,8 @@ def getPassword(username):
     db = get_db()
     return db.cursor().execute("select password from users where username=:name",{"name":username}).fetchone()[0]
 
-def joinGame(gameid,username):
-    if username not in getPlayers():
+def joinGame(gameid, username):
+    if username  in getPlayers(gameid):
         return False
     db = get_db()
     if db.cursor().execute('select * from userGames where gameid=:id',{"id":gameid}).fetchone() is None:
@@ -260,8 +260,9 @@ def player(gameid):
 def ready(gameid):
     if request.method == "POST":
         if request.form.has_key("join"):
-            joinGame(gameid,session['username'])
-            return
+            print "join"
+            joinGame(gameid, session['username'])
+            return redirect(url_for('lobby'))
         elif request.form.has_key("start"):
             startGame(gameid)
             return redirect(url_for("game",gameid=gameid))
@@ -289,7 +290,8 @@ def game(gameid=None):
 def playCard(gameid,card):
     if request.method == 'POST':
         card = card.lower()
-        player = Games[gameid].playerDict[session['username']]
+        game = getCurrentGame(gameid)
+        player = game.playerDict[session['username']]
         if player is not Games[gameid].currentPlayer:
             return "Not your Turn"
         Games[gameid].currentTurn.playCard(card)
@@ -311,9 +313,12 @@ def state(gameid):
     game = getCurrentGame(gameid)
     player = game.playerDict[session['username']]
     turn = game.currentTurn
-    while player not in turn.playerChoice:
+    while player.name in turn.playerChoice:
         continue
-    print game.playerStates[player.name].getState()
+    state = game.playerStates[player.name].getState()
+    for key in state:
+        print key, state[key]
+        print ""
     return json.dumps(game.playerStates[player.name].getState())
 
 @app.route('/games/pending')
@@ -344,10 +349,13 @@ def newUser():
     if request.method == "POST":
         if getUserID(request.form['username']):
             return render_template('/newuser.html', user=True)
-        if request.form['password']!=request.form['password2']:
+        print "here111"
+        if request.form['password'] != request.form['password2']:
             return render_template('/newuser.html',password=True)
+        
         createUser(username = request.form['username'],
-                      password = hashPassword(request.form['password'],request.form['username'][-2:]),
+                      password = hashPassword(request.form['password'],
+                                            request.form['username'][-2:]),
                       firstName = request.form['firstName'],
                       lastName  = request.form['lastName'])
         return redirect(url_for('lobby'))
