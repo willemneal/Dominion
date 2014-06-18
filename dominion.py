@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response, stream_with_context
 import pickle
 from game import Game,base,playerList,allSets
 from flask import render_template, session, redirect, url_for, escape, request, jsonify
@@ -8,6 +8,7 @@ import sqlite3
 from flask import g
 from datetime import datetime
 from hashlib import md5
+import redis
 
 
 app = Flask(__name__)
@@ -99,7 +100,7 @@ def getGames(started, done):
         return gamesList
     for game in games:
         gameid = game[0]
-        creatorid = game[-1]
+        creatorid = game[7]
         username = getUser(userid=creatorid)[1]
         sets = pickle.loads(game[1])
         if game is None:
@@ -132,6 +133,11 @@ def getUser(username=None,userid=None):
     if user is None:
         return False
     return user
+
+def getState(gameid,username):
+    db = get_db()
+    game = getCurrentGame(gameid)
+    return json.dumps(game.playerStates[username].getState())
 
 def getUserID(username):
     db = get_db()
@@ -294,7 +300,7 @@ def playCard(gameid,card):
         player = game.playerDict[session['username']]
         if player is not Games[gameid].currentPlayer:
             return "Not your Turn"
-        Games[gameid].currentTurn.playCard(card)
+        game.currentTurn.playCard(card)
         return json.dumps([card.getAttr() for card in player.hand])
 
 @app.route('/discard/<card>/<int:gameid>',methods=['GET','POST'])
@@ -308,18 +314,29 @@ def discard(gameid,card):
         player.discardCard(card)
         return json.dumps([card.getAttr() for card in player.hand])
 
-@app.route('/state/<int:gameid>')
+@app.route('/state/<int:gameid>',methods = ["GET","POST"])
 def state(gameid):
     game = getCurrentGame(gameid)
     player = game.playerDict[session['username']]
     turn = game.currentTurn
-    while player.name in turn.playerChoice:
-        continue
-    state = game.playerStates[player.name].getState()
-    for key in state:
-        print key, state[key]
-        print ""
-    return json.dumps(game.playerStates[player.name].getState())
+        
+    if request.method== "POST":
+        return json.dumps(game.playerStates[player.name].getState())
+    # if player.update:
+    #     player.setUpdate(False)
+    #     print player.update, "now False"
+    #     updateGame(gameid, game)
+    #     return json.dumps(game.playerStates[player.name].getState())
+    # while player.name not in turn.playerChoice or player.update is False:
+    #     continue
+    # state = game.playerStates[player.name].getState()
+    # turn.removePlayer(player.name)
+    # for key in state:
+    #     print key, state[key]
+    #     print ""
+
+    # updateGame(gameid, game)
+    # return json.dumps(state)
 
 @app.route('/games/pending')
 def pending():
@@ -362,6 +379,38 @@ def newUser():
     else:
         return render_template('/newuser.html')
 
+@app.route('/log/<int:gameid>')
+def getLog(gameid):
+    game = getCurrentGame(gameid)
+    return json.dumps(game.log)
+
+
+red = redis.StrictRedis()
+
+@app.route('/update/<int:gameid>', methods=['GET'])
+def post(gameid):
+    players = getPlayers(gameid)
+    for player in players:
+        state = getState(gameid, player)
+        red.publish(player, "%s" % state)
+    return Response(status=204)
+
+def event_stream():
+    print session
+    pubsub = red.pubsub()
+    pubsub.subscribe(session['username'])
+    
+    for message in pubsub.listen():
+        print message," listen"
+        yield 'data: %s\n\n' % message['data']
+
+@app.route('/stream')
+def stream():
+    return Response(stream_with_context(event_stream()),
+                          mimetype="text/event-stream")
+
+
+
 app.secret_key = "\xf3Bg\x90\xec $xv\xee\xca`,A\"\'\x0f\\M&a\xf9\xbd\xdc"
 
 
@@ -369,4 +418,4 @@ def hashPassword(password,salt):
     return md5(password+salt).hexdigest()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

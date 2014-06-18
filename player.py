@@ -16,6 +16,7 @@ class Player():
         self.coinTokens = 0
         self.vpTokens   = 0
         self.drawHand()
+        self.prompt = ''
 
     def __repr__(self):
         return self.name
@@ -118,6 +119,9 @@ class Player():
 
     def printPlayed(self):
         print len(self.played),self.played
+
+    def setUpdate(self, Bool):
+        self.update = Bool
 
     def trashCard(self,card):
         self.supply.trashCard(card)

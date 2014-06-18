@@ -17,6 +17,7 @@ class Turn(object):
         if self.player.hasAction():
             self.log.append("Action Phase")
             self.phase = "action"
+            self.prompt = "Pick and action card to play or skip"
             self.playerChoice[self.player.name] = "action"
         elif self.player.hasTreasure():
             self.log.append("Buy Phase")
@@ -56,15 +57,22 @@ class Turn(object):
     def promtGain(self,cost,kind = None,player=None):
         if player is None:
             player = self.currentPlayer
-        self.playerChoice[player.name] = {"gain":{"cost":cost}}
-        if kind is not None:
-            self.playerChoice[player.name] = ["gain"]["kind"] = kind
+        prompt = "Pick a card from the supply costing less than %d" % cost
 
-    def promptCard(self,cost=100,kind=None,player=None):
+        self.playerChoice[player.name] = {"gain":{"cost":cost, "kind":kind,
+                                                  "prompt":prompt}}
+
+    def promptCardFromHand(self,cost=100,kind=None,player=None):
         if player is None:
             player = self.currentPlayer
+        prompt = "Pick a card from your hand"
         self.playerChoice[player.name] = {""} 
 
+    def removePlayer(self, name):
+        try:
+            del self.playerChoice[name]
+        except KeyError:
+            pass
 
     # def promptCards(self,cards,kind=Card):
     #     s = ""
