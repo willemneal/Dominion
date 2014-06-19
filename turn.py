@@ -2,7 +2,7 @@ from card import *
 from baseCards import feast
 
 class Turn(object):
-    def __init__(self, player,otherPlayers,roundNumber,log):
+    def __init__(self, player,otherPlayers,roundNumber,log, event):
         self.player = player
         self.otherPlayers = otherPlayers
         self.actions = 1
@@ -12,25 +12,30 @@ class Turn(object):
         self.currentPlayer = player
         self.playerChoice={}
         self.log = log
+        self.event = event
         self.prompt = ""
         self.log.append("It is %s's turn"% self.player)
         if self.player.hasAction():
             self.log.append("Action Phase")
             self.phase = "action"
-            self.prompt = "Pick and action card to play or skip"
-            self.playerChoice[self.player.name] = "action"
+            self.playerChoice[self.player.name] = self.promptCardFromHand(kind=ActionCard)
         elif self.player.hasTreasure():
             self.log.append("Buy Phase")
             self.phase = "buy"
-            self.playerChoice[self.player.name] = "treasure"
-    
+            self.playerChoice[self.player.name] = self.promtCardFromHand(kind=TreasureCard)
+        else:
+            self.endTurn()
+ 
+    def endTurn(self):
+        self.event.set()
+
     def toDict(self):
         return {"actions":self.actions,"buys":self.buys,
                 "coins":self.coins}
 
     def startBuyPhase(self):
         self.phase = "buy"
-        self.promptCards
+        self.promptCardFromHand(kind=TreasureCard)
 
     def updateActions(self,num):
         self.actions += num
@@ -59,14 +64,22 @@ class Turn(object):
             player = self.currentPlayer
         prompt = "Pick a card from the supply costing less than %d" % cost
 
-        self.playerChoice[player.name] = {"gain":{"cost":cost, "kind":kind,
+        self.playerChoice[player.name] = {"gain":{"cost":cost, "kind":str(kind),
                                                   "prompt":prompt}}
 
-    def promptCardFromHand(self,cost=100,kind=None,player=None):
+    def promptCardFromHand(self,cost=None,kind=None,player=None):
         if player is None:
             player = self.currentPlayer
-        prompt = "Pick a card from your hand"
-        self.playerChoice[player.name] = {""} 
+        if None is not kind:
+            prompt = "Pick a %s card" % str(kind).lower()[:-4]
+        else:
+            prompt = "Pick a card from your hand"
+        if cost is not None:
+            prompt += " costing %d or more" % cost 
+        self.playerChoice[player.name] =\
+            {"fromHand":{"type":str(kind),
+                        "cost": cost,
+                        "promt":prompt} 
 
     def removePlayer(self, name):
         try:

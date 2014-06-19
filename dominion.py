@@ -384,7 +384,12 @@ def getLog(gameid):
     game = getCurrentGame(gameid)
     return json.dumps(game.log)
 
+'''
+The following is for pushing state to the user.
 
+
+
+'''
 red = redis.StrictRedis()
 
 @app.route('/update/<int:gameid>', methods=['GET'])

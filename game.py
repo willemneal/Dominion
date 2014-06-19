@@ -6,6 +6,40 @@ from random import sample
 from random import shuffle
 import logging
 from playerState import PlayerState
+    
+import threading
+import copy
+
+class Event(object):
+    "A threading.Event that can be serialized."
+    def __init__(self):
+        self.evt = threading.Event()
+
+    def set(self):
+        return self.evt.set()
+
+    def clear(self):
+        return self.evt.clear()
+
+    def isSet(self):
+        return self.evt.isSet()
+
+    def wait(self, timeout=0):
+        return self.evt.wait(timeout)
+
+    def __getstate__(self):
+        d = copy.copy(self.__dict__)
+        if self.evt.isSet():
+            d['evt'] = True
+        else:
+            d['evt'] = False
+        return d
+
+    def __setstate__(self, d):
+        self.evt = threading.Event()
+        if d['evt']:
+            self.evt.set()
+
 
 logging.basicConfig(filename='example.log',level=logging.DEBUG)
 ##logging.debug('This message should go to the log file')
@@ -40,7 +74,7 @@ class Game(object):
         for player in self.players:
             self.playerDict[player.name]  = player
             self.playerStates[player.name]= PlayerState(player,self)
-
+        self.event = Event()
         self.firstTurn()
         
 
@@ -55,16 +89,23 @@ class Game(object):
         self.currentPlayer = self.players.pop(0)
         self.firstPlayer   = self.currentPlayer
         self.log.append("Round 1")
-        self.currentTurn   = Turn(self.currentPlayer, self.players, self.round, self.log)
+        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log, self.event)
+        self.event.wait()
+        self.event.clear()
+        self.nextTurn()
 
     def nextTurn(self):
-        self.currentTurn.cleanupPhase()
-        self.players.append(self.currentPlayer)
-        self.currentPlayer = self.players.pop(0)
-        if self.currentPlayer == self.firstPlayer:
-            self.round += 1
-            self.log.append("Round %d" % (self.round))
-        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log)
+        while not self.supply.gameOver():
+            self.currentTurn.cleanupPhase()
+            self.players.append(self.currentPlayer)
+            self.currentPlayer = self.players.pop(0)
+            if self.currentPlayer == self.firstPlayer:
+                self.round += 1
+                self.log.append("Round %d" % (self.round))
+            self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log)
+            self.event.wait()
+            self.event.clear()
+
 
         # while not self.supply.gameOver():
         #     self.currentPlayer = self.players.pop(0)

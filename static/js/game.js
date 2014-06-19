@@ -27,7 +27,10 @@
         $scope.kingdomCards = [];
         $scope.nonSupplyCards =[];
         $scope.miscCards = [];
-        $scope.hand = [{"name":"chapel","cost":2,"desc":"","type":"ActionCard","src":"/static/images/chapel.png"}];
+        $scope.hand = [{"name":"chapel",
+                        "cost":2,"desc":"",
+                        "type":"ActionCard",
+                        "src":"/static/images/chapel.png"}];
         $scope.actions = 1;
         $scope.buys = 1;
         $scope.prompt = ''
