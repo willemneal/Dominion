@@ -14,21 +14,10 @@
 <body>
   <div id = "game" ng-controller="gameController">
   <div id="supply">
-    <div id ="victoryCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in victoryCards">
+    <div id ="{{category}}" ng-repeat = "category in categories">
+    <img id = "{{card.name.lower()}}" ng-src="{{card.src}}" ng-repeat="card in supply[category]" ng-click="gainCard(card)">
   </div>
-  <div id="treasureCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in treasureCards">
-  </div>
-  <div id="kingdomCards">
-  <img ng-src="{{card.src}}" ng-repeat="card in kingdomCards">
-  </div>
-  <div id="miscCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in miscCards">
-  </div>
-  <div id="nonSupplyCards">
-    <img ng-src="{{card.src}}" ng-repeat="card in nonSupplyCards">
-  </div>
+  
   </div>
   <div id = "log" style="overflow-y: auto; height=400px;">
     <div ng-repeat="line in log">
@@ -37,11 +26,20 @@
   </div>
   <div id="prompt">
     {{prompt}}
-    <button ng-show='actionPhase()'>Skip Action Phase</button>
-    <button ng-show='buyPhase()'>Skip Buy Phase</button>
+    <div ng-show="isOptions()">
+      <button ng-click="chooseOption(option)" ng-repeat= "option in choice['options']">{{option}}</button>
+    </div>
+    <button ng-hide="isOptions()" ng-show='actionPhase()' ng-click="startBuyPhase()">Skip Action Phase</button>
+    <button ng-hide="isOptions()" ng-show='buyPhase()'>Skip Buy Phase</button>
+    <button ng-click="playAllTreasures()" ng-hide="isOptions()" ng-show='buyPhase()'>+${{state.coinInHand}}</button>
+    <div id="turnInfo">
+      Actions: {{actions}}
+      Buys: {{buys}}
+      Coin: {{coins}}
+    </div>
   </div>
   <div id="hand" >
-    <img ng-src="{{card.src}}" ng-click="playCard(card.name)" ng-repeat="card in hand">
+    <img ng-src="{{card.src}}" ng-click="playCard(card)" ng-repeat="card in hand">
   </div>  
 </div>
 </body>

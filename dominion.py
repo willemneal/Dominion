@@ -205,6 +205,29 @@ def updateGame(gameid, game):
 def index():
     return redirect(url_for('login'))
 
+@app.route('/gain/<cardName>/<int:gameid>',methods=["POST"])
+def gain(cardName,gameid):
+    game = getCurrentGame(gameid)
+    player = game.playerDict[session['username']]
+    if player != game.currentPlayer:
+        return "Not Current Player"
+    card = game.supply.strToCard(cardName)
+    if request.form['type'] == "buy":
+        game.currentTurn.buyCard(card)
+        game.log.append("%s bought a %s" % (player.name, card.name))
+    else:
+        game.currentTurn.gainCard(card)
+        game.log.append("%s gained a %s" % (player.name, card.name))
+    updateGame(gameid, game)
+
+
+@app.route('/buyPhase/<int:gameid>',methods = ["POST"])
+def buyPhase(gameid):
+    game = getCurrentGame(gameid)
+    game.currentTurn.startBuyPhase()
+    updateGame(gameid, game)
+    return "yay!yay!yay!yay!"
+
 @app.route('/lobby',methods = ["GET","POST"])
 def lobby():
     if not session.has_key('username'):
@@ -295,10 +318,10 @@ def game(gameid=None):
 @app.route('/play/<card>/<int:gameid>',methods=['GET','POST'])
 def playCard(gameid,card):
     if request.method == 'POST':
-        card = card.lower()
         game = getCurrentGame(gameid)
+        card = game.supply.strToCard(card)
         player = game.playerDict[session['username']]
-        if player is not Games[gameid].currentPlayer:
+        if player is not game.currentPlayer:
             return "Not your Turn"
         game.currentTurn.playCard(card)
         return json.dumps([card.getAttr() for card in player.hand])
@@ -337,6 +360,12 @@ def state(gameid):
 
     # updateGame(gameid, game)
     # return json.dumps(state)
+
+@app.route('/choice/<option>/<int:gameid>')
+def choice(option, gameid):
+    game = getCurrentGame(gameid)
+    turn.playerDecision[session['username']] = option
+    updateGame(gameid, game)
 
 @app.route('/games/pending')
 def pending():
@@ -386,8 +415,6 @@ def getLog(gameid):
 
 '''
 The following is for pushing state to the user.
-
-
 
 '''
 red = redis.StrictRedis()

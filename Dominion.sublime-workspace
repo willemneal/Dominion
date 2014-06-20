@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"c",
+				"choice"
+			],
+			[
+				"up",
+				"updateState"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"cle",
+				"cleanupPhase"
+			],
+			[
+				"game",
+				"gameOver"
+			],
+			[
+				"prom",
+				"promptCardFromHand"
+			],
+			[
+				"Trea",
+				"TreasureCard"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
 				"v",
 				"village"
 			],
@@ -72,21 +104,50 @@
 			}
 		},
 		{
-			"file": "card.py",
+			"file": "static/pages/game.html",
 			"settings":
 			{
-				"buffer_size": 1558,
-				"line_ending": "Unix"
+				"buffer_size": 1464,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "",
-			"file": "/C/Users/willem/Documents/WD/baseCards.py",
-			"file_size": -1,
-			"file_write_time": -1,
+			"file": "playerState.py",
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 1003,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "static/js/game.js",
+			"settings":
+			{
+				"buffer_size": 4923,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "card.py",
+			"settings":
+			{
+				"buffer_size": 2426,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "baseCards.py",
+			"settings":
+			{
+				"buffer_size": 9704,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "dominion.py",
+			"settings":
+			{
+				"buffer_size": 13686,
 				"line_ending": "Windows"
 			}
 		},
@@ -94,23 +155,15 @@
 			"file": "game.py",
 			"settings":
 			{
-				"buffer_size": 1644,
-				"line_ending": "Unix"
+				"buffer_size": 3181,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "supply.py",
 			"settings":
 			{
-				"buffer_size": 1495,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "baseCards.py",
-			"settings":
-			{
-				"buffer_size": 1565,
+				"buffer_size": 2983,
 				"line_ending": "Windows"
 			}
 		},
@@ -118,15 +171,15 @@
 			"file": "player.py",
 			"settings":
 			{
-				"buffer_size": 2412,
-				"line_ending": "Unix"
+				"buffer_size": 3361,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "deck.py",
 			"settings":
 			{
-				"buffer_size": 567,
+				"buffer_size": 564,
 				"line_ending": "Windows"
 			}
 		},
@@ -134,19 +187,37 @@
 			"file": "turn.py",
 			"settings":
 			{
-				"buffer_size": 3652,
-				"line_ending": "Unix"
+				"buffer_size": 9837,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Searching 13 files for \"clean\"\n\nC:\\Users\\willem\\Documents\\Dominion\\game.py:\n   97      def nextTurn(self):\n   98          while not self.supply.gameOver():\n   99:             self.currentTurn.cleanupPhase()\n  100              self.players.append(self.currentPlayer)\n  101              self.currentPlayer = self.players.pop(0)\n  ...\n  117          #     self.currentTurn.buyPhase()\n  118          #     logging.debug(self.currentTurn.printAllCards())\n  119:         #     self.currentTurn.cleanupPhase()\n  120          #     logging.debug(self.currentTurn.printAllCards())\n  121          #     self.players.append(self.currentPlayer)\n\nC:\\Users\\willem\\Documents\\Dominion\\turn.py:\n  189  \n  190  \n  191:     def cleanupPhase(self):\n  192          self.player.discardHand()\n  193          while feast in self.player.played:\n\n3 matches across 2 files\n",
+			"settings":
+			{
+				"buffer_size": 846,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
 			}
 		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
 	"command_palette":
 	{
-		"height": 0.0,
+		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"pac",
+				"Package Control: Discover Packages"
+			],
+			[
+				"",
+				"Preferences: Browse Packages"
+			]
 		],
-		"width": 0.0
+		"width": 512.0
 	},
 	"console":
 	{
@@ -163,6 +234,9 @@
 	},
 	"file_history":
 	[
+		"/C/Users/willem/Documents/Dominion/playerState.py",
+		"/C/Users/willem/Documents/WD/baseCards.py",
+		"/C/Users/willem/Documents/Dominion/Dominion.sublime-project",
 		"/C/Users/willem/Documents/WD/supply.py",
 		"/C/Users/willem/Documents/WD/sets.py",
 		"/C/Users/willem/Documents/WD/player.py",
@@ -171,7 +245,6 @@
 		"/C/Users/willem/Documents/WD/turn.py",
 		"/C/Users/willem/Documents/WD/Dominion.sublime-project",
 		"/C/Users/willem/Documents/WD/Dominion.sublime-workspace",
-		"/C/Users/willem/Documents/WD/baseCards.py",
 		"/C/Users/willem/Documents/WD/card.py"
 	],
 	"find":
@@ -180,7 +253,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
 			"<open files>"
@@ -191,6 +264,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"clean",
 			"duration"
 		],
 		"highlight": true,
@@ -209,7 +283,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -224,13 +298,68 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								39,
+								39
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "static/pages/game.html",
+					"settings":
+					{
+						"buffer_size": 1464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								855,
+								855
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 98.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "playerState.py",
+					"settings":
+					{
+						"buffer_size": 1003,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								695,
+								695
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -245,99 +374,39 @@
 			"sheets":
 			[
 				{
-					"buffer": 1,
-					"file": "card.py",
-					"settings":
-					{
-						"buffer_size": 1558,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 2,
-			"sheets":
-			[
-				{
-					"buffer": 2,
-					"file": "/C/Users/willem/Documents/WD/baseCards.py",
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
 					"buffer": 3,
-					"file": "game.py",
+					"file": "static/js/game.js",
 					"settings":
 					{
-						"buffer_size": 1644,
+						"buffer_size": 4923,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1224,
+								1224
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 411.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "supply.py",
+					"file": "card.py",
 					"settings":
 					{
-						"buffer_size": 1495,
+						"buffer_size": 2426,
 						"regions":
 						{
 						},
@@ -365,41 +434,48 @@
 					"file": "baseCards.py",
 					"settings":
 					{
-						"buffer_size": 1565,
+						"buffer_size": 9704,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1964,
+								1964
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 638.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
-				},
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
 				{
 					"buffer": 6,
-					"file": "player.py",
+					"file": "dominion.py",
 					"settings":
 					{
-						"buffer_size": 2412,
+						"buffer_size": 13686,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								12812,
+								12812
 							]
 						],
 						"settings":
@@ -409,17 +485,101 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 6758.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
+					"file": "game.py",
+					"settings":
+					{
+						"buffer_size": 3181,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1315,
+								1315
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 46.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "supply.py",
+					"settings":
+					{
+						"buffer_size": 2983,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2206,
+								2206
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 318.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "player.py",
+					"settings":
+					{
+						"buffer_size": 3361,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2703,
+								2703
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"file": "deck.py",
 					"settings":
 					{
-						"buffer_size": 567,
+						"buffer_size": 564,
 						"regions":
 						{
 						},
@@ -443,13 +603,60 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 11,
 					"file": "turn.py",
 					"settings":
 					{
-						"buffer_size": 3652,
+						"buffer_size": 9837,
 						"regions":
 						{
+						},
+						"selection":
+						[
+							[
+								2989,
+								2989
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 786.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"settings":
+					{
+						"buffer_size": 846,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										192,
+										197
+									],
+									[
+										488,
+										493
+									],
+									[
+										709,
+										714
+									]
+								],
+								"scope": ""
+							}
 						},
 						"selection":
 						[
@@ -460,9 +667,13 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"detect_indentation": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -507,8 +718,8 @@
 		"cols":
 		[
 			0.0,
-			0.333333333333,
-			0.666666666667,
+			0.328520499109,
+			0.818390054002,
 			1.0
 		],
 		"rows":
@@ -547,6 +758,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 73.0,
+	"side_bar_width": 50.0,
 	"status_bar_visible": true
 }

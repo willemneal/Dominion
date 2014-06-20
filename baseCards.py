@@ -67,10 +67,13 @@ def councilRoomAction(turn):
 
 def feastAction(turn):
 	print "Choose a card to gain which costs 5 or less"
-	card = turn.promptGain(5)
+	turn.promptGain(5)
 	while not card:
 		print "Too expensive Try again"
 		card = turn.promptGain(5)
+
+	turn.player.played.remove(feast)
+	turn.supply.trashCard(feast)
 	turn.player.discardCard(card)
 
 

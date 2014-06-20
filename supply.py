@@ -57,6 +57,7 @@ class BaseSupply(object):
             dic[card.name] = card.getAttr()
             if card not in dic["nonSupplyCards"]:
                 dic[card.name]["numberLeft"] = self.cardsLeft(card)
+        dic["categories"] = ["victoryCards","treasureCards",'kingdomCards',"miscCards","nonSupplyCards"]
         return dic
 
     def cardsLeft(self,card):

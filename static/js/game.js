@@ -33,12 +33,41 @@
                         "src":"/static/images/chapel.png"}];
         $scope.actions = 1;
         $scope.buys = 1;
-        $scope.prompt = ''
+        $scope.coins = 0;
+        $scope.prompt = '';
+        $scope.choice = null;
 
+        //This is for connecting to the event stream which pushes updates
         var source = new EventSource('/stream');
         source.onmessage = function (event) {
             console.log(event)
             unpackState(JSON.parse(event.data));
+        };
+
+        $scope.gainCard = function(card){
+            /*if ($scope.phase != "buy" | $scope.choice['type'] != "gain"){
+                return
+            }
+            if ($scope.phase == "buy"){
+               if (card.cost > $scope.coins | card in $scope.supply['nonSupplyCards']){
+                return
+               }
+               var formVariables = "type=buy";
+            }
+            if ($scope.choice['type'] == "gain"){
+                if ($scope.choice['gain']['kind'] != "None" & card.kind = $scope.choice['gain']['kind']){
+                    return
+                }
+                if (choice['cost'] < card.cost){
+                    return
+                }
+                var formVariables = "type=gain";
+            } 
+                $http.post("/gain/"+card.name+"/"+window.gameid + "+" + formVariables).success(
+                        function(data){
+                        updateState();
+                    });
+*/
         };
 
         $scope.actionPhase = function(){
@@ -50,16 +79,60 @@
         $scope.waiting =function(){
             return $scope.phase = 'waiting'
         };
+
+        $scope.chooseOption = function(option){
+            $http.post("/choice/"+option+"/"+window.gameid).success(
+                function(data){
+                    updateState();
+                });
+        };
         
 
         unpackState = function(state){
+            console.log(state);
+                        $scope.state = state;
                         $scope.hand = state['hand'];
                         $scope.phase = state['phase'];
                         $scope.supply = state['supply'];
+                        
+                        
                         $scope.log = state['log'];
-                        $scope.prompt = state['prompt'];
-                     };  
-            
+
+                        if ($scope.phase == "waiting"){
+                            $scope.actions = 1;
+                            $scope.buys    = 1;
+                            $scope.coins   = 0;
+                        }
+                        else{
+                            $scope.actions = state['turn']['actions'];
+                            if ($scope.phase == "action" & $scope.actions == 0){
+                                $scope.startBuyPhase();
+                            }
+
+                            $scope.buys    = state['turn']['buys'];
+                            if ($scope.phase == "buy" & $scope.buys == 0){
+                                $scope.startBuyPhase();
+                            }
+                            
+                            $scope.coins   = state['turn']['coins'];
+                        }
+                        $scope.categories = state['supply']['categories'];
+                        console.log(state['supply']['categories']);
+                        $scope.choice = null;
+                        $scope.prompt = '';
+                        if (state['choice']){
+                            $scope.choice = state['choice']['choice'];
+                            $scope.prompt = state['choice']['prompt'];
+                        }
+                        
+                     };
+
+        $scope.isOptions = function(){
+            if ($scope.choice == null){
+                return false
+            }
+            return $scope.choice['type'] == "options";
+        };
             
         $scope.initialState = function(){
             $http.post('/state/'+window.gameid).success(
@@ -91,7 +164,7 @@
                
         $scope.playCard = function(card) {
             if (card.type == "ActionCard"){
-                if ($scope.actions == 0){
+                if ($scope.actions == 0 | $scope.buyPhase()){
                     return
                 }
             }
@@ -102,9 +175,16 @@
             }
             $http.post('/play/'+card+'/'+window.gameid).success(
                 function(data) {
-                    $scope.hand = data;
                     $scope.updateState();
                 });;
+        };
+
+        $scope.startBuyPhase = function(){
+            $http.post('/buyPhase/'+window.gameid).success(
+                function(data){
+                    $scope.updateState();
+            });
+
         };
 
         $scope.discardCard = function() {

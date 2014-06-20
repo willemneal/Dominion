@@ -2,7 +2,7 @@ from card import *
 from baseCards import feast
 
 class Turn(object):
-    def __init__(self, player,otherPlayers,roundNumber,log, event):
+    def __init__(self, player, otherPlayers, roundNumber, log):
         self.player = player
         self.otherPlayers = otherPlayers
         self.actions = 1
@@ -12,9 +12,9 @@ class Turn(object):
         self.currentPlayer = player
         self.playerChoice={}
         self.log = log
-        self.event = event
         self.prompt = ""
-        self.log.append("It is %s's turn"% self.player)
+        self.log.append("It is %s's turn" % self.player)
+        self.playerDecision = {}
         if self.player.hasAction():
             self.log.append("Action Phase")
             self.phase = "action"
@@ -27,7 +27,8 @@ class Turn(object):
             self.endTurn()
  
     def endTurn(self):
-        self.event.set()
+        self.phase = ["cleanup"]
+        self.cleanupPhase()
 
     def toDict(self):
         return {"actions":self.actions,"buys":self.buys,
@@ -42,6 +43,17 @@ class Turn(object):
     
     def updateBuys(self, num):
         self.buys += num
+
+    def buyCard(self, card):
+        ##TODO: react to buying cards
+        self.coins -= card.cost
+        self.gainCard(card)
+
+    def gainCard(self,card):
+        if self.player.supply.gainCard(card) is None:
+            return False
+        self.player.discardCard(card)
+
 
     def chooseTrash(self,num,player):
         print "Choose cards to trash: \n"
@@ -59,27 +71,35 @@ class Turn(object):
                 blocked = True
         return blocked
 
-    def promtGain(self,cost,kind = None,player=None):
+    def promptGain(self,cost, kind = None, player=None):
         if player is None:
             player = self.currentPlayer
         prompt = "Pick a card from the supply costing less than %d" % cost
 
-        self.playerChoice[player.name] = {"gain":{"cost":cost, "kind":str(kind),
-                                                  "prompt":prompt}}
+        self.playerChoice[player.name] = {"choice":{"type":"gain",
+                                                    "gain":{"cost":cost, "kind":str(kind)}},
+                                          "prompt":prompt}
 
     def promptCardFromHand(self,cost=None,kind=None,player=None):
         if player is None:
             player = self.currentPlayer
         if None is not kind:
-            prompt = "Pick a %s card" % str(kind).lower()[:-4]
+            prompt = "Pick a %s card from your hand" % str(kind).lower()[:-4]
         else:
             prompt = "Pick a card from your hand"
         if cost is not None:
-            prompt += " costing %d or more" % cost 
+            prompt += " costing %d or less" % cost 
         self.playerChoice[player.name] =\
-            {"fromHand":{"type":str(kind),
-                        "cost": cost,
-                        "promt":prompt} 
+            {"choice":{"type":"fromHand","fromHand":{"kind":str(kind),
+                        "cost": cost}},
+             "promt":prompt} 
+
+    def promptOptions(self,options,player=None):
+        if player is None:
+            player = self.currentPlayer
+        prompt = "Pick one: "
+        self.playerChoice[player.name] = {"choice":{"type":"options","options":options}, "prompt":prompt}
+
 
     def removePlayer(self, name):
         try:
@@ -190,9 +210,6 @@ class Turn(object):
 
     def cleanupPhase(self):
         self.player.discardHand()
-        while feast in self.player.played:
-            self.player.played.remove(feast)
-            self.player.trashCard(feast)
         self.player.discardPlayed()
         assert 0 == len(self.player.hand)
         self.player.drawHand()
@@ -226,9 +243,9 @@ class Turn(object):
     def playCard(self,card):
         if isinstance(card, basestring):
             card = self.player.supply.strToCard(card)
-        self.hand.remove(card)
-        card.play(self)
+        self.player.hand.remove(card)
         self.player.played.append(card)
+        card.play(self)
         self.updateActions(-1)
 
     def printAllCards(self):

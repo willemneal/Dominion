@@ -14,8 +14,11 @@ class PlayerState(GameState):
 		return self.player == self.game.currentPlayer
 
 	def getState(self):
-		self.state["hand"] = [card.name for card in self.player.hand]
-		self.state['prompt'] = self.game.currentTurn.prompt
+		self.state["hand"] = [card.getAttr() for card in self.player.hand]
+		self.state["coinInHand"] = self.player.coinInHand()
+		self.state['choice'] = None
+		self.state["supply"]= self.game.supply.toDict()
+		print "hello", self.state['supply']['categories']
 		if self.isCurrentPlayer():
 			self.state["turn"] = self.game.currentTurn.toDict()
 			if self.player in self.game.currentTurn.playerChoice:
