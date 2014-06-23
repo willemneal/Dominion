@@ -1,5 +1,5 @@
 from flask import Flask, Response, stream_with_context
-import pickle
+import pickle, dill
 from game import Game,base,playerList,allSets
 from flask import render_template, session, redirect, url_for, escape, request, jsonify
 from random import randint
@@ -9,6 +9,7 @@ from flask import g
 from datetime import datetime
 from hashlib import md5
 import redis
+
 
 
 app = Flask(__name__)
@@ -262,12 +263,10 @@ def login():
         if not getUserID(username):
             return render_template("/login.html",username=True)
         
-        print hashPassword(password,username[-2:]) == getPassword(username)
-
         if hashPassword(password,username[-2:]) != getPassword(username):
             return render_template('/login.html',password=True)
         session['username'] = request.form['username']
-        print session['username']
+        #print session['username']
         if request.form.has_key('remember_me') and request.form['remember_me'] == "on":
             session.permanent = True
         return redirect(url_for('lobby'))
@@ -315,16 +314,40 @@ def game(gameid=None):
     return render_template('/game.html',game=Games[gameid])
 
 
-@app.route('/play/<card>/<int:gameid>',methods=['GET','POST'])
-def playCard(gameid,card):
-    if request.method == 'POST':
-        game = getCurrentGame(gameid)
-        card = game.supply.strToCard(card)
-        player = game.playerDict[session['username']]
-        if player is not game.currentPlayer:
-            return "Not your Turn"
-        game.currentTurn.playCard(card)
-        return json.dumps([card.getAttr() for card in player.hand])
+@app.route('/play/<card>/<int:gameid>', methods=["POST"])
+def play(card,gameid):
+    game = getCurrentGame(gameid)
+    card = game.supply.strToCard(card)
+    if not request.form.has_key('callback'):
+        return "No callback given"
+    func = dill.loads(request.form['callback'])
+    game.currentTurn.func(card)
+    game.currentTurn.updateTurn(game.currentTurn, session['username'])
+
+    updateGame(gameid, game)
+    return "%s was played" % (card.name)
+
+@app.route('/skip/<int:gameid>', methods=['POST'])
+def skipChoice(gameid):
+    game = getCurrentGame(gameid)
+    choice = game.currentTurn.playerChoice['session']['choice']
+    if choice['may']:
+        game.currentTurn.skipChoice(session['username'])
+    updateGame(gameid, game)
+    return "attempted skip if %b" % choice['may']
+
+
+# @app.route('/play/<card>/<int:gameid>',methods=['GET','POST'])
+# def playCard(gameid,card):
+#     if request.method == 'POST':
+#         game = getCurrentGame(gameid)
+#         card = game.supply.strToCard(card)
+#         player = game.playerDict[session['username']]
+#         if player is not game.currentPlayer:
+#             return "Not your Turn"
+#         game.currentTurn.playCard(card)
+#         updateGame(gameid, game)
+#         return json.dumps([card.getAttr() for card in player.hand])
 
 @app.route('/discard/<card>/<int:gameid>',methods=['GET','POST'])
 def discard(gameid,card):
@@ -344,7 +367,8 @@ def state(gameid):
     turn = game.currentTurn
         
     if request.method== "POST":
-        return json.dumps(game.playerStates[player.name].getState())
+        return getState(gameid,player.name)
+
     # if player.update:
     #     player.setUpdate(False)
     #     print player.update, "now False"
@@ -433,7 +457,7 @@ def event_stream():
     pubsub.subscribe(session['username'])
     
     for message in pubsub.listen():
-        print message," listen"
+        #print message," listen"
         yield 'data: %s\n\n' % message['data']
 
 @app.route('/stream')

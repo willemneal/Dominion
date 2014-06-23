@@ -7,8 +7,7 @@ class Deck(object):
         self.deck = []
         for i in range(7):
             self.deck.append(copper)
-        for card in base:
-            self.deck.append(card)
+        self.deck.extend([village, festival, chapel])
         self.shuffle()
 
     def addCardOnTop(self, card):

@@ -16,16 +16,17 @@ class PlayerState(GameState):
 	def getState(self):
 		self.state["hand"] = [card.getAttr() for card in self.player.hand]
 		self.state["coinInHand"] = self.player.coinInHand()
-		self.state['choice'] = None
+		self.state['choice'] = self.game.currentTurn.playerChoice[self.player.name]
 		self.state["supply"]= self.game.supply.toDict()
 		print "hello", self.state['supply']['categories']
 		if self.isCurrentPlayer():
 			self.state["turn"] = self.game.currentTurn.toDict()
-			if self.player in self.game.currentTurn.playerChoice:
+			if self.player.name in self.game.currentTurn.playerChoice:
 				self.state["choice"] = self.game.currentTurn.playerChoice[self.player.name]
 			self.state["phase"] = self.game.currentTurn.phase
 		else:
 			self.state["phase"] = "waiting"
-			if self.player in self.game.currentTurn.playerChoice:
+			if self.player.name in self.game.currentTurn.playerChoice:
 				self.state["choice"] =self.game.currentTurn.playerChoice[self.player.name]
+		print "STATE:",self.state
 		return self.state

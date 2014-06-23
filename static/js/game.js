@@ -41,7 +41,7 @@
         var source = new EventSource('/stream');
         source.onmessage = function (event) {
             console.log(event)
-            unpackState(JSON.parse(event.data));
+            setTimeout(unpackState(JSON.parse(event.data)),500);
         };
 
         $scope.gainCard = function(card){
@@ -91,6 +91,10 @@
         unpackState = function(state){
             console.log(state);
                         $scope.state = state;
+                        if ($scope.state==1){
+                            $scope.updateState();
+                            return
+                        }
                         $scope.hand = state['hand'];
                         $scope.phase = state['phase'];
                         $scope.supply = state['supply'];
@@ -133,6 +137,12 @@
             }
             return $scope.choice['type'] == "options";
         };
+
+        $scope.skipChoice = function(){
+            $http.post('/skip/'+window.gameid).success(
+                function(data){ $scope.updateState()});
+
+        }
             
         $scope.initialState = function(){
             $http.post('/state/'+window.gameid).success(
@@ -169,14 +179,14 @@
                 }
             }
             if (card.type == "TreasureCard"){
-                if ($scope.actionPhase()){
+                if ($scope.state['choice']['type'] == "ActionCard"){
                     return
                 }
             }
-            $http.post('/play/'+card+'/'+window.gameid).success(
-                function(data) {
+            $http.post(encodeURI('/play/'+card +'/' + window.gameid + "?callback=" +$scope.choice['callback'])).success(
+                function(data){
                     $scope.updateState();
-                });;
+                });
         };
 
         $scope.startBuyPhase = function(){

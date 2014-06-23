@@ -26,6 +26,7 @@
   </div>
   <div id="prompt">
     {{prompt}}
+    <button ng-show="state['may']" ng-click="skipChoice()">skip choice</button>
     <div ng-show="isOptions()">
       <button ng-click="chooseOption(option)" ng-repeat= "option in choice['options']">{{option}}</button>
     </div>
