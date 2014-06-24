@@ -125,7 +125,7 @@
                         $scope.choice = null;
                         $scope.prompt = '';
                         if (state['choice']){
-                            $scope.choice = state['choice']['choice'];
+                            $scope.choice = state['choice'];
                             $scope.prompt = state['choice']['prompt'];
                         }
                         
@@ -174,16 +174,17 @@
                
         $scope.playCard = function(card) {
             if (card.type == "ActionCard"){
-                if ($scope.actions == 0 | $scope.buyPhase()){
-                    return
+                if ($scope.actions == 0 | $scope.buyPhase()|
+                    $scope.choice['kind']== "TreasureCard"){
+                    return;
                 }
             }
             if (card.type == "TreasureCard"){
-                if ($scope.state['choice']['type'] == "ActionCard"){
-                    return
+                if ($scope.choice['kind'] == "ActionCard"){
+                    return;
                 }
             }
-            $http.post(encodeURI('/play/'+card +'/' + window.gameid + "?callback=" +$scope.choice['callback'])).success(
+            $http.post(encodeURI('/play/'+card.name +'/' + window.gameid + "?callback=" +$scope.choice['callback'])).success(
                 function(data){
                     $scope.updateState();
                 });

@@ -30,9 +30,13 @@ class BaseSupply(object):
 
         for card in self.supply:
             self.cardDict[card.name] = card
+        for card in base:
+            self.cardDict[card.name] = card
         self.trash = []
     
-    def strToCard(card):
+
+    def strToCard(self, card):
+        print self.cardDict
         return self.cardDict[card]
                     
     def gainCard(self,card):

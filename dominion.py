@@ -3,12 +3,13 @@ import pickle, dill
 from game import Game,base,playerList,allSets
 from flask import render_template, session, redirect, url_for, escape, request, jsonify
 from random import randint
-import thread, json
+import thread
 import sqlite3
 from flask import g
 from datetime import datetime
 from hashlib import md5
 import redis
+import simplejson as json
 
 
 
@@ -314,23 +315,26 @@ def game(gameid=None):
     return render_template('/game.html',game=Games[gameid])
 
 
-@app.route('/play/<card>/<int:gameid>', methods=["POST"])
+@app.route('/play/<string:card>/<int:gameid>', methods=["POST"])
 def play(card,gameid):
+    print type(card), card
     game = getCurrentGame(gameid)
-    card = game.supply.strToCard(card)
-    if not request.form.has_key('callback'):
+    card = game.supply.strToCard(str(card))
+    turn = game.currentTurn
+    print request.values.has_key('callback')
+    if not request.values.has_key('callback'):
         return "No callback given"
-    func = dill.loads(request.form['callback'])
-    game.currentTurn.func(card)
-    game.currentTurn.updateTurn(game.currentTurn, session['username'])
-
+    func = eval(request.values['callback'])
+    func(card)
+    print "played %s" % card.name
+    turn.updateTurn(session['username'])
     updateGame(gameid, game)
     return "%s was played" % (card.name)
 
 @app.route('/skip/<int:gameid>', methods=['POST'])
 def skipChoice(gameid):
     game = getCurrentGame(gameid)
-    choice = game.currentTurn.playerChoice['session']['choice']
+    choice = game.currentTurn.playerChoice[session['username']]
     if choice['may']:
         game.currentTurn.skipChoice(session['username'])
     updateGame(gameid, game)

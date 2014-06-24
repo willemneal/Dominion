@@ -1,6 +1,7 @@
 from card import *
 from baseCards import feast
 import dill
+import simplejson as sjson
 class Turn(object):
     def __init__(self, player, otherPlayers, roundNumber, log):
         self.player = player
@@ -19,12 +20,10 @@ class Turn(object):
             self.log.append("Action Phase")
             self.phase = "action"
             print "about to prompt!!"
-            self.promptCardFromHand(self.playCard,kind=ActionCard)
+            self.promptCardFromHand("turn.playCard",kind="ActionCard")
             print self.playerChoice[self.player.name], "choice"
         elif self.player.hasTreasure():
-            self.log.append("Buy Phase")
-            self.phase = "buy"
-            self.promtCardFromHand(self.playCard, kind=TreasureCard)
+            self.startBuyPhase()
         else:
             self.endTurn()
  
@@ -37,8 +36,9 @@ class Turn(object):
                 "coins":self.coins}
 
     def startBuyPhase(self):
+        self.log.append("Buy Phase")
         self.phase = "buy"
-        self.promptCardFromHand(self.playCard,kind=TreasureCard)
+        self.promptCardFromHand("turn.playCard",kind="TreasureCard")
 
     def updateActions(self,num):
         self.actions += num
@@ -78,8 +78,9 @@ class Turn(object):
             player = self.currentPlayer
         prompt = "Pick a card from the supply costing less than %d" % cost
 
-        self.playerChoice[player.name] = {"choice":{"type":"gain",
-                                                    "cost":cost, "kind":str(kind)},
+        self.playerChoice[player.name] = {"type":"gain",
+                                          "cost":cost,
+                                          "kind":str(kind),
                                           "prompt":prompt}
 
     def promptCardFromHand(self,callback, cost=None,kind=None,player=None,num=1, may = False):
@@ -92,9 +93,12 @@ class Turn(object):
             prompt = "Pick a card from your hand"
         if cost is not None:
             prompt += " costing %d or less" % cost 
-        self.playerChoice[player.name] ={"choice":{"type":"fromHand","kind":str(kind),
-                                                    "cost": cost, "callback":None,"num":num,
-                                                    "may":may},
+        self.playerChoice[player.name] ={"type":"fromHand",
+                                        "kind":str(kind),
+                                        "cost": cost,
+                                        "callback":callback,
+                                        "num":num,
+                                        "may":may,
                                         "prompt":prompt}
         print "CHOICE", self.playerChoice[player.name]
 
@@ -102,7 +106,7 @@ class Turn(object):
         if player is None:
             player = self.currentPlayer
         prompt = "Pick one: "
-        self.playerChoice[player.name] = {"choice":{"type":"options","options":options}, "prompt":prompt}
+        self.playerChoice[player.name] = {"type":"options","options":options, "prompt":prompt}
 
 
     def removePlayer(self, name):
@@ -244,17 +248,17 @@ class Turn(object):
     #             return False
     #         return cards.pop(cardindex)
     
-    @staticmethod
-    def playCard(turn,card):
+    
+    def playCard(self, card):
         if isinstance(card, basestring):
-            card = turn.player.supply.strToCard(card)
-        turn.player.hand.remove(card)
-        turn.player.played.append(card)
-        card.play(turn)
+            card = self.player.supply.strToCard(card)
+        self.player.hand.remove(card)
+        self.player.played.append(card)
+        card.play(self)
         if card.isAction():
-            turn.updateActions(-1)
-        if turn.actions == 0:
-            turn.startBuyPhase()
+            self.updateActions(-1)
+        if self.actions == 0:
+            self.startBuyPhase()
 
     def printAllCards(self):
         s = ""
@@ -268,19 +272,19 @@ class Turn(object):
         print s
 
     def updateTurn(self, playerName):
-        choice = self.playerChoice[playerName]['choice']
+        choice = self.playerChoice[playerName]
         if choice.has_key('num') and choice['num'] > 0:
             choice['num'] -= 1
-        if choice['num'] == 0:
-            if self.phase == 'action':
-                choice = self.promptCardFromHand(self.playCard,kind=ActionCard)
+        if choice['num'] == 0 and playerName == self.player.name:
+            if self.phase == 'action' and self.player.hasAction():
+                choice = self.promptCardFromHand("turn.playCard",kind="ActionCard")
             elif self.phase == 'buy':
-                choice = self.promptCardFromHand(self.playCard,kind=TreasureCard)
+                choice = self.promptCardFromHand("turn.playCard",kind="TreasureCard")
             else:
                 choice = None
 
     def skipChoice(self, playerName):
-        self.playerChoice[playerName]['choice']['num'] -= 1
+        self.playerChoice[playerName]['num'] = 1
         self.updateTurn(playerName)
 
 
