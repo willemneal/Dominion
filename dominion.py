@@ -214,14 +214,20 @@ def gain(cardName,gameid):
     if player != game.currentPlayer:
         return "Not Current Player"
     card = game.supply.strToCard(cardName)
-    if request.form['type'] == "buy":
-        game.currentTurn.buyCard(card)
-        game.log.append("%s bought a %s" % (player.name, card.name))
-    else:
-        game.currentTurn.gainCard(card)
-        game.log.append("%s gained a %s" % (player.name, card.name))
+    game.currentTurn.gainCard(card)
+    game.log.append("%s gained a %s" % (player.name, card.name))
     updateGame(gameid, game)
 
+@app.route('/buy/<card>/<int:gameid>', methods = ["POST"])
+def buy(card, gameid):
+    game = getCurrentGame(gameid)
+    card = game.supply.strToCard(card)
+    turn = game.currentTurn
+    if turn.coins < card.cost:
+        return "that card is too expensive"
+    turn.buyCard(card)
+    updateGame(gameid, game)
+    return "%s bought a %s for $%d" % (turn.currentPlayer, card.name, card.cost)
 
 @app.route('/buyPhase/<int:gameid>',methods = ["POST"])
 def buyPhase(gameid):
@@ -325,9 +331,10 @@ def play(card,gameid):
     if not request.values.has_key('callback'):
         return "No callback given"
     func = eval(request.values['callback'])
-    func(card)
+    res = func(card)
+    if res is None:
+        turn.updateTurn(session['username'])
     print "played %s" % card.name
-    turn.updateTurn(session['username'])
     updateGame(gameid, game)
     return "%s was played" % (card.name)
 
@@ -338,8 +345,14 @@ def skipChoice(gameid):
     if choice['may']:
         game.currentTurn.skipChoice(session['username'])
     updateGame(gameid, game)
-    return "attempted skip if %b" % choice['may']
+    return "attempted skip"
 
+@app.route('/endTurn/<int:gameid>', methods= ["POST"])
+def endTurn(gameid):
+    game = getCurrentGame(gameid)
+    game.nextTurn()
+    updateGame(gameid, game)
+    return "it's %s's turn" % (game.currentPlayer)
 
 # @app.route('/play/<card>/<int:gameid>',methods=['GET','POST'])
 # def playCard(gameid,card):

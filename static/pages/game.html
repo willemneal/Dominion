@@ -31,7 +31,7 @@
       <button ng-click="chooseOption(option)" ng-repeat= "option in choice['options']">{{option}}</button>
     </div>
     <button ng-hide="isOptions()" ng-show='actionPhase()' ng-click="startBuyPhase()">Skip Action Phase</button>
-    <button ng-hide="isOptions()" ng-show='buyPhase()'>Skip Buy Phase</button>
+    <button ng-hide="isOptions()" ng-show='buyPhase()' ng-click="endTurn()">Skip Buy Phase</button>
     <button ng-click="playAllTreasures()" ng-hide="isOptions()" ng-show='buyPhase()'>+${{state.coinInHand}}</button>
     <div id="turnInfo">
       Actions: {{actions}}

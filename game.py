@@ -54,7 +54,7 @@ class Game(object):
         self.currentPlayer = self.players.pop(0)
         self.firstPlayer   = self.currentPlayer
         self.log.append("Round 1")
-        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log)
+        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log, self)
 
 
     def nextTurn(self):
@@ -64,7 +64,7 @@ class Game(object):
         if self.currentPlayer == self.firstPlayer:
             self.round += 1
             self.log.append("Round %d" % (self.round))
-        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log)
+        self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log, self)
 
 
         # while not self.supply.gameOver():

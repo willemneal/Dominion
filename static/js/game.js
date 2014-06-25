@@ -27,10 +27,7 @@
         $scope.kingdomCards = [];
         $scope.nonSupplyCards =[];
         $scope.miscCards = [];
-        $scope.hand = [{"name":"chapel",
-                        "cost":2,"desc":"",
-                        "type":"ActionCard",
-                        "src":"/static/images/chapel.png"}];
+        $scope.hand = [];
         $scope.actions = 1;
         $scope.buys = 1;
         $scope.coins = 0;
@@ -45,6 +42,20 @@
         };
 
         $scope.gainCard = function(card){
+
+            if ($scope.phase == "buy" & $scope.choice['type'] != "gain"){
+                if (card.cost > $scope.coins | card in $scope.supply['nonSupplyCards']){
+                    return;
+                }
+                $http.post('/buy/'+card.name + "/" + window.gameid).success(
+                    function(data){
+                        $scope.updateState();
+                    }
+                    );
+            }
+            if ($scope.choice['type'] != 'gain'){
+                return;
+            }
             /*if ($scope.phase != "buy" | $scope.choice['type'] != "gain"){
                 return
             }
@@ -70,6 +81,13 @@
 */
         };
 
+        $scope.endTurn = function(){
+            $http.post('/endTurn/'+window.gameid).success(
+                function(data){
+                    $scope.updateState();
+                });
+        };
+
         $scope.actionPhase = function(){
             return $scope.phase == 'action'
         };
@@ -89,12 +107,12 @@
         
 
         unpackState = function(state){
-            console.log(state);
-                        $scope.state = state;
-                        if ($scope.state==1){
+                        if (state==1){
                             $scope.updateState();
                             return
                         }
+                        console.log(state);
+                        $scope.state = state;
                         $scope.hand = state['hand'];
                         $scope.phase = state['phase'];
                         $scope.supply = state['supply'];
@@ -171,8 +189,19 @@
         $scope.updateState = function(){
             $http.get('/update/'+window.gameid)
         }
+
+        $scope.playAllTreasures  = function(){
+            for (var i=0; i<$scope.hand.length; i++){
+                if ($scope.hand[i]['type'] == "TreasureCard"){
+                    $scope.playCard($scope.hand[i]);
+                }
+            }
+        }
                
         $scope.playCard = function(card) {
+            if ($scope.choice['type'] != 'fromHand'){
+                return;
+            }
             if (card.type == "ActionCard"){
                 if ($scope.actions == 0 | $scope.buyPhase()|
                     $scope.choice['kind']== "TreasureCard"){

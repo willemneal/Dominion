@@ -90,6 +90,7 @@ class TreasureCard(Card):
 
     def play(self,turn):
         turn.coins += self.coin
+        return "tresure"
 
 
 

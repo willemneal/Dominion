@@ -57,7 +57,9 @@ def chancellorAction(turn):
 		turn.player.discardDeck()
 
 def chapelAction(turn):
-	turn.chooseTrash(4, turn.player)
+	turn.promptCardFromHand("turn.trashCard",may = True,num = 4,
+				prompt="Pick up to four cards to trash")
+	return "prompt"
 
 def councilRoomAction(turn):
 	turn.player.drawToHand(4)
