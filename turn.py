@@ -17,6 +17,10 @@ class Turn(object):
         self.prompt = ""
         self.log.append("It is %s's turn" % self.player)
         self.playerDecision = {}
+
+        for player in otherPlayers:
+            self.playerChoice[player.name] = None
+
         if self.player.hasAction():
             self.log.append("Action Phase")
             self.phase = "action"
@@ -49,6 +53,7 @@ class Turn(object):
 
     def buyCard(self, card):
         ##TODO: react to buying cards
+        self.updateBuys(-1)
         self.coins -= card.cost
         self.log.append("%s bought a %s for $%d" % (self.currentPlayer, card.name, card.cost))
         self.gainCard(card)
@@ -107,7 +112,7 @@ class Turn(object):
                                         "num":num,
                                         "may":may,
                                         "prompt":prompt}
-        print "CHOICE", self.playerChoice[player.name]
+        #print "CHOICE", self.playerChoice[player.name]
 
     def promptOptions(self,options,player=None):
         if player is None:
@@ -143,7 +148,7 @@ class Turn(object):
         res = card.play(self)
         if card.isAction():
             self.updateActions(-1)
-        if self.actions == 0:
+        if self.actions == 0 and res is None:
             self.startBuyPhase()
         return res
 
@@ -166,7 +171,7 @@ class Turn(object):
         if choice['num'] == 0:
             if playerName == self.player.name:
                 if self.phase == 'action':
-                    if self.actions > 0:
+                    if self.actions > 0 and self.player.hasAction():
                         self.promptAction()
                     else:
                         self.startBuyPhase()

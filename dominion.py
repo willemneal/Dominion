@@ -464,12 +464,13 @@ red = redis.StrictRedis()
 def post(gameid):
     players = getPlayers(gameid)
     for player in players:
+        print "player in update!", player, session['username']
         state = getState(gameid, player)
-        red.publish(player, "%s" % state)
+        thread.start_new_thread(red.publish, (player, "%s" % state))
     return Response(status=204)
 
 def event_stream():
-    print session
+    print "session", session
     pubsub = red.pubsub()
     pubsub.subscribe(session['username'])
     

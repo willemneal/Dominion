@@ -23,7 +23,7 @@ reloadAll()
 """
 
 class Game(object):
-    def __init__(self, playerList,sets):
+    def __init__(self, playerList, sets):
         self.log = []
         allCards = []
         for Set in sets:
@@ -58,6 +58,8 @@ class Game(object):
 
 
     def nextTurn(self):
+        if self.supply.gameOver():
+            return
         self.currentTurn.cleanupPhase()
         self.players.append(self.currentPlayer)
         self.currentPlayer = self.players.pop(0)

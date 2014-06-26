@@ -20,13 +20,13 @@
   
   </div>
   <div id = "log" style="overflow-y: auto; height=400px;">
-    <div ng-repeat="line in log">
+    <div ng-repeat="line in state.log">
       {{line}}
     </div>
   </div>
   <div id="prompt">
     {{prompt}}
-    <button ng-show="state['may']" ng-click="skipChoice()">skip choice</button>
+    <button ng-show="state.choice.may" ng-click="skipChoice()">skip choice</button>
     <div ng-show="isOptions()">
       <button ng-click="chooseOption(option)" ng-repeat= "option in choice['options']">{{option}}</button>
     </div>

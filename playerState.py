@@ -18,15 +18,10 @@ class PlayerState(GameState):
 		self.state["coinInHand"] = self.player.coinInHand()
 		self.state['choice'] = self.game.currentTurn.playerChoice[self.player.name]
 		self.state["supply"]= self.game.supply.toDict()
-		print "hello", self.state['supply']['categories']
+		self.state["choice"] =self.game.currentTurn.playerChoice[self.player.name]
 		if self.isCurrentPlayer():
 			self.state["turn"] = self.game.currentTurn.toDict()
-			if self.player.name in self.game.currentTurn.playerChoice:
-				self.state["choice"] = self.game.currentTurn.playerChoice[self.player.name]
 			self.state["phase"] = self.game.currentTurn.phase
 		else:
 			self.state["phase"] = "waiting"
-			if self.player.name in self.game.currentTurn.playerChoice:
-				self.state["choice"] =self.game.currentTurn.playerChoice[self.player.name]
-		print "STATE:",self.state
 		return self.state

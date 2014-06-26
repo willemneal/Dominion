@@ -37,11 +37,15 @@
         //This is for connecting to the event stream which pushes updates
         var source = new EventSource('/stream');
         source.onmessage = function (event) {
-            console.log(event)
-            setTimeout(unpackState(JSON.parse(event.data)),500);
+            console.log(event);
+            setTimeout(unpackState(JSON.parse(event.data)),250);
+
         };
 
         $scope.gainCard = function(card){
+            if ($scope.choice == null){
+                return;
+            }
 
             if ($scope.phase == "buy" & $scope.choice['type'] != "gain"){
                 if (card.cost > $scope.coins | card in $scope.supply['nonSupplyCards']){
@@ -133,7 +137,7 @@
 
                             $scope.buys    = state['turn']['buys'];
                             if ($scope.phase == "buy" & $scope.buys == 0){
-                                $scope.startBuyPhase();
+                                $scope.endTurn();
                             }
                             
                             $scope.coins   = state['turn']['coins'];
@@ -199,7 +203,8 @@
         }
                
         $scope.playCard = function(card) {
-            if ($scope.choice['type'] != 'fromHand'){
+
+            if ($scope.choice==null | $scope.choice['type'] != 'fromHand'){
                 return;
             }
             if (card.type == "ActionCard"){
