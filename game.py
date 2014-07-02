@@ -10,17 +10,7 @@ from playerState import PlayerState
 
 ##logging.debug('This message should go to the log file')
 
-"""
-def reloadAll():
-    
-    reload(turn)
-    reload(baseCards)
-    reload(card)
-    reload(player)
-    reload(supply)
 
-reloadAll()
-"""
 
 class Game(object):
     def __init__(self, playerList, sets):
@@ -58,11 +48,11 @@ class Game(object):
 
 
     def nextTurn(self):
-        if self.supply.gameOver():
-            self.determineWinner()
-            self.log.append("")
-            return
         self.currentTurn.cleanupPhase()
+        if self.supply.gameOver():
+            self.log.append("The Game is Over!!")
+            self.determineWinner()
+
         self.players.append(self.currentPlayer)
         self.currentPlayer = self.players.pop(0)
         if self.currentPlayer == self.firstPlayer:

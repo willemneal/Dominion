@@ -7,13 +7,13 @@ class BaseSupply(object):
         if (numOfPlayers == 2):
             numOfVictories = 8
         self.numberOfPilesGone = 0
-        self.supply={curse:[curse]*30,
-                    duchy: [duchy]*numOfVictories,
-                    province: [province]*numOfVictories,
-                    estate:[estate]*numOfVictories,
-                    copper:[copper]*60,
-                    silver: [silver]*40,
-                    gold: [gold]*30
+        self.supply={curse:     [curse]*30,
+                    duchy:      [duchy]*numOfVictories,
+                    province:   [province]*numOfVictories,
+                    estate:     [estate]*numOfVictories,
+                    copper:     [copper]*60,
+                    silver:     [silver]*40,
+                    gold:       [gold]*30
                     }
         self.victoryCards  = [estate, duchy, province]
         self.treasureCards = [copper, silver, gold]
@@ -78,7 +78,7 @@ class BaseSupply(object):
         return s[:-1]
 
     def gameOver(self):
-        return  len(self.supply[province]) == 0 or self.numberOfPilesGone == 3
+        return  self.cardsLeft(province) == 0 or self.numberOfPilesGone == 3
 
     def getPiles(self):
         return sorted(self.supply.keys())

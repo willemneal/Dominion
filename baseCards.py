@@ -18,7 +18,7 @@ def adventurerAction(turn):
 	numOfTreasures = 0
 	
 	while numOfTreasures<2:
-		card = turn.player.drawCards(1)[0] #draw one card
+		card = turn.player.drawCard() #draw one card
 		if card.isTreasure():
 			numOfTreasures+=1
 			turn.player.hand.append(card)
@@ -57,7 +57,7 @@ def chancellorAction(turn):
 		turn.player.discardDeck()
 
 def chapelAction(turn):
-	turn.promptCardFromHand("turn.trashCard",may = True,num = 4,
+	turn.promptCardFromHand("turn.trashCard",may = True,num = 5,
 				prompt="Pick up to four cards to trash")
 	return "prompt"
 

@@ -76,7 +76,7 @@ class ActionCard(Card):
 
     def play(self,turn):
         self.action(turn)
-        print turn.player, "played ",self.name,":",self.desc
+        turn.log.append(str(turn.player.name) + " played "+ str(self.name) +": "+ str(self.desc))
 
 
 

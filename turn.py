@@ -145,9 +145,11 @@ class Turn(object):
         self.player.hand.remove(card)
         self.player.played.append(card)
         res = card.play(self)
+        print res
         if card.isAction():
             self.updateActions(-1)
         if self.actions == 0 and res is None:
+            print "starting Buy Phase"
             self.startBuyPhase()
         return res
 
