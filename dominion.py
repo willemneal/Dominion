@@ -9,7 +9,7 @@ from flask import g
 from datetime import datetime
 from hashlib import md5
 import redis
-import simplejson as json
+import json
 
 
 

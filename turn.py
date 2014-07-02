@@ -1,7 +1,6 @@
 from card import *
 from baseCards import feast
-import dill
-import simplejson as sjson
+
 class Turn(object):
     def __init__(self, player, otherPlayers, roundNumber, log, game):
         self.game = game
