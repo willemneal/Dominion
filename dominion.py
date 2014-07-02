@@ -1,5 +1,5 @@
 from flask import Flask, Response, stream_with_context
-import pickle, dill
+import pickle
 from game import Game,base,playerList,allSets
 from flask import render_template, session, redirect, url_for, escape, request, jsonify
 from random import randint
