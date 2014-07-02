@@ -4,12 +4,60 @@
 		"selected_items":
 		[
 			[
-				"ch",
-				"choice"
+				"gam",
+				"gameOver"
+			],
+			[
+				"up",
+				"updateBuys"
+			],
+			[
+				"other",
+				"otherPlayers"
+			],
+			[
+				"ga",
+				"gameid"
+			],
+			[
+				"post",
+				"POST"
+			],
+			[
+				"play",
+				"playCard"
+			],
+			[
+				"cur",
+				"currentPlayer"
+			],
+			[
+				"next",
+				"nextTurn"
+			],
+			[
+				"player",
+				"playerChoice"
+			],
+			[
+				"callba",
+				"callback"
+			],
+			[
+				"act",
+				"actions"
+			],
+			[
+				"n",
+				"num"
 			],
 			[
 				"upd",
-				"updateGame"
+				"setUpdate"
+			],
+			[
+				"ch",
+				"choice"
 			],
 			[
 				"bu",
@@ -26,18 +74,6 @@
 			[
 				"curr",
 				"currentTurn"
-			],
-			[
-				"up",
-				"updateGame"
-			],
-			[
-				"cur",
-				"currentTurn"
-			],
-			[
-				"ga",
-				"gainCard"
 			],
 			[
 				"dis",
@@ -82,10 +118,6 @@
 			[
 				"smith",
 				"smithy"
-			],
-			[
-				"play",
-				"playerList"
 			],
 			[
 				"Actio",
@@ -135,7 +167,15 @@
 			"file": "dominion.py",
 			"settings":
 			{
-				"buffer_size": 15044,
+				"buffer_size": 16090,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "static/js/game.js",
+			"settings":
+			{
+				"buffer_size": 8373,
 				"line_ending": "Windows"
 			}
 		},
@@ -151,7 +191,7 @@
 			"file": "static/pages/game.html",
 			"settings":
 			{
-				"buffer_size": 1680,
+				"buffer_size": 1791,
 				"line_ending": "Windows"
 			}
 		},
@@ -159,23 +199,18 @@
 			"file": "playerState.py",
 			"settings":
 			{
-				"buffer_size": 1110,
+				"buffer_size": 910,
 				"line_ending": "Windows"
 			}
 		},
 		{
+			"contents": "from card import *\nfrom baseCards import feast\nimport dill\nimport simplejson as sjson\nclass Turn(object):\n    def __init__(self, player, otherPlayers, roundNumber, log, game):\n        self.game = game\n        self.player = player\n        self.otherPlayers = otherPlayers\n        self.actions = 1\n        self.buys = 1\n        self.coins = 5\n        self.hand = player.hand\n        self.currentPlayer = player\n        self.playerChoice={}\n        self.log = log\n        self.prompt = \"\"\n        self.log.append(\"It is %s's turn\" % self.player)\n        self.playerDecision = {}\n\n        for player in otherPlayers:\n            self.playerChoice[player.name] = None\n\n        if self.player.hasAction():\n            self.log.append(\"Action Phase\")\n            self.phase = \"action\"\n            print \"about to prompt!!\"\n            self.promptAction()\n            print self.playerChoice[self.player.name], \"choice\"\n        elif self.player.hasTreasure():\n            self.startBuyPhase()\n        else:\n            self.endTurn()\n \n    def endTurn(self):\n        self.phase = [\"cleanup\"]\n        self.cleanupPhase()\n\n    def toDict(self):\n        return {\"actions\":self.actions,\"buys\":self.buys,\n                \"coins\":self.coins}\n\n    def startBuyPhase(self):\n        self.log.append(\"Buy Phase\")\n        self.phase = \"buy\"\n        self.promptBuy()\n\n    def updateActions(self,num):\n        self.actions += num\n    \n    def updateBuys(self, num):\n        self.buys += num\n\n    def buyCard(self, card):\n        ##TODO: react to buying cards\n        self.updateBuys(-1)\n        self.coins -= card.cost\n        self.log.append(\"%s bought a %s for $%d\" % (self.currentPlayer, card.name, card.cost))\n        self.gainCard(card)\n\n    def gainCard(self,card):\n        if self.player.supply.gainCard(card) is None:\n            return False\n        self.player.discardCard(card)\n\n\n    def trashCard(self,card,player=None):\n        if player is None:\n            player = self.player\n        player.hand.remove(card)\n        player.supply.trashCard(card)\n\n    def handleReactions(self,player):\n        blocked = False\n        reactionCards = player.getReactionCards()\n        for card in reactionCards:\n            if card.reaction(player):\n                blocked = True\n        return blocked\n\n    def promptAction(self):\n        self.promptCardFromHand(\"turn.playCard\", kind=\"ActionCard\", may=True)\n\n    def promptBuy(self):\n        self.promptCardFromHand('turn.playCard', kind=\"TreasureCard\", may=True)\n\n    def promptGain(self,cost, kind = None, player=None):\n        if player is None:\n            player = self.currentPlayer\n        prompt = \"Pick a card from the supply costing less than %d\" % cost\n\n        self.playerChoice[player.name] = {\"type\":\"gain\",\n                                          \"cost\":cost,\n                                          \"kind\":str(kind),\n                                          \"prompt\":prompt}\n\n    def promptCardFromHand(self,callback, cost=None,kind=None,player=None,num=1, may = False, prompt = None):\n        print \"prompt Hand\"\n        if player is None:\n            player = self.currentPlayer\n        if prompt is None:\n            if None is not kind:\n                prompt = \"Pick a %s card from your hand\" % str(kind).lower()[:-4]\n            else:\n                prompt = \"Pick a card from your hand\"\n            if cost is not None:\n                prompt += \" costing %d or less\" % cost \n        self.playerChoice[player.name] ={\"type\":\"fromHand\",\n                                        \"kind\":str(kind),\n                                        \"cost\": cost,\n                                        \"callback\":callback,\n                                        \"num\":num,\n                                        \"may\":may,\n                                        \"prompt\":prompt}\n        #print \"CHOICE\", self.playerChoice[player.name]\n\n    def promptOptions(self,options,player=None):\n        if player is None:\n            player = self.currentPlayer\n        prompt = \"Pick one: \"\n        self.playerChoice[player.name] = {\"type\":\"options\",\"options\":options, \"prompt\":prompt}\n\n\n    def removePlayer(self, name):\n        try:\n            del self.playerChoice[name]\n        except KeyError:\n            pass\n\n    \n\n    def cleanupPhase(self):\n        self.player.discardHand()\n        self.player.discardPlayed()\n        assert 0 == len(self.player.hand)\n        self.player.drawHand()\n        assert 5 == len(self.player.hand)\n        self.player.played = []\n\n    \n    \n    \n    def playCard(self, card):\n        if isinstance(card, basestring):\n            card = self.player.supply.strToCard(card)\n        self.player.hand.remove(card)\n        self.player.played.append(card)\n        res = card.play(self)\n        if card.isAction():\n            self.updateActions(-1)\n        if self.actions == 0 and res is None:\n            self.startBuyPhase()\n        return res\n\n    def printAllCards(self):\n        s = \"\"\n        for player in self.otherPlayers + [self.player]:\n            s += \"%s\\n\" % player\n            s += \"hand\\t%s\\n\" % (self.printSet(player.hand))\n            s += \"played\\t%s\\n\" % (self.printSet(player.played))\n            s +=  \"discard\\t%s\\n\" % (self.printSet(player.discard))\n            s += \"deck\\t%s\\n\" % (self.printSet(player.deck.deck))\n        s += (\"%s\" % player.supply.getPiles()) + \"\\n\"\n        print s\n\n    def updateTurn(self, playerName):\n        choice = self.playerChoice[playerName]\n\n        if choice.has_key('num') and choice['num'] > 0:\n            choice['num'] -= 1\n        if choice['num'] == 0:\n            if playerName == self.player.name:\n                if self.phase == 'action':\n                    if self.actions > 0 and self.player.hasAction():\n                        self.promptAction()\n                    else:\n                        self.startBuyPhase()\n                elif self.phase == 'buy' and self.buys > 0 :\n                    self.promptBuy()\n                else:\n                    self.game.nextTurn()\n            else:\n                choice = None\n\n    def skipChoice(self, playerName):\n        self.playerChoice[playerName]['num'] = 1\n        self.updateTurn(playerName)\n\n\n    @staticmethod #this means that it doesn't take self as a parameter. In other words it is just a vanilia function.\n    def printSet(List):\n        s = ''\n        for i,element in enumerate(set(List)):\n            s += \"(%d) %s \\t \"% (List.count(element),element)\n\n        return s+'\\n'\n\n    ## Fuction to check if string is a number\n    @staticmethod \n    def is_number(s):\n        try:\n            float(s)\n            return True\n        except ValueError:\n            return False\n",
 			"file": "turn.py",
+			"file_size": 6890,
+			"file_write_time": 130482289493956828,
 			"settings":
 			{
-				"buffer_size": 10242,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "static/js/game.js",
-			"settings":
-			{
-				"buffer_size": 6901,
+				"buffer_size": 6686,
 				"line_ending": "Windows"
 			}
 		},
@@ -183,7 +218,7 @@
 			"file": "card.py",
 			"settings":
 			{
-				"buffer_size": 2426,
+				"buffer_size": 2451,
 				"line_ending": "Windows"
 			}
 		},
@@ -191,7 +226,7 @@
 			"file": "baseCards.py",
 			"settings":
 			{
-				"buffer_size": 9704,
+				"buffer_size": 9794,
 				"line_ending": "Windows"
 			}
 		},
@@ -199,7 +234,7 @@
 			"file": "game.py",
 			"settings":
 			{
-				"buffer_size": 3181,
+				"buffer_size": 3248,
 				"line_ending": "Windows"
 			}
 		},
@@ -207,7 +242,7 @@
 			"file": "supply.py",
 			"settings":
 			{
-				"buffer_size": 2983,
+				"buffer_size": 3088,
 				"line_ending": "Windows"
 			}
 		},
@@ -223,7 +258,7 @@
 			"file": "deck.py",
 			"settings":
 			{
-				"buffer_size": 564,
+				"buffer_size": 557,
 				"line_ending": "Windows"
 			}
 		}
@@ -279,7 +314,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
 			"<open files>"
@@ -287,9 +322,38 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"startBuy",
+			"log.append(\"Buy",
+			"log.append(\"buy",
+			"CHOICE",
+			"STATE",
+			"print State",
+			"buyCard",
+			"promptA",
+			"$",
+			"trash",
+			"/buy",
+			"buy",
+			"self.playC",
+			"playerC",
+			"playerChoi",
+			"promptCardFromHand",
+			"name",
+			"playCard",
+			"prompt",
+			"strTo",
+			"getState",
+			"promptCardFromHand",
+			"getstate",
+			"print",
+			"print s",
+			"print su",
+			"pickle",
+			"self.playCard",
+			"playCard",
 			"play",
 			"print",
 			"buyPhase",
@@ -313,7 +377,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -321,15 +385,15 @@
 					"file": "dominion.py",
 					"settings":
 					{
-						"buffer_size": 15044,
+						"buffer_size": 16090,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10619,
-								10619
+								13715,
+								13715
 							]
 						],
 						"settings":
@@ -339,13 +403,41 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5450.0,
+						"translation.y": 6273.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "static/js/game.js",
+					"settings":
+					{
+						"buffer_size": 8373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1282,
+								1282
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2879.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "sets.py",
 					"settings":
 					{
@@ -371,19 +463,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 3,
 					"file": "static/pages/game.html",
 					"settings":
 					{
-						"buffer_size": 1680,
+						"buffer_size": 1791,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1568,
-								1568
+								1015,
+								1015
 							]
 						],
 						"settings":
@@ -393,25 +485,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 126.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "playerState.py",
 					"settings":
 					{
-						"buffer_size": 1110,
+						"buffer_size": 910,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								602,
-								602
+								709,
+								709
 							]
 						],
 						"settings":
@@ -432,19 +524,19 @@
 			"sheets":
 			[
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "turn.py",
 					"settings":
 					{
-						"buffer_size": 10242,
+						"buffer_size": 6686,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								668,
-								668
+								5923,
+								5923
 							]
 						],
 						"settings":
@@ -453,36 +545,8 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 90.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "static/js/game.js",
-					"settings":
-					{
-						"buffer_size": 6901,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6338,
-								6338
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2809.0,
+						"translation.x": 49.0,
+						"translation.y": 2316.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -492,15 +556,15 @@
 					"file": "card.py",
 					"settings":
 					{
-						"buffer_size": 2426,
+						"buffer_size": 2451,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1005,
-								1000
+								894,
+								894
 							]
 						],
 						"settings":
@@ -510,7 +574,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 120.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -518,7 +582,7 @@
 			]
 		},
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -526,15 +590,15 @@
 					"file": "baseCards.py",
 					"settings":
 					{
-						"buffer_size": 9704,
+						"buffer_size": 9794,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1751,
-								1751
+								3582,
+								3582
 							]
 						],
 						"settings":
@@ -543,7 +607,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 853.0,
+						"translation.y": 1074.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -553,43 +617,15 @@
 					"file": "game.py",
 					"settings":
 					{
-						"buffer_size": 3181,
+						"buffer_size": 3248,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1315,
-								1315
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 200.0,
-						"translation.y": 321.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "supply.py",
-					"settings":
-					{
-						"buffer_size": 2983,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1459,
-								1459
+								1674,
+								1674
 							]
 						],
 						"settings":
@@ -599,7 +635,35 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 353.0,
+						"translation.y": 589.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "supply.py",
+					"settings":
+					{
+						"buffer_size": 3088,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1114,
+								1114
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 813.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -616,8 +680,8 @@
 						"selection":
 						[
 							[
-								2703,
-								2703
+								1146,
+								1146
 							]
 						],
 						"settings":
@@ -627,7 +691,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 637.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -637,15 +701,15 @@
 					"file": "deck.py",
 					"settings":
 					{
-						"buffer_size": 564,
+						"buffer_size": 557,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								202,
+								202
 							]
 						],
 						"settings":
@@ -697,8 +761,8 @@
 		"cols":
 		[
 			0.0,
-			0.523577235772,
-			0.784552845528,
+			0.282113821138,
+			0.59918699187,
 			1.0
 		],
 		"rows":

@@ -13,7 +13,7 @@ class PlayerState(GameState):
 	def isCurrentPlayer(self):
 		return self.player == self.game.currentPlayer
 
-	def getState(self):
+	def setState(self):
 		self.state["hand"] = [card.getAttr() for card in self.player.hand]
 		self.state["coinInHand"] = self.player.coinInHand()
 		self.state['choice'] = self.game.currentTurn.playerChoice[self.player.name]
@@ -24,4 +24,7 @@ class PlayerState(GameState):
 			self.state["phase"] = self.game.currentTurn.phase
 		else:
 			self.state["phase"] = "waiting"
+		
+
+	def getState(self):
 		return self.state

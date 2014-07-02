@@ -100,7 +100,7 @@ class Player():
 
     def minimalHand(self):
         hand = set(self.hand)
-        hand = list(hand)
+        hand = [(card, self.hand.count(card) for card in hand)]
 
     def numOfCards(self):
         res = 0

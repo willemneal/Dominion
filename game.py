@@ -59,6 +59,8 @@ class Game(object):
 
     def nextTurn(self):
         if self.supply.gameOver():
+            self.determineWinner()
+            self.log.append("")
             return
         self.currentTurn.cleanupPhase()
         self.players.append(self.currentPlayer)
@@ -69,27 +71,28 @@ class Game(object):
         self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log, self)
 
 
-        # while not self.supply.gameOver():
-        #     self.currentPlayer = self.players.pop(0)
-        #     print "It is %s's turn." % (self.currentPlayer)
-        #     self.currentTurn = Turn(self.currentPlayer,self.players)
-        #     self.currentTurn.actionPhase()
-        #     ##logging.debug(currentTurn.printAllCards())
-        #     print self.currentTurn.printAllCards()
-        #     self.currentTurn.buyPhase()
-        #     logging.debug(self.currentTurn.printAllCards())
-        #     self.currentTurn.cleanupPhase()
-        #     logging.debug(self.currentTurn.printAllCards())
-        #     self.players.append(self.currentPlayer)
+    def determineWinner(self):
+        winner = (None, 0)
+        for player in self.players:
+            vp = player.numOfVictoryPoints()
+            if vp > winner[1]:
+                winner = ([player], vp)
+            elif vp == winner[1]:
+                if winner[0]:
+                    winner = (winner[1].append(player),winner[1])
+                else:
+                    winner = ([player], vp)
+        winners = ''
 
-        # print "The game is over!! The scores are:\n"
-        # winner = [0,""]
-        # for player in self.players:
-        #     print "%s had %d Victory Points." % (player, player.numOfVictoryPoints())
-        #     if player.numOfVictoryPoints() > winner[0]:
-        #         winner[0] = player.numOfVictoryPoints()
-        #         winner[1] = player
-        # print "And the Winner is: %s with %d Victory Points. The rest of you suck ass." %(winner[1],winner[0])
+        for player in winner[0]:
+            if player == winner[0][-1]:
+                winners += player
+            else:
+                winners += player + " and "
+        self.log.append("%s Just won with %d Victory Points" % (winners, winner[1]))
+        for player in self.players:
+            if player not in winner[0]:
+                self.log.append("%s scored %d Victory Points" % (player.name, player.numOfVictoryPoints()))
 
 
 

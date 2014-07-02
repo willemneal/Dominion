@@ -194,6 +194,8 @@ def startGame(gameid):
 
 
 def updateGame(gameid, game):
+    for playerName in game.playerStates:
+        game.playerStates[playerName].setState()
     db = get_db()
     db.cursor().execute('''update games
         set game =:Game, started =:begin
@@ -320,6 +322,11 @@ def game(gameid=None):
     return app.send_static_file('pages/game.html')
     return render_template('/game.html',game=Games[gameid])
 
+@app.route('/play/treasures/<int:gameid>', methods=['POST'])
+def playTreasures(gameid):
+    game = getCurrentGame(gameid)
+    game.currentTurn.playAllTreasures()
+    updateGame(gameid, game)
 
 @app.route('/play/<string:card>/<int:gameid>', methods=["POST"])
 def play(card,gameid):

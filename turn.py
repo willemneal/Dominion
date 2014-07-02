@@ -175,7 +175,7 @@ class Turn(object):
                         self.promptAction()
                     else:
                         self.startBuyPhase()
-                elif self.phase == 'buy' and self.buys > 0:
+                elif self.phase == 'buy' and self.buys > 0 :
                     self.promptBuy()
                 else:
                     self.game.nextTurn()
@@ -186,6 +186,11 @@ class Turn(object):
         self.playerChoice[playerName]['num'] = 1
         self.updateTurn(playerName)
 
+    def playAllTreasures(self):
+        cards = self.player.treasuresInHand()
+        for card in cards:
+            hand.remove(card)
+            card.play()
 
     @staticmethod #this means that it doesn't take self as a parameter. In other words it is just a vanilia function.
     def printSet(List):
