@@ -33,20 +33,20 @@ class Card(object):
 		return isinstance(self, ActionCard)
 
     def getType(self):
-        return str(type(self)).split(".")[1]
+        return str(type(self)).split(".")[1][:-2]
 
     def getAttr(self):
         return {"name":self.name,"src":self.src,
-                "type":self.type[:-2],"cost":self.cost,
+                "type":self.type,"cost":self.cost,
                 "desc":self.desc,"vp":self.vp}
 
     def __repr__(self):
         return self.name
 
-    def __cmp__(self,other):
-        if other.cost> self.cost:
+    def __cmp__(self, other):
+        if other.cost > self.cost:
             return -1
-        elif other.cost <self.cost:
+        elif other.cost < self.cost:
             return  1
         return 0
 	

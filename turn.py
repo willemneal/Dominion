@@ -1,6 +1,3 @@
-from card import *
-from baseCards import feast
-
 class Turn(object):
     def __init__(self, player, otherPlayers, roundNumber, log, game):
         self.game = game
@@ -11,7 +8,7 @@ class Turn(object):
         self.coins = 5
         self.hand = player.hand
         self.currentPlayer = player
-        self.playerChoice={}
+        self.playerChoice = {}
         self.log = log
         self.prompt = ""
         self.log.append("It is %s's turn" % self.player)
@@ -127,7 +124,6 @@ class Turn(object):
             pass
 
     
-
     def cleanupPhase(self):
         self.player.discardHand()
         self.player.discardPlayed()
@@ -136,7 +132,6 @@ class Turn(object):
         assert 5 == len(self.player.hand)
         self.player.played = []
 
-    
     
     
     def playCard(self, card):
@@ -164,13 +159,13 @@ class Turn(object):
         s += ("%s" % player.supply.getPiles()) + "\n"
         print s
 
-    def updateTurn(self, playerName):
-        choice = self.playerChoice[playerName]
+    def updateTurn(self, player_name):
+        choice = self.playerChoice[player_name]
 
-        if choice.has_key('num') and choice['num'] > 0:
+        if 'num' in choice and choice['num'] > 0:
             choice['num'] -= 1
         if choice['num'] == 0:
-            if playerName == self.player.name:
+            if player_name == self.player.name:
                 if self.phase == 'action':
                     if self.actions > 0 and self.player.hasAction():
                         self.promptAction()
@@ -190,18 +185,18 @@ class Turn(object):
     def playAllTreasures(self):
         cards = self.player.treasuresInHand()
         for card in cards:
-            hand.remove(card)
+            self.player.hand.remove(card)
             card.play()
 
-    @staticmethod #this means that it doesn't take self as a parameter. In other words it is just a vanilia function.
-    def printSet(List):
+    @staticmethod # this means that it doesn't take self as a parameter. In other words it is just a vanilla function.
+    def printSet(l):
         s = ''
-        for i,element in enumerate(set(List)):
-            s += "(%d) %s \t "% (List.count(element),element)
+        for i,element in enumerate(set(l)):
+            s += "(%d) %s \t "% (l.count(element),element)
 
         return s+'\n'
 
-    ## Fuction to check if string is a number
+    ## Function to check if string is a number
     @staticmethod 
     def is_number(s):
         try:

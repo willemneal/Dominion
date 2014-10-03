@@ -2,7 +2,6 @@ from baseCards import *
 
 class BaseSupply(object):
     def __init__(self,kingdomCards,numOfPlayers=4):
-
         numOfVictories =12
         if (numOfPlayers == 2):
             numOfVictories = 8
@@ -64,7 +63,10 @@ class BaseSupply(object):
         dic["categories"] = ["victoryCards","treasureCards",'kingdomCards',"miscCards","nonSupplyCards"]
         return dic
 
-    def cardsLeft(self,card):
+    def cardsLeft(self, card):
+        assert isinstance(card, Card)
+        card = self.strToCard(card.name)
+        assert card in self.supply
         return len(self.supply[card])
 
     def addPiles(self,cards):
@@ -78,7 +80,7 @@ class BaseSupply(object):
         return s[:-1]
 
     def gameOver(self):
-        return  self.cardsLeft(province) == 0 or self.numberOfPilesGone == 3
+        return  0 == self.cardsLeft(province)  or self.numberOfPilesGone == 3
 
     def getPiles(self):
         return sorted(self.supply.keys())

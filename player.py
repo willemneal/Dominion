@@ -72,30 +72,16 @@ class Player():
         self.hand.extend(self.drawCards(num))
 
     def getAllCards(self):
-        res = []
-        for Set in self.allCards:
-            res.extend(Set)
-        return res         
+        return [card for Set in self.allCards for card in Set]      
 
     def hasAction(self):
-        for card in self.hand:
-            if card.isAction():
-                return True
-        return False
+        return len([card for card in self.hand if card.isAction()]) > 0
 
     def hasTreasure(self):
-        for card in self.hand:
-            if card.isTreasure():
-                return True
-        return False
+        return len(self.treasuresInHand()) > 0
 
     def getReactionCards(self):
-        reactionCards = []
-        for card in self.hand:
-            if card.isAction():
-                if card.isReaction:
-                    reactionCards.append(card)
-        return reactionCards
+        return [card for card in self.hand if card.isReaction()]
 
 
     def minimalHand(self):
@@ -104,10 +90,7 @@ class Player():
 
 
     def numOfCards(self):
-        res = 0
-        for cards in self.allCards:
-            res += len(cards)
-        return res
+        return sum([len(cards) for cards in self.allCards])
 
     def numOfVictoryPoints(self):
         return sum([card.vp for card in self.getAllCards()])
@@ -128,8 +111,4 @@ class Player():
         self.supply.trashCard(card)
 
     def treasuresInHand(self):
-        treasures = []
-        for card in self.hand:
-            if card.isTreasure():
-                treasures.append(card)
-        return treasures
+        return [card for card in self.hand if card.isTreasure()]

@@ -1,7 +1,6 @@
 from card import Card
 from card import ActionCard
 from card import TreasureCard
-from gameLog import GameLog
 
 
 curse    = Card('Curse',    0, vp = -1)

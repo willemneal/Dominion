@@ -4,15 +4,17 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> 
 <html lang="en" ng-app="dominion" > <!--<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
-<script type="text/javascript" src="/static/js/game.js"></script>
+
 
 <head>
   <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+  <script type="text/javascript" src="/static/js/game.js"></script>
   <title>Game</title>
 </head>
 <body>
   <div id = "game" ng-controller="gameController">
+    
   <div id="supply">
     <div id ="{{category}}" ng-repeat = "category in categories">
     <img id = "{{card.name.lower()}}" ng-src="{{card.src}}" ng-repeat="card in supply[category]" ng-click="gainCard(card)">

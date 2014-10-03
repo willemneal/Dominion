@@ -29,13 +29,8 @@ class Game(object):
         for player in self.players:
             self.playerDict[player.name]  = player
             self.playerStates[player.name]= PlayerState(player,self)
-
         self.firstTurn()
         
-
-
-        
-
     def firstTurn(self):
         for player in self.players:
             self.playerDict[player.name] = player
@@ -45,7 +40,6 @@ class Game(object):
         self.firstPlayer   = self.currentPlayer
         self.log.append("Round 1")
         self.currentTurn = Turn(self.currentPlayer, self.players, self.round, self.log, self)
-
 
     def nextTurn(self):
         self.currentTurn.cleanupPhase()

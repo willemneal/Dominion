@@ -17,6 +17,7 @@
     
 
     window.gameid = window.location.href.split('/').splice(-1)[0];
+    
     window.gameController = function($scope, $http){
         $scope.hand = [];
         $scope.phase = '';
