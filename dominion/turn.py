@@ -1,3 +1,5 @@
+from event import Event
+
 class Turn(object):
     def __init__(self, player, otherPlayers, roundNumber, log, game):
         self.game = game
@@ -16,7 +18,6 @@ class Turn(object):
 
         self.subscribeListeners()
 
-        self.playersToAttack =
 
         for player in otherPlayers:
             self.playerChoice[player.name] = None
@@ -36,15 +37,13 @@ class Turn(object):
     def subscribeListeners(self):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
-        self.listeners = {"Attack":[]}
-        for player in self.otherPlayer:
+        self.listeners = {"Attack":Event()}
+        for player in self.otherPlayers:
             for reactionCard in player.getReactionCards():
-                self.listeners.append(reactionCard.reaction)
+                self.listeners["Attack"].append(reactionCard.reaction)
 
     def event(self,name):
-        if eventName in self.listeners:
-            for listener in self.listeners[eventName]:
-                listener()
+        self.listeners[name]()
 
 
     def endTurn(self):

@@ -129,24 +129,19 @@ def moatAction(turn):
 	turn.player.drawToHand(2)
 
 def moatReaction(player):
-	return True
+	player.canAttack = False
 
 def moneylenderAction(turn):
 	if copper in turn.player.hand:
-		print "Pick a copper to trash."
-		cardindex = turn.promptCardsIndex(turn.player.hand)
-		while turn.player.hand[cardindex] != copper:
-			print "That's not a copper"
-			cardindex = turn.promptCardsIndex(turn.player.hand)
-		card = turn.player.hand.pop(cardindex)
-		turn.player.trashCard(card)
+		turn.player.hand.remove(copper)
+		turn.player.trashCard(copper)
 		turn.coins += 3
 	else:
 		print "SORRY no copper to trash"
 	return
 
 def remodelAction(turn):
-	print "pick card to trash and gain one up to three more"
+	print "pick card to trash and gain one up to two more"
 	card = turn.promptCards(turn.player.hand)
 	turn.player.trashCard(card)
 	gainedCard = turn.promptGain(card.cost + 2)

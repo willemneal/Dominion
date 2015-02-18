@@ -1,10 +1,11 @@
 from flask import Flask, Response, stream_with_context
+import dominion
 from dominion.database import *
 from dominion.game import Game, base, allSets
 from flask import render_template, session, redirect, url_for, request, jsonify
 import thread
 
-from datetime import datetime
+
 from hashlib import md5
 
 import json, pdb
@@ -301,6 +302,21 @@ def getLog(gameid):
 The following is for pushing state to the user.
 
 '''
+@socketio.on('join', namespace='/updates')
+def join(message):
+    join_room(message['room'])
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('message',
+         {'data': 'In rooms: ' + ', '.join(request.namespace.rooms),
+          'count': session['receive_count']})
+
+@socketio.on('Game Event', namespace='/updates')
+def test_broadcast_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my response',
+         {'data': message['data'],
+         'count': session['receive_count']},
+         broadcast=True)
 
 
 

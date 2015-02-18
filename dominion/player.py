@@ -116,5 +116,10 @@ class Player():
     def trashCard(self,card):
         self.supply.trashCard(card)
 
+    def trashCardFromHand(self,card):
+        assert card in self.hand
+        self.hand.remove(card)
+        self.trashCard(card)
+
     def treasuresInHand(self):
         return [card for card in self.hand if card.isTreasure()]

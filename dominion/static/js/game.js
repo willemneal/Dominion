@@ -38,6 +38,11 @@
         //This is for connecting to the event stream which pushes updates
         var socket = io.connect('http://'+document.domiain+'/updates');
         socket.on('my response', function(msg) {
+                $scope.unpackState(msg['state'])
+                console.log(msg);
+        });
+
+        socket.on('messages', function(msg){
                 console.log(msg);
         });
 
@@ -193,7 +198,7 @@
         };
 
         $scope.updateState = function(){
-            $http.get('/update/'+window.gameid)
+            $http.get('/update/'+window.gameid);
         }
 
         $scope.playAllTreasures  = function(){
