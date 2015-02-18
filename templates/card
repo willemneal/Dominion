@@ -1,2 +1,0 @@
-<!doctype html>
-<img id = {{card}} src = "/static/{{card.getImageLocation()}}" class ="{{card.type()}}" >

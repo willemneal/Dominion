@@ -1,8 +1,0 @@
-<!doctype html>
-
-<h1>{{ session['username'] }}'s hand!</h1>
-{% for group in game.playerDict[session['username']].hand|groupby('type') %}
-	{% for card in group.list %}
-    <img id = {{card}} src = "/static/{{card.getImageLocation()}}" class ="{{card.type}}" >
-    {% endfor %}
-{% endfor %}
