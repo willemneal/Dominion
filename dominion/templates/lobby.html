@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="dominion"> <!--<![endif]-->
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+<script type="text/javascript" src="/static/js/game.js"></script>
+  <meta charset="utf-8">
+  <title>Lobby</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+  {% if welcome %}
+  <form method="post" action = "/lobby">
+  <input type="submit" name="pending" value="See Pending Games">
+  Number of Pending Games: {{numPending}}
+  <div>
+  <input type="submit" name="liveGames" value="Live Games">
+</div>
+<input type="submit" name="newGame" value="Create Game">
+  </form>
+  {% endif %}
+
+  {% if newGame %}
+  <form method="post" action = "/new/Game">
+  <label>Pick which set:
+  {% for set in sets %}
+  {{set.name}}
+  <input type="radio" name ="{{set.name}}" value="{{set.name}}">
+  <br>
+  {% endfor %}
+</label>
+  <label>
+  Number of Players:
+  <input type="number" name="numberOfPlayers" min ="1" max = "4" placeholder="4">
+  
+  </label>
+  <input type="submit" name="create" value="Create Game">
+  </form>
+   <div>
+ 
+  {% endif %}
+
+  {% if pending %}
+  {% for game in games %}
+  <div>
+  	creator = {{game.creator}}
+    players = {{game.players}}
+    sets = {{game.sets}}
+  <form method="post" action = "/ready/{{game.gameid}}">
+
+  {% if session['username'] == game.creator %}
+  <input type="submit" name="start" value="Start Game">
+  {% else %}
+  <input type="submit" name="join" value="Join Game">
+  {% endif %}
+  </form>
+  <div>
+  {% endfor %}
+  {% endif %}
+  {% if liveGames %}
+  {% for game in games %}
+   creator = {{game.creator}}
+    players = {{game.players}}
+    sets = {{game.sets}}
+
+   {% if session['username'] in game.players %} 
+   	<form method="get" action="/game/{{game.gameid}}">
+    <input type="submit" name="start" value="go To">
+   	</form>
+   {% endif %}
+  {% endfor %}
+  {% endif %}
+
+</body>
+</html>
