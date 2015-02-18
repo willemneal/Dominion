@@ -1,0 +1,32 @@
+<!doctype html>
+
+<h1>Dominion Game Supply</h1>
+<div>
+    <div id="victoryCards">
+        {% for card in game.supply.victoryCards %}
+            <img id = {{card}} src = "{{card.getImageLocation()}}" class ="{{card.type}}" >
+        {% endfor %}
+    </div>
+    <div id="treasureCards">
+        {% for card in game.supply.treasureCards %}
+            <img id = {{card}} src = "{{card.getImageLocation()}}" class ="{{card.type}}" >
+        {% endfor %}
+    </div>
+    <div id="miscCards">
+        {% for card in game.supply.miscCards %}
+            <img id = {{card}} src = "{{card.getImageLocation()}}" class ="{{card.type}}" >
+        {% endfor %}
+    </div>
+    {% if nonSupplyCards %}
+        <div id="nonSupplyCards">
+            {% for card in game.supply.nonSupplyCards %}
+                <img id = {{card}} src = "{{card.getImageLocation()}}" class ="{{card.type}}" >
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div id="kingdomCards">
+        {% for card in game.supply.kingdomCards %}
+            <img id = {{card}} src = "{{card.getImageLocation()}}" class ="{{card.type}}" >
+        {% endfor %}
+    </div>
+</div>

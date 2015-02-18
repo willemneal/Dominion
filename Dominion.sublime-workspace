@@ -1,0 +1,1050 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"fun",
+				"func"
+			],
+			[
+				"fu",
+				"funictons"
+			],
+			[
+				"num",
+				"numOfVictoryPoints"
+			],
+			[
+				"gae",
+				"gameid"
+			],
+			[
+				"gam",
+				"gameOver"
+			],
+			[
+				"up",
+				"updateBuys"
+			],
+			[
+				"other",
+				"otherPlayers"
+			],
+			[
+				"ga",
+				"gameid"
+			],
+			[
+				"post",
+				"POST"
+			],
+			[
+				"play",
+				"playCard"
+			],
+			[
+				"cur",
+				"currentPlayer"
+			],
+			[
+				"next",
+				"nextTurn"
+			],
+			[
+				"player",
+				"playerChoice"
+			],
+			[
+				"callba",
+				"callback"
+			],
+			[
+				"act",
+				"actions"
+			],
+			[
+				"n",
+				"num"
+			],
+			[
+				"upd",
+				"setUpdate"
+			],
+			[
+				"ch",
+				"choice"
+			],
+			[
+				"bu",
+				"buyPhase"
+			],
+			[
+				"buy",
+				"buy"
+			],
+			[
+				"gai",
+				"gainCard"
+			],
+			[
+				"curr",
+				"currentTurn"
+			],
+			[
+				"dis",
+				"discardCard"
+			],
+			[
+				"game",
+				"gameid"
+			],
+			[
+				"ca",
+				"categories"
+			],
+			[
+				"c",
+				"choice"
+			],
+			[
+				"cle",
+				"cleanupPhase"
+			],
+			[
+				"prom",
+				"promptCardFromHand"
+			],
+			[
+				"Trea",
+				"TreasureCard"
+			],
+			[
+				"v",
+				"village"
+			],
+			[
+				"smith",
+				"smithy"
+			],
+			[
+				"Actio",
+				"ActionCard"
+			],
+			[
+				"pla",
+				"player"
+			],
+			[
+				"r",
+				"return"
+			],
+			[
+				"crr",
+				"currentPlayer"
+			],
+			[
+				"Gan",
+				"gainedCard"
+			],
+			[
+				"co",
+				"coins"
+			],
+			[
+				"villag",
+				"villageAction"
+			],
+			[
+				"updat",
+				"updateActions"
+			],
+			[
+				"chapel",
+				"chapelAction"
+			],
+			[
+				"card",
+				"card"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "dominion.py",
+			"settings":
+			{
+				"buffer_size": 16558,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "static/js/game.js",
+			"settings":
+			{
+				"buffer_size": 8373,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "sets.py",
+			"settings":
+			{
+				"buffer_size": 39,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "static/pages/game.html",
+			"settings":
+			{
+				"buffer_size": 1791,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "playerState.py",
+			"settings":
+			{
+				"buffer_size": 935,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "player.py",
+			"settings":
+			{
+				"buffer_size": 3031,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Searching 12 files for \"played\" (case sensitive)\n\nC:\\Users\\willem\\Documents\\Dominion\\baseCards.py:\n   75  		card = turn.promptGain(5)\n   76  \n   77: 	turn.player.played.remove(feast)\n   78  	turn.supply.trashCard(feast)\n   79  	turn.player.discardCard(card)\n\nC:\\Users\\willem\\Documents\\Dominion\\card.py:\n   77      def play(self,turn):\n   78          self.action(turn)\n   79:         print turn.player, \"played \",self.name,\":\",self.desc\n   80  \n   81  \n\nC:\\Users\\willem\\Documents\\Dominion\\dominion.py:\n  342      if res is None:\n  343          turn.updateTurn(session['username'])\n  344:     print \"played %s\" % card.name\n  345      updateGame(gameid, game)\n  346:     return \"%s was played\" % (card.name)\n  347  \n  348  @app.route('/skip/<int:gameid>', methods=['POST'])\n\nC:\\Users\\willem\\Documents\\Dominion\\player.py:\n    7          self.name     = name\n    8          self.deck       = Deck()\n    9:         self.played     = []\n   10          self.discard    = []\n   11          self.hand       = []\n   12          self.allCards   = [self.deck.deck,\n   13:                             self.played,\n   14                              self.discard, \n   15                              self.hand]\n   ..\n   33  \n   34      def discardDeck(self):\n   35:         self.discardList(self.played)\n   36  \n   37      def discardHand(self):\n   ..\n   44  \n   45      def discardPlayed(self):\n   46:         self.discardList(self.played)\n   47  \n   48      def drawCard(self):\n   ..\n  120  \n  121      def printPlayed(self):\n  122:         print len(self.played),self.played\n  123  \n  124      def setUpdate(self, Bool):\n\nC:\\Users\\willem\\Documents\\Dominion\\turn.py:\n  135          self.player.drawHand()\n  136          assert 5 == len(self.player.hand)\n  137:         self.player.played = []\n  138  \n  139      \n  ...\n  144              card = self.player.supply.strToCard(card)\n  145          self.player.hand.remove(card)\n  146:         self.player.played.append(card)\n  147          res = card.play(self)\n  148          if card.isAction():\n  ...\n  157              s += \"%s\\n\" % player\n  158              s += \"hand\\t%s\\n\" % (self.printSet(player.hand))\n  159:             s += \"played\\t%s\\n\" % (self.printSet(player.played))\n  160              s +=  \"discard\\t%s\\n\" % (self.printSet(player.discard))\n  161              s += \"deck\\t%s\\n\" % (self.printSet(player.deck.deck))\n\n14 matches across 5 files\n",
+			"settings":
+			{
+				"buffer_size": 2392,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "turn.py",
+			"settings":
+			{
+				"buffer_size": 6820,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "game.py",
+			"settings":
+			{
+				"buffer_size": 2916,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "card.py",
+			"settings":
+			{
+				"buffer_size": 2488,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "baseCards.py",
+			"settings":
+			{
+				"buffer_size": 9761,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "supply.py",
+			"settings":
+			{
+				"buffer_size": 3258,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/homework1.py",
+			"settings":
+			{
+				"buffer_size": 2290,
+				"line_ending": "Windows",
+				"name": "from sympy import *"
+			}
+		},
+		{
+			"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/funcs",
+			"settings":
+			{
+				"buffer_size": 581,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/flip.py",
+			"settings":
+			{
+				"buffer_size": 179,
+				"line_ending": "Windows",
+				"name": "f = open(\"funcs\")"
+			}
+		},
+		{
+			"contents": "<tbody><tr><td class=\"PSLEVEL2SCROLLAREAHEADER\">&nbsp;</td></tr>\n<tr><td width=\"659\">\n<table id=\"ACE_$ICField12$0\" cols=\"3\" class=\"PSLEVEL2SCROLLAREABODY\" style=\"border-style:none\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"659\">\n<tbody><tr>\n<td height=\"1\" width=\"4\"></td>\n<td width=\"652\"></td>\n<td width=\"3\"></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$0\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>Internal Unofficial Transcript - UNC Chapel Hill</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$1\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Name      :  Willem Wyndham</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$2\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Student ID:  720041983</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$3\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Print Date   :  2014-09-11</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$4\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                       - - - - -   Degrees Awarded   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$5\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Degree        :  Bachelor of Science</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$6\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Confer Date   :  2014-05-11</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$7\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Degree Honors :  Highest Distinction</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$8\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Plan          :  College of Arts and Sciences</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$9\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                 Computer Science</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$10\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                      - - - - -   Transfer Credits   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$11\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>Transfer Credit from Asheville-Buncombe Tech Cmty C</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$12\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Applied Toward AS Bachelor Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$13\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$14\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2010 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$15\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMM      113       PUBLIC SPEAKING                   3.00     3.00 TR</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$16\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>POLI         ----   POLI GENERAL ELECTIVE             3.00     3.00 TR</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$17\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>PSYC      101       GENERAL PSYCHOLOGY                3.00     3.00 TR</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$18\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>  Course Trans GPA:     0.000  Transfer Totals :      9.00     9.00          0.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$19\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$20\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                        - - - - -   Test Credits   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$21\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Test Credits Applied Toward AS Bachelor Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$22\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$23\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2010 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$24\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>CHEM      101       GEN DESCRIP CHEM I                3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$25\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>CHEM      101L      QUANT CHEM LAB I                  1.00     1.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$26\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>ENGL      101       ENG COMP &amp; RHETORIC               3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$27\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>ENST      202       ENVIRONMENTAL SCIENCE             4.00     4.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$28\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>HIST      128       AM HIST SINCE 1865                3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$29\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      110P      ALGEBRA                                    0.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$30\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>     Repeated     : Repeat</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$31\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      110P      ALGEBRA                                    0.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$32\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>     Repeated     : Repeat</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$33\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      110P      ALGEBRA                                    0.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$34\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      231       CALC FUNC ONE VAR I                        0.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$35\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>     Repeated     : Repeat</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$36\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      231       CALC FUNC ONE VAR I               3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$37\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      232       CAL FUNC ONE VAR II               3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$38\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>POLI      100       INTRO TO GOVT IN US               3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$39\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>STOR      155       INTRO STATISTICS                  3.00     3.00 BE</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$40\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>    Test Trans GPA:     0.000  Transfer Totals :     26.00    26.00          0.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$41\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                  - - - - -   Academic Program History   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$42\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Program     :  AS Bachelor</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$43\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>2010-05-24  :  Active in Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$44\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2010-05-24 : Undecided Major</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$45\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Program     :  AS Bachelor of Arts</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$46\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>2012-01-09  :  Active in Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$47\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2012-01-09 : Undecided Major</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$48\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>2012-02-24  :  Active in Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$49\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2012-02-24 : Computer Science Major</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$50\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2012-02-24 : Mathematics Minor Minor</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$51\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Program     :  AS Bachelor of Science</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$52\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>2012-09-20  :  Active in Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$53\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2012-09-20 : Computer Science Major</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$54\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2012-09-20 : Mathematics Minor Minor</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$55\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>2014-01-15  :  Active in Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$56\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2014-01-15 : Computer Science Major</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$57\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$58\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>              - - - - -   Beginning of Undergraduate Record   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$59\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2010 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$60\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>ECON      101       ECON: INTRO                       3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$61\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      233       MULTI VARI CALC I                 3.00     3.00 A-      11.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$62\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MUSC      142       GREAT MUSICAL WORKS               3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$63\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>POLI       58       FYS: GLOB PROD/WORKERS            3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$64\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     3.925      TERM TOTALS :     12.00    12.00         47.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$65\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$66\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.925      CUM  TOTALS :     12.00    47.00         47.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$67\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Dean's List</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$68\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$69\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$70\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2011 Spr</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$71\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      116       INTRO SCIENTIFIC PROG             3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$72\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>INTS      393       GREAT DECISIONS                   1.00     1.00 PS</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$73\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>LFIT      110       LIFE FITNESS: BEG SWIM            1.00     1.00 A        4.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$74\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      383       1ST COURSE DIFF EQUATION          3.00     3.00 B        9.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$75\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>PHYS      116       MECHANICS                         4.00     4.00 A-      14.800</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$76\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     3.618      TERM TOTALS :     12.00    12.00         39.800</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$77\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$78\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.778      CUM  TOTALS :     24.00    59.00         86.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$79\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$80\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$81\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2011 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$82\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      396       INDEP STUDY IN COMP SCI           3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$83\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      401       FOUND'N OF PROGRAMG               4.00     4.00 A       16.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$84\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>DTCH      402       ELEMENTARY DUTCH                  3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$85\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>ENGL      102       ENG COMP &amp; RHETORIC               3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$86\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      381       DISCRETE MATH                     3.00     3.00 B+       9.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$87\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     3.869      TERM TOTALS :     16.00    16.00         61.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$88\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$89\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.815      CUM  TOTALS :     40.00    75.00        148.800</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$90\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Dean's List</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$91\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$92\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$93\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2012 Spr</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$94\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>AERO      196       INDEPENDENT STUDY                 2.00     2.00 A        8.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$95\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      396       INDEP STUDY IN COMP SCI           3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$96\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      410       DATA STRUCTURES                   3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$97\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>DTCH      403       INTERMEDIATE DUTCH                3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$98\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>HIST      226       HISTORY OF ROME                   3.00     3.00 A-      11.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$99\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     3.936      TERM TOTALS :     14.00    14.00         55.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$100\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$101\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.847      CUM  TOTALS :     54.00    89.00        203.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$102\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Dean's List</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$103\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$104\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$105\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2012 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$106\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      411       COMPUTER ORGANIZATN               4.00     4.00 A       16.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$107\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      426       ADV WWW PROG                      3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$108\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      455       MODELS: LANGS/COMPN               3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$109\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>DTCH      404       ADV INTERMEDIATE DUTCH            3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$110\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     4.000      TERM TOTALS :     13.00    13.00         52.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$111\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$112\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.877      CUM  TOTALS :     67.00   102.00        255.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$113\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Dean's List</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$114\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$115\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$116\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2013 Spr</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$117\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>ISP       314       EXCH IN THE NETHERLANDS                    0.00 NR</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$118\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>TREQ      299       ELECTIVE                          1.00     1.00 PS</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$119\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>TREQ      299       ELECTIVE                          3.00     3.00 PS</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$120\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>TREQ      299       ELECTIVE                          3.00     3.00 PS</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$121\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>TREQ      299       ELECTIVE                          2.00     2.00 PS</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$122\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>TREQ      501       MAJOR 1 REQUIREMENT 1             3.00     3.00 PS</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$123\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     0.000      TERM TOTALS :     12.00    12.00          0.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$124\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$125\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.877      CUM  TOTALS :     79.00   114.00        255.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$126\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$127\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$128\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2013 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$129\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      521       FILES AND DATABASES               3.00     3.00 A-      11.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$130\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      530       OPERATING SYSTEMS                 3.00     3.00 A-      11.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$131\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      590       TOPICS COMPUTER SCI               1.00     1.00 A        4.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$132\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>MATH      547       LINEAR ALGEBRA FOR APPL           3.00     3.00 A-      11.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$133\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>STOR      435       INTRO TO PROBABIL                 3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$134\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     3.792      TERM TOTALS :     13.00    13.00         49.300</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$135\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$136\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.863      CUM  TOTALS :     92.00   127.00        305.200</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$137\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Dean's List</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$138\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$139\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$140\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2014 Spr</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$141\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>AAAD      201       AFRICAN LITERATURE                3.00     3.00 A       12.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$142\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      541       DIGITAL LOGIC                     4.00     4.00 A       16.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$143\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      737       REAL-TIME SYSTEMS                 3.00     3.00 B+       9.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$144\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>PHIL      230H      EXPERIENCE &amp; REAL                 3.00     3.00 A-      11.100</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$145\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>PHYA      231       BEGINNING SOCIAL DANCE            1.00     0.00 A-</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$146\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>     Grading Basis: EXCLUDE FROM HRS TO GRADUATION</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$147\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     3.764      TERM TOTALS :     14.00    13.00         52.700</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$148\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$149\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     3.848      CUM  TOTALS :    106.00   140.00        357.900</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$150\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Dean's List</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$151\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                    Good Standing</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$152\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>Internal Unofficial Transcript - UNC Chapel Hill</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$153\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Name      :  Willem Wyndham</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$154\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Student ID:  720041983</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$155\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Print Date   :  2014-09-11</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$156\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                       - - - - -   Degrees Awarded   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$157\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Degree        :  Bachelor of Science</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$158\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Confer Date   :  2014-05-11</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$159\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Degree Honors :  Highest Distinction</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$160\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Plan          :  College of Arts and Sciences</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$161\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>                 Computer Science</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$162\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                  - - - - -   Academic Program History   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$163\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>Program     :  AS Master of Science</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$164\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>2014-08-18  :  Active in Program</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$165\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>               2014-08-18 : Computer Science Major</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$166\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$167\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                 - - - - -   Beginning of Graduate Record   - - - - -</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$168\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre><b>                                      2014 Fall</b></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$169\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      750       ALGORITHM ANALYSIS                3.00</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$170\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      776       COMP VSN OF OUR 3D WORLD          3.00</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$171\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>COMP      992       MASTER'S (NON-THESIS)             3.00</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$172\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         TERM GPA :     0.000      TERM TOTALS :      0.00     0.00          0.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"17\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$173\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre></pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n<tr>\n<td height=\"16\"></td>\n<td align=\"left\" valign=\"top\">\n<div id=\"win0divDERIVED_TSCRPT_TSCRPT_COMP_DATA_H$174\"><div style=\"width:652px; \">\n<!-- Begin HTML Area Name Undisclosed -->\n<pre>         CUM  GPA :     0.000      CUM  TOTALS :      0.00     0.00          0.000</pre>\n<!-- End HTML Area -->\n</div>\n</div></td>\n</tr>\n</tbody></table\n></td></tr>\n</tbody>",
+			"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/transcript.html",
+			"file_size": 53794,
+			"file_write_time": 130549629001137130,
+			"settings":
+			{
+				"buffer_size": 52034,
+				"line_ending": "Windows",
+				"name": "<tbody><tr><td class=\"PSLEVEL2SCROLLAREAHEADER\">&n"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pac",
+				"Package Control: Discover Packages"
+			],
+			[
+				"",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 146.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/grading/HW1/TC13",
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/grading/HW1/alex2.txt",
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/grading/HW1/gradeAll.sh",
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/grading/HW1/grader.sh",
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/grading/HW1/TC12",
+		"/C/Users/willem/Documents/Dominion/deck.py",
+		"/C/Users/willem/AppData/Local/Temp/e9a8620e-1c5a-462f-b781-9c8547fbe7b7/afs/cs.unc.edu/home/wyndham/comp530/submissions/HW4/HW43.c",
+		"/C/Users/willem/AppData/Local/Temp/e9a8620e-1c5a-462f-b781-9c8547fbe7b7/afs/cs.unc.edu/home/wyndham/comp530/submissions/HW4/HW42.c",
+		"/C/Users/willem/AppData/Local/Temp/e9a8620e-1c5a-462f-b781-9c8547fbe7b7/afs/cs.unc.edu/home/wyndham/TA/comp530/HW1/IO_1.c",
+		"/C/Users/willem/AppData/Local/Temp/e9a8620e-1c5a-462f-b781-9c8547fbe7b7/afs/cs.unc.edu/home/wyndham/TA/comp530/HW1/IO_2.c",
+		"/C/Users/willem/AppData/Local/Temp/0ebe74aa-196d-4182-b8a7-5c8b7f94f957/afs/cs.unc.edu/home/wyndham/TA/comp530/HW1/IO.c",
+		"/C/Users/willem/AppData/Local/Temp/e9a8620e-1c5a-462f-b781-9c8547fbe7b7/afs/cs.unc.edu/home/wyndham/comp530/submissions/HW4/HW41.c",
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/HW1/tester.sh",
+		"/C/Users/willem/AppData/Local/Temp/e70b3dae-2d48-4551-87a4-5715119f7014/afs/cs.unc.edu/home/wyndham/TA/comp530/HW1/IO.c",
+		"/C/Users/willem/Documents/Dominion/playerState.py",
+		"/C/Users/willem/Documents/WD/baseCards.py",
+		"/C/Users/willem/Documents/Dominion/Dominion.sublime-project",
+		"/C/Users/willem/Documents/WD/supply.py",
+		"/C/Users/willem/Documents/WD/sets.py",
+		"/C/Users/willem/Documents/WD/player.py",
+		"/C/Users/willem/Documents/WD/game.py",
+		"/C/Users/willem/Documents/WD/deck.py",
+		"/C/Users/willem/Documents/WD/turn.py",
+		"/C/Users/willem/Documents/WD/Dominion.sublime-project",
+		"/C/Users/willem/Documents/WD/Dominion.sublime-workspace",
+		"/C/Users/willem/Documents/WD/card.py"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"<open files>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			")",
+			"(",
+			"**",
+			"endTurn",
+			"end",
+			"end ",
+			"end",
+			"flask",
+			"def play",
+			"played",
+			"startBuy",
+			"log.append(\"Buy",
+			"log.append(\"buy",
+			"CHOICE",
+			"STATE",
+			"print State",
+			"buyCard",
+			"promptA",
+			"$",
+			"trash",
+			"/buy",
+			"buy",
+			"self.playC",
+			"playerC",
+			"playerChoi",
+			"promptCardFromHand",
+			"name",
+			"playCard",
+			"prompt",
+			"strTo",
+			"getState",
+			"promptCardFromHand",
+			"getstate",
+			"print",
+			"print s",
+			"print su",
+			"pickle",
+			"self.playCard",
+			"playCard",
+			"play",
+			"print",
+			"buyPhase",
+			"decision",
+			"clean",
+			"duration"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "dominion.py",
+					"settings":
+					{
+						"buffer_size": 16558,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11985,
+								11985
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6689.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "static/js/game.js",
+					"settings":
+					{
+						"buffer_size": 8373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2862,
+								2865
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1289.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "sets.py",
+					"settings":
+					{
+						"buffer_size": 39,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								39,
+								39
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "static/pages/game.html",
+					"settings":
+					{
+						"buffer_size": 1791,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1015,
+								1015
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 422.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "playerState.py",
+					"settings":
+					{
+						"buffer_size": 935,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								369,
+								369
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "player.py",
+					"settings":
+					{
+						"buffer_size": 3031,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2034,
+								2034
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1219.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"settings":
+					{
+						"buffer_size": 2392,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										162,
+										168
+									],
+									[
+										403,
+										409
+									],
+									[
+										598,
+										604
+									],
+									[
+										683,
+										689
+									],
+									[
+										914,
+										920
+									],
+									[
+										1092,
+										1098
+									],
+									[
+										1281,
+										1287
+									],
+									[
+										1418,
+										1424
+									],
+									[
+										1543,
+										1549
+									],
+									[
+										1556,
+										1562
+									],
+									[
+										1768,
+										1774
+									],
+									[
+										1939,
+										1945
+									],
+									[
+										2170,
+										2176
+									],
+									[
+										2208,
+										2214
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								399,
+								399
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 36.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "turn.py",
+					"settings":
+					{
+						"buffer_size": 6820,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2785,
+								2725
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1778.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "game.py",
+					"settings":
+					{
+						"buffer_size": 2916,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1607,
+								1607
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 722.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "card.py",
+					"settings":
+					{
+						"buffer_size": 2488,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2164,
+								2164
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1092.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 10,
+					"file": "baseCards.py",
+					"settings":
+					{
+						"buffer_size": 9761,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1452,
+								1452
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "supply.py",
+					"settings":
+					{
+						"buffer_size": 3258,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								924,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/homework1.py",
+					"settings":
+					{
+						"buffer_size": 2290,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								519,
+								519
+							]
+						],
+						"settings":
+						{
+							"auto_name": "from sympy import *",
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1094.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/funcs",
+					"settings":
+					{
+						"buffer_size": 581,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/flip.py",
+					"settings":
+					{
+						"buffer_size": 179,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								163,
+								163
+							]
+						],
+						"settings":
+						{
+							"auto_name": "f = open(\"funcs\")",
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "/C/Users/willem/Dropbox/College/Classes/Comp/750/transcript.html",
+					"settings":
+					{
+						"buffer_size": 52034,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21901,
+								21901
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<tbody><tr><td class=\"PSLEVEL2SCROLLAREAHEADER\">&n",
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 13063.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				2,
+				0,
+				3,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.0511507659347,
+			0.07903699014,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 118.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 127.0,
+	"status_bar_visible": true
+}
