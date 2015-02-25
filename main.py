@@ -9,7 +9,8 @@ import thread
 from hashlib import md5
 
 import json, pdb
-from flask.ext.socketio import SocketIO, emit
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room, \
+    close_room, disconnect
 
 
 app.secret_key = "\xf3Bg\x90\xec $xv\xee\xca`,A\"\'\x0f\\M&a\xf9\xbd\xdc"
@@ -91,10 +92,10 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if not getUserID(username):
-            return render_template("/login.html", username=True)
+            return render_template("/login.html", usernameWrong=True)
 
         if hashPassword(password, username[-2:]) != getPassword(username):
-            return render_template('/login.html', password=True)
+            return render_template('/login.html', passwordWrong=True)
         session['username'] = request.form['username']
         # print session['username']
         if request.form.has_key('remember_me') and request.form['remember_me'] == "on":
@@ -133,6 +134,7 @@ def supply(gameid):
     if not game:
         return Flask.abort(401)
     supply = game.supply
+    print jsonify(supply.toDict())
     return jsonify(supply.toDict())
 
 
@@ -156,7 +158,7 @@ def playTreasures(gameid):
 @app.route('/play/<string:card>/<int:gameid>', methods=["POST"])
 def play(card, gameid):
     #pdb.set_trace()
-    print type(card), card
+    #print type(card), card
     game = getCurrentGame(gameid)
     card = game.supply.strToCard(str(card))
     turn = game.currentTurn
@@ -222,7 +224,7 @@ def state(gameid):
     turn = game.currentTurn
 
     if request.method == "POST":
-        return getState(gameid, player.name)
+        return json.dumps(getState(gameid, player.name))
 
         # if player.update:
         #     player.setUpdate(False)
@@ -278,7 +280,7 @@ def newUser():
     if request.method == "POST":
         if getUserID(request.form['username']):
             return render_template('/newuser.html', user=True)
-        print "here111"
+        #print "here111"
         if request.form['password'] != request.form['password2']:
             return render_template('/newuser.html', password=True)
 
@@ -305,17 +307,22 @@ The following is for pushing state to the user.
 @socketio.on('join', namespace='/updates')
 def join(message):
     join_room(message['room'])
+    print "joined",message['room'],"room"
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('message',
          {'data': 'In rooms: ' + ', '.join(request.namespace.rooms),
           'count': session['receive_count']})
 
 @socketio.on('Game Event', namespace='/updates')
-def test_broadcast_message(message):
+def room_update(message):
+    print type(message['room']),
+    state = getState(int(message['room']),session['username'])
+    print type(state)
     session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': message['data'],
-         'count': session['receive_count']},
+    emit('state',
+         {'room': message['room'],
+         'count': session['receive_count'],
+         'state': state},
          broadcast=True)
 
 

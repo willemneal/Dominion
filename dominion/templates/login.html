@@ -14,10 +14,10 @@
   <section class="container">
     <div class="login">
       <h1>Login to Dominion</h1>
-      {% if username%}
+      {% if usernameWrong%}
       <p>Username not found</p>
       {% endif %}
-      {% if password%}
+      {% if passwordWrong%}
       <p>Wrong password</p>
       {% endif %}
         <form method="post" action="/login">

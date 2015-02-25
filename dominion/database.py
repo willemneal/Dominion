@@ -146,7 +146,7 @@ def getUser(username=None, userid=None):
 def getState(gameid, username):
     db = get_db()
     game = getCurrentGame(gameid)
-    return json.dumps(game.playerStates[username].getState())
+    return game.playerStates[username].getState()
 
 
 def getUserID(username):

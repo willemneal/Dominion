@@ -6,7 +6,7 @@ from random import sample
 from random import shuffle
 import logging
 from playerState import PlayerState
-    
+
 
 ##logging.debug('This message should go to the log file')
 
@@ -21,7 +21,7 @@ class Game(object):
         gameCards = sample(allCards,10) ## gets 10 random cards from inluded sets
         numOfPlayers = len(playerList)
         self.supply  = BaseSupply(gameCards,numOfPlayers)
-        print self.supply
+        #print self.supply
         self.players = [Player(name,self.supply) for name in playerList]
         shuffle(self.players)
         self.playerDict = dict()
@@ -30,7 +30,7 @@ class Game(object):
             self.playerDict[player.name]  = player
             self.playerStates[player.name]= PlayerState(player,self)
         self.firstTurn()
-        
+
     def firstTurn(self):
         for player in self.players:
             self.playerDict[player.name] = player

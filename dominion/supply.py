@@ -23,7 +23,7 @@ class BaseSupply(object):
 
         #add in cards we are playing with.
         self.addPiles(kingdomCards)
-        print kingdomCards,"kingdomCards"
+        #print kingdomCards,"kingdomCards"
         self.kingdomCards = kingdomCards
         self.kingdomCards.sort()
 
@@ -32,12 +32,12 @@ class BaseSupply(object):
         for card in base:
             self.cardDict[card.name] = card
         self.trash = []
-    
+
 
     def strToCard(self, card):
-        print self.cardDict
+        #print self.cardDict
         return self.cardDict[card]
-                    
+
     def gainCard(self,card):
         if len(self.supply[card])==0:
             print "There are no more %s cards. \n" % (card)

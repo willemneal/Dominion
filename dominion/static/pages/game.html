@@ -14,7 +14,7 @@
   <title>Game</title>
 </head>
 <body>
-  <div id = "game" ng-controller="gameController">
+  <div id = "game" ng-controller="GameController">
 
   <div id="supply">
     <div id ="{{category}}" ng-repeat = "category in categories">
@@ -40,6 +40,7 @@
       Actions: {{actions}}
       Buys: {{buys}}
       Coin: {{coins}}
+      {{state}}
     </div>
   </div>
   <div id="hand" >

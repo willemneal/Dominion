@@ -17,8 +17,9 @@
 
 
     window.gameid = window.location.href.split('/').splice(-1)[0];
+    console.log(document.location);
 
-    window.gameController = function($scope, $http){
+    window.GameController = function($scope, $http){
         $scope.hand = [];
         $scope.phase = '';
         $scope.supply = [];
@@ -34,19 +35,10 @@
         $scope.coins = 0;
         $scope.prompt = '';
         $scope.choice = null;
+        $scope.categories = ["victoryCards", "treasureCards", "kingdomCards", "miscCards", "nonSupplyCards"];
 
         //This is for connecting to the event stream which pushes updates
-        var socket = io.connect('http://'+document.domiain+'/updates');
-        socket.on('my response', function(msg) {
-                $scope.unpackState(msg['state'])
-                console.log(msg);
-        });
 
-        socket.on('messages', function(msg){
-                console.log(msg);
-        });
-
-        socket.emit("join",{room:window.gameid});
 
         $scope.gainCard = function(card){
             if ($scope.choice == null){
@@ -67,29 +59,6 @@
                     );
             }
 
-            /*if ($scope.phase != "buy" | $scope.choice['type'] != "gain"){
-                return
-            }
-            if ($scope.phase == "buy"){
-               if (card.cost > $scope.coins | card in $scope.supply['nonSupplyCards']){
-                return
-               }
-               var formVariables = "type=buy";
-            }
-            if ($scope.choice['type'] == "gain"){
-                if ($scope.choice['gain']['kind'] != "None" & card.kind = $scope.choice['gain']['kind']){
-                    return
-                }
-                if (choice['cost'] < card.cost){
-                    return
-                }
-                var formVariables = "type=gain";
-            }
-                $http.post("/gain/"+card.name+"/"+window.gameid + "+" + formVariables).success(
-                        function(data){
-                        updateState();
-                    });
-*/
         };
 
         $scope.endTurn = function(){
@@ -127,7 +96,11 @@
                         $scope.hand = state['hand'];
                         $scope.phase = state['phase'];
                         $scope.supply = state['supply'];
-
+                        $scope.victoryCards   = $scope.supply["victoryCards"]
+                        $scope.treasureCards  = $scope.supply["treasureCards"];
+                        $scope.kingdomCards   = $scope.supply["kingdomCards"];
+                        $scope.nonSupplyCards = $scope.supply["nonSupplyCards"];
+                        $scope.miscCards      = $scope.supply["miscCards"];
 
                         $scope.log = state['log'];
 
@@ -137,12 +110,12 @@
                             $scope.coins   = 0;
                         }
                         else{
-                            $scope.actions = state['turn']['actions'];
+                            $scope.actions = $scope.state['turn']['actions'];
                             if ($scope.phase == "action" & $scope.actions == 0){
                                 $scope.startBuyPhase();
                             }
 
-                            $scope.buys    = state['turn']['buys'];
+                            $scope.buys    = $scope.state['turn']['buys'];
                             if ($scope.phase == "buy" & $scope.buys == 0){
                                 $scope.endTurn();
                             }
@@ -176,7 +149,7 @@
         $scope.initialState = function(){
             $http.post('/state/'+window.gameid).success(
                     function(data) {
-                        unpackState(data);
+                        $scope.unpackState(data);
                 });
         };
 
@@ -198,7 +171,8 @@
         };
 
         $scope.updateState = function(){
-            $http.get('/update/'+window.gameid);
+            //$http.get('/update/'+window.gameid);
+            socket.emit('Game Event',{'room':window.gameid});
         }
 
         $scope.playAllTreasures  = function(){
@@ -245,9 +219,22 @@
                     $scope.hand = data;
                 });
         };
+        var socketLocation = window.location.origin+":"+window.location.port+'/updates';
+        console.log(socketLocation);
+        socket = io.connect(socketLocation);
 
-        $scope.updateSupply();
-        $scope.initialState();
-        $scope.updateHand();
+        socket.on('state', function(msg) {
+                unpackState(msg['state']);
+                console.log(msg);
+        });
+
+        socket.on('message', function(msg){
+                console.log(msg);
+        });
+
+        socket.emit("join",{'room':window.gameid});
+
+        $scope.updateState();
+
     };
 })(window);
