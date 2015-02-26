@@ -146,6 +146,8 @@ def getUser(username=None, userid=None):
 def getState(gameid, username):
     db = get_db()
     game = getCurrentGame(gameid)
+    print [card['name'] for card in game.playerStates[username].getState()['hand']]
+
     return game.playerStates[username].getState()
 
 

@@ -307,25 +307,26 @@ The following is for pushing state to the user.
 @socketio.on('join', namespace='/update')
 def join(message):
     join_room(message['room'])
-    print "joined",message['room'],"room"
-    session['receive_count'] = session.get('receive_count', 0) + 1
+    print "joined",message['room'],"room", type(message['room'])
     emit('message',
-         {'data': 'In rooms: ' + ', '.join(request.namespace.rooms),
-          'count': session['receive_count']})
+         {'data': 'In rooms: ' + ', '.join(request.namespace.rooms)})
 
 @socketio.on('Game Event', namespace='/update')
+def game_update(message):
+    print "game Event", int(message['room'])
+    emit('getState',
+         {'room': message['room']},
+          room=message['room'])
+
+@socketio.on('getUpdate', namespace='/update')
 def room_update(message):
     print type(message['room']),
     state = getState(int(message['room']),session['username'])
-    print type(state)
-    session['receive_count'] = session.get('receive_count', 0) + 1
+    print session['username']
+    #print state
     emit('state',
          {'room': message['room'],
-         'count': session['receive_count'],
-         'state': state},
-         broadcast=True)
-
-
+         'state': state})
 
 @app.route('/update/<int:gameid>', methods=['GET'])
 def post(gameid):

@@ -214,13 +214,19 @@
         console.log(socketLocation);
 
 
+        socket.on('getState', function(msg) {
+            console.log("asking for my state");
+            socket.emit('getUpdate',{'room':window.gameid});
+        });
+
         socket.on('state', function(msg) {
             $scope.$apply(unpackState(msg['state']));
             console.log(msg);
         });
 
+
         socket.on('message', function(msg){
-                console.log(msg);
+                console.log(msg.data);
         });
 
 
