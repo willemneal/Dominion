@@ -1,9 +1,6 @@
 <!DOCTYPE html >
-<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html lang="en" ng-app="dominion" > <!--<![endif]-->
+
+<html lang="en" ng-app="Dominion" ng-controller="GameController" >
 
 
 <head>
@@ -14,12 +11,12 @@
   <title>Game</title>
 </head>
 <body>
-  <div id = "game" ng-controller="GameController">
+  <div id = "game" >
 
-  <div id="supply">
+  <div id="supply" >
     <div id ="{{category}}" ng-repeat = "category in categories">
     <img id = "{{card.name.lower()}}" ng-src="{{card.src}}" ng-repeat="card in supply[category]" ng-click="gainCard(card)">
-  </div>
+    </div>
 
   </div>
   <div id = "log" style="overflow-y: auto; height=400px;">
@@ -40,7 +37,6 @@
       Actions: {{actions}}
       Buys: {{buys}}
       Coin: {{coins}}
-      {{state}}
     </div>
   </div>
   <div id="hand" >

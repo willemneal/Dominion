@@ -304,7 +304,7 @@ def getLog(gameid):
 The following is for pushing state to the user.
 
 '''
-@socketio.on('join', namespace='/updates')
+@socketio.on('join', namespace='/update')
 def join(message):
     join_room(message['room'])
     print "joined",message['room'],"room"
@@ -313,7 +313,7 @@ def join(message):
          {'data': 'In rooms: ' + ', '.join(request.namespace.rooms),
           'count': session['receive_count']})
 
-@socketio.on('Game Event', namespace='/updates')
+@socketio.on('Game Event', namespace='/update')
 def room_update(message):
     print type(message['room']),
     state = getState(int(message['room']),session['username'])

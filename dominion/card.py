@@ -85,10 +85,14 @@ class ActionCard(Card):
 
 class TreasureCard(Card):
     def __init__(self, name, cost, desc = "", vp = 0,
-                coin = 0):
+                coin = 0,reaction=False):
         Card.__init__(self, name, cost, desc=desc, vp=vp)
         self.coin     = coin
         self.type = self.getType()
+        self.reaction = reaction
+
+    def isReaction(self):
+        return self.reaction
 
 
     def play(self,turn):

@@ -5,6 +5,7 @@ import os
 from flask import Flask, g
 from datetime import datetime
 from game import Game, base, allSets
+import game
 
 app = Flask(__name__)
 
@@ -114,12 +115,11 @@ def getGames(started, done):
             continue
         players = getPlayers(gameid)
         print players, "players---"
-        if game[2] is None:
-            g = None
-        else:
-            g = pickle.loads(game[2])
-        gamesList.append({"game": g,
-                          "gameid": gameid,
+        # if game[2] is None:
+        #     g = None
+        # else:
+        #     g = pickle.loads(game[2])
+        gamesList.append({"gameid": gameid,
                           "players": players,
                           "numberOfPlayers": game[6],
                           "creator": username,
