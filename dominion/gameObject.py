@@ -1,7 +1,8 @@
 from listener import Listener
-class GameObject(object):
 
-    listener = Listener()
+class GameObject(object):
+    def __init__(self):
+        self.listener = Listener()
 
     def update(self,GO):
         self.listener.update(GO.listener)
@@ -16,14 +17,16 @@ class GameObject(object):
         if name in self.listener:
             self.listener[name](*args,**kwargs)
         return False
+
 TO = GameObject()
 GO = GameObject()
 def foo(x):
     print x
-TO.addSubscriber("willem",foo)
+
 def go(*args):
     print "go"
-GO.addSubscriber("willem",go)
+TO.addSubscriber('willem',foo)
+GO.listener.addListener("willem",go)
 GO.update(TO)
 
 GO.event("willem",2)

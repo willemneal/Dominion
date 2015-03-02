@@ -1,5 +1,7 @@
 from listener import Listener
 from gameObject import GameObject
+
+
 class Turn(GameOject):
     gain = 'gain'
     buy = 'buy'
@@ -40,10 +42,7 @@ class Turn(GameOject):
     def subscribeListeners(self):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
-        self.listeners = Listener()
-        for player in self.otherPlayers:
-            for reactionCard in player.getReactionCards():
-                self.listeners["Attack"].append(reactionCard.reaction)
+        map(lambda listener:self.update(listener),self.players+self.otherPlayers)
 
     def event(self,name,*args, **kwargs):
         self.listeners[name](*args, **kwargs)
