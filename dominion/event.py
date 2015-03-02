@@ -1,3 +1,4 @@
+
 class Event(list):
     """Event subscription.
 
@@ -25,8 +26,10 @@ class Event(list):
     g(2)
 
     """
+
     def __call__(self, *args, **kwargs):
         for f in self:
+
             f(*args, **kwargs)
 
     def __repr__(self):

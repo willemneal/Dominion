@@ -1,4 +1,6 @@
-class Card(object):
+from gameObject import GameObject
+
+class Card(GameOject):
     """
 	This is the main class for a Card.
 	A card can be an action, a treasure or a victory.
@@ -55,7 +57,7 @@ class ActionCard(Card):
 
     def __init__(self, name, cost, desc, attack=False,
         isDefense = False, vp = 0,  action=(),
-         reaction = False, actions=0, plusCards=0,reactionAction = ()):
+         reaction = False, actions=0, plusCards=0,listener = None):
         Card.__init__(self,name,cost,desc,vp)
         self.isDefense          = isDefense
         self.attack             = attack

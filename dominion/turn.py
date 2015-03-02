@@ -1,6 +1,9 @@
-from event import Event
-
-class Turn(object):
+from listener import Listener
+from gameObject import GameObject
+class Turn(GameOject):
+    gain = 'gain'
+    buy = 'buy'
+    fromHand = 'fromHand'
     def __init__(self, player, otherPlayers, roundNumber, log, game):
         self.game = game
         self.player = player
@@ -16,7 +19,7 @@ class Turn(object):
         self.log.append("It is %s's turn" % self.player)
         self.playerDecision = {}
 
-        self.subscribeListeners()
+        self.subscribePlayers()
 
 
         for player in otherPlayers:
@@ -37,13 +40,13 @@ class Turn(object):
     def subscribeListeners(self):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
-        self.listeners = {"Attack":Event()}
+        self.listeners = Listener()
         for player in self.otherPlayers:
             for reactionCard in player.getReactionCards():
                 self.listeners["Attack"].append(reactionCard.reaction)
 
-    def event(self,name):
-        self.listeners[name]()
+    def event(self,name,*args, **kwargs):
+        self.listeners[name](*args, **kwargs)
 
 
     def endTurn(self):
@@ -71,11 +74,13 @@ class Turn(object):
         self.coins -= card.cost
         self.log.append("%s bought a %s for $%d" % (self.currentPlayer, card.name, card.cost))
         self.gainCard(card)
+        self.promptGain(self.coins, )
 
     def gainCard(self,card):
-        if self.player.supply.gainCard(card) is None:
+        card = self.player.supply.gainCard(card)
+        if card is None:
             return False
-        self.player.discardCard(card)
+        self.player.discardCard(card, bu)
 
 
     def trashCard(self,card,player=None):
@@ -98,12 +103,12 @@ class Turn(object):
     def promptBuy(self):
         self.promptCardFromHand('turn.playCard', kind="TreasureCard", may=True)
 
-    def promptGain(self,cost, kind = None, player=None):
+    def promptGain(self, cost, kind = None, player=None, _type=gain):
         if player is None:
             player = self.currentPlayer
         prompt = "Pick a card from the supply costing %d or less" % cost
 
-        self.playerChoice[player.name] = {"type":"gain",
+        self.playerChoice[player.name] = {"type":_type,
                                           "cost":cost,
                                           "kind":str(kind),
                                           "prompt":prompt}
@@ -119,7 +124,7 @@ class Turn(object):
                 prompt = "Pick a card from your hand"
             if cost is not None:
                 prompt += " costing %d or less" % cost
-        self.playerChoice[player.name] ={"type":"fromHand",
+        self.playerChoice[player.name] ={"type":fromHand,
                                         "kind":str(kind),
                                         "cost": cost,
                                         "callback":callback,

@@ -1,6 +1,13 @@
+    getGameID function (){
+        var gameid = window.location.href.split('/').splice(-1)[0];
+        if (gameid.indexOf("?") != -1){
+            gameid = gameid.substring(0,window.gameid.indexOf("?"));
+        }
+        return gameid
+    }
 
+    window.gameid = getGameID();//Global variable
 
-    window.gameid = window.location.href.split('/').splice(-1)[0];
     console.log(document.location);
     angular.module('Dominion', []).controller('GameController',["$scope","$http",
 
@@ -20,31 +27,70 @@
         $scope.coins = 0;
         $scope.prompt = '';
         $scope.choice = null;
-        $scope.categories = ["victoryCards", "treasureCards", "kingdomCards", "miscCards", "nonSupplyCards"];
+        $scope.categories = [];
 
         //This is for connecting to the event stream which pushes updates
 
 
-        $scope.gainCard = function(card){
+        $scope.chooseCard = function(card){
             if ($scope.choice == null){
                 return;
             }
-            if ($scope.choice['type'] != 'gain'){
-                return;
+            switch ($scope.choice['type']){
+                case 'gain':
+                    gainCard(card);
+                    console.log(card.name + " gained");
+                    break;
+                case 'buy':
+                    if (!$scope.buyPhase()){
+                        console.log('Not the buyPhase');
+                        return;
+                    }
+                    buyCard(card);
+                    console.log(card.name + " gained");
+                    break;
+                default:
+                    console.log("nothing to do... Not right");
+                    break;
             }
 
+
+
             if ($scope.phase == "buy" & $scope.choice['type'] != "gain"){
-                if (card.cost > $scope.coins | card in $scope.supply['nonSupplyCards']){
-                    return;
-                }
-                $http.post('/buy/'+card.name + "/" + window.gameid).success(
-                    function(data){
-                        $scope.updateState();
-                    }
+
+
                     );
             }
 
         };
+        buyCard = function(card){
+            if (card.cost > $scope.coins | card in $scope.supply['nonSupplyCards']
+                | pileEmpty(card)){
+                return;
+            }
+            $http.post('/buy/'+card.name + "/" + window.gameid).success(
+                function(data){
+                    $scope.updateState();
+                }
+                );
+        };
+
+        gainCard = function(card){
+            if (pileEmpty(card) | ($scope.choice.kind && $scope.choice.kind != card.kind))
+                return;
+            if (( $scope.choice.exact &&  $scope.choice.cost != card.cost)||
+                $scope.choice.cost > card.cost)
+                return;
+            $http.post('/gain/'+card.name + "/" + window.gameid).success(
+                function(data){
+                    $scope.updateState();
+                }
+                );
+        };
+
+
+
+
 
         $scope.endTurn = function(){
             $http.post('/endTurn/'+window.gameid).success(
@@ -124,6 +170,10 @@
             return $scope.choice['type'] == "options";
         };
 
+        pileEmpty function(card){
+            return $scope.supply[card.name].numberLeft > 0;
+        }
+
         $scope.skipChoice = function(){
             $http.post('/skip/'+window.gameid).success(
                 function(data){ $scope.updateState()});
@@ -157,30 +207,42 @@
 
 
         $scope.playAllTreasures  = function(){
-            for (var i=0; i<$scope.hand.length; i++){
-                if ($scope.hand[i]['type'] == "TreasureCard"){
-                    $scope.playCard($scope.hand[i]);
-                }
+            socket.emit("PlayAllTreasures",{"time": new Date().toDateString()});
+        }
+
+        correctKind function(card){
+            if ($scope.choice['kind']==card.type){
+                return card.kind != $scope.choice.kind;
             }
+            return true;
         }
 
         $scope.playCard = function(card) {
             console.log(card.name + " clicked");
 
-            if ($scope.choice==null | $scope.choice['type'] != 'fromHand'){
+            /*
+            Return if:
+            -no choice
+            -not choice from hand
+            -if the there is a kind choice card is right kind
+            */
+            if ($scope.choice==null | $scope.choice['type'] != 'fromHand'
+                | !correctKind(card)){
                 return;
             }
-            if (card.type == "ActionCard"){
-                if ($scope.actions == 0 | $scope.buyPhase()|
-                    $scope.choice['kind']== "TreasureCard"){
-                    return;
-                }
-            }
-            if (card.type == "TreasureCard"){
-                if ($scope.choice['kind'] == "ActionCard"){
-                    return;
-                }
-            }
+            // if ($scope.buyPhase()){
+            //     if (card.type == "ActionCard"){
+            //         return;
+            //     }
+            // }
+            // if (card.type == "ActionCard"  && ($scope.actions == 0 || $scope.buyPhase()||
+            //     $scope.choice['kind']== "TreasureCard")){
+            //         return;
+            //
+            // }
+            // if (card.type == "TreasureCard"  && $scope.choice['kind'] == "ActionCard"){
+            //     return;
+            // }
             $http.post(encodeURI('/play/'+card.name +'/' + window.gameid + "?callback=" +$scope.choice['callback'])).success(
                 function(data){
                     $scope.updateState();

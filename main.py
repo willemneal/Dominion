@@ -26,6 +26,8 @@ def hashPassword(password, salt):
 
 @app.route('/')
 def index():
+    if 'username' in session:
+        return redirect(url_for('lobby'))
     return redirect(url_for('login'))
 
 

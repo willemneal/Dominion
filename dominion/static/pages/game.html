@@ -15,7 +15,8 @@
 
   <div id="supply" >
     <div id ="{{category}}" ng-repeat = "category in categories">
-    <img id = "{{card.name.lower()}}" ng-src="{{card.src}}" ng-repeat="card in supply[category]" ng-click="gainCard(card)">
+    <img id = "{{card.name.lower()}}" ng-src="{{card.src}}"
+            ng-repeat="card in supply[category]" ng-click="chooseCard(card)">
     </div>
 
   </div>
