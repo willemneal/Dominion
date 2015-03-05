@@ -7,7 +7,6 @@ class Listener(dict):
         event = self.setdefault(name,Event())
         event.append(callback)
 
-    def trigger(funcargs):
 
 
 class trigger(object):
@@ -15,8 +14,8 @@ class trigger(object):
         self.event = event
         self.listener = listener
 
-    def __call__(self,*args,*kwargs):
-        self.listener.event(self.event)
+    def __call__(self,*args,**kwargs):
+        self.listener[self.event](*args,**kwargs)
 
 
 L = Listener()
@@ -26,7 +25,7 @@ def foo():
 
 L.addListener('willem',foo)
 
-@trigger('willem',listener)
+@trigger('willem',L)
 def faa():
     print "faa y'all"
 
