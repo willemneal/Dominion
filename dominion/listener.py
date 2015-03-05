@@ -12,8 +12,12 @@ class Listener(dict):
 
 class trigger(object):
     def __init__(self, event,listener):
-        if event is not None:
-            listener[event]
+        self.event = event
+        self.listener = listener
+
+    def __call__(self,*args,*kwargs):
+        self.listener.event(self.event)
+
 
 L = Listener()
 
