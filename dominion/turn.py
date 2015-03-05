@@ -42,14 +42,13 @@ class Turn(GameOject):
     def subscribeListeners(self):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
-        map(lambda listener:self.update(listener),self.players+self.otherPlayers)
-
-    def event(self,name,*args, **kwargs):
-        self.listeners[name](*args, **kwargs)
+        self.update(self.supply)
+        map(lambda player:self.update(player),self.players+self.otherPlayers)
 
 
     def endTurn(self):
         self.phase = ["cleanup"]
+        self.listener.event('cleanup')
         self.cleanupPhase()
 
     def toDict(self):
@@ -73,7 +72,7 @@ class Turn(GameOject):
         self.coins -= card.cost
         self.log.append("%s bought a %s for $%d" % (self.currentPlayer, card.name, card.cost))
         self.gainCard(card)
-        self.promptGain(self.coins, )
+        self.promptGain(self.coins, _type=buy)
 
     def gainCard(self,card):
         card = self.player.supply.gainCard(card)

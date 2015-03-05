@@ -4,6 +4,9 @@ class GameObject(object):
     def __init__(self):
         self.listener = Listener()
 
+    def hasEvent(self,name):
+        return name in self
+
     def update(self,GO):
         self.listener.update(GO.listener)
 

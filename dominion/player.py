@@ -38,6 +38,7 @@ class Player():
     def discardHand(self):
         self.discard.extend(self.hand)
         self.hand = []
+        self.listener.clear()
 
     def discardList(self,pile):
         self.discard.extend(pile)

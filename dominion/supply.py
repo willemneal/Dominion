@@ -34,6 +34,11 @@ class BaseSupply(GameOject):
             self.cardDict[card.name] = card
         self.trash = []
 
+        for _list in self.supply.values():
+            val = _list[0] ##get one element from list
+            if val.hasEvent('gain') or val.hasEvent("buy"):
+                self.update(val)
+
 
     def strToCard(self, card):
         #print self.cardDict
