@@ -26,7 +26,9 @@ class Turn(GameOject):
 
         for player in otherPlayers:
             self.playerChoice[player.name] = None
+        self.event('Action Phase')
 
+    def startActionPhase(self):
         if self.player.hasActionCard():
             self.log.append("Action Phase")
             self.phase = "action"
@@ -43,7 +45,13 @@ class Turn(GameOject):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
         self.update(self.supply)
+
         map(lambda player:self.update(player),self.players+self.otherPlayers)
+        self.listener.addListener('Action Phase',self.startActionPhase)
+        self.addSubcriber('Buy Phase', self.startBuyPhase)
+        self.addSubcriber('Clean Up Phase',self.endTurn)
+        self.addSubcriber('Buy', self.buyCard)
+        self.addSubcriber('Gain', self.gainCard)
 
 
     def endTurn(self):
