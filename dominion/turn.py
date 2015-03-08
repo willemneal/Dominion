@@ -6,6 +6,7 @@ class Turn(GameOject):
     gain = 'gain'
     buy = 'buy'
     fromHand = 'fromHand'
+
     def __init__(self, player, otherPlayers, roundNumber, log, game):
         self.game = game
         self.player = player
@@ -22,6 +23,7 @@ class Turn(GameOject):
         self.playerDecision = {}
 
         self.subscribePlayers()
+        self.event('Start Turn',self)
 
 
         for player in otherPlayers:
@@ -29,8 +31,8 @@ class Turn(GameOject):
         self.event('Action Phase')
 
     def startActionPhase(self):
+        self.log.append("Action Phase")
         if self.player.hasActionCard():
-            self.log.append("Action Phase")
             self.phase = "action"
             print "about to prompt!!"
             self.promptAction()
@@ -44,14 +46,15 @@ class Turn(GameOject):
     def subscribeListeners(self):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
-        self.update(self.supply)
-
-        map(lambda player:self.update(player),self.players+self.otherPlayers)
-        self.listener.addListener('Action Phase',self.startActionPhase)
-        self.addSubcriber('Buy Phase', self.startBuyPhase)
+        self.addSubcriber('Action Phase',self.startActionPhase)
         self.addSubcriber('Clean Up Phase',self.endTurn)
         self.addSubcriber('Buy', self.buyCard)
         self.addSubcriber('Gain', self.gainCard)
+        listeners = [self.supply,self.player] + self.otherPlayers
+        self.update(self.supply)
+        map(lambda player:self.update(player),self.players+self.otherPlayers)
+
+
 
 
     def endTurn(self):
@@ -162,20 +165,16 @@ class Turn(GameOject):
         self.player.played = []
 
 
-
     def playCard(self, card):
         if isinstance(card, basestring):
             card = self.player.supply.strToCard(card)
-        self.player.hand.remove(card)
-        self.player.played.append(card)
-        res = card.play(self)
-        print res
-        if card.isAction():
-            self.updateActions(-1)
-        if self.actions == 0 and res is None:
-            print "starting Buy Phase"
-            self.startBuyPhase()
-        return res
+
+        if self.isActionPhase():
+            self.playActionCard(card)
+        elif self.isBuyPhase():
+            self.playTreasureCard(card)
+        else:
+            return False
 
     def printAllCards(self):
         s = ""
@@ -212,8 +211,8 @@ class Turn(GameOject):
         self.updateTurn(playerName)
 
     def playAllTreasures(self):
-        cards = self.player.treasuresInHand()
-        for card in cards:
+        treasureCards = self.player.treasuresInHand()
+        for treasureCard in cards:
             self.player.hand.remove(card)
             card.play()
 
@@ -225,6 +224,20 @@ class Turn(GameOject):
             else:
                 player.canAttack = True
         return Players
+
+    def isActionPhase(self):
+        return self.phase == "action"
+
+    def isBuyPhase(self):
+        return self.phase == "buy"
+
+    def playActionCard(self, card):
+        assert self.actions > 0
+        self.actions -= 1
+        self.player.playCard(card,self)
+
+    def playTreasureCard(self, card):
+        self.player.playCard(card,self)
 
     @staticmethod # this means that it doesn't take self as a parameter. In other words it is just a vanilla function.
     def printSet(l):

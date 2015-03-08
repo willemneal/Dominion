@@ -7,11 +7,11 @@ class GameObject(object):
     def hasEvent(self,name):
         return name in self
 
-    def update(self,GO):
-        self.listener.update(GO.listener)
+    def updateListener(self,GameObject):
+        self.listener.update(GameObject.listener)
 
-    def merge(self,listeners):
-        map(lambda listener: self.update(listener),listeners)
+    def mergeListeners(self,listeners):
+        map(lambda listener: self.updateListener(listener),listeners)
 
     def addSubscriber(self,name,callback):
         self.listener.addListener(name, callback)

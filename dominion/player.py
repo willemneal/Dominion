@@ -48,7 +48,15 @@ class Player():
         self.discardList(self.played)
 
     def drawCard(self):
-        return self.drawCards(1)[0]
+        card = self.deck.draw()
+        if not card:
+            self.deck.addCards(self.discard)
+            self.discard=[]
+            self.deck.shuffle()
+            card = self.deck.draw()
+        if not card:
+            return False
+        return card
 
 
 
@@ -59,18 +67,20 @@ class Player():
         '''
         drawnCards = []
         for i in range(num):
-            newcard = self.deck.draw()
-            if (not newcard):
-                self.deck.addCards(self.discard)
-                self.discard=[]
-                self.deck.shuffle()
-                newcard = self.deck.draw()
-            drawnCards.append(newcard)
+            card = self.drawCard()
+            if not card:
+                return drawCards
+            drawnCards.append(card)
         return drawnCards
 
     def drawHand(self):
         assert 0 == len(self.hand)
         self.drawToHand(5)
+
+    def playCard(self,card, turn):
+        assert card in self.hand
+        self.hand.remove(card)
+        card.play(turn)
 
     def drawToHand(self,num):
         self.hand.extend(self.drawCards(num))

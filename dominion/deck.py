@@ -2,24 +2,23 @@ from random import shuffle
 
 from baseCards import *
 
-class Deck(object):
+class Deck(list):
     def __init__(self):
-        self.deck = []
         for i in range(7):
-            self.deck.append(copper)
-        self.deck.extend([village, festival, chapel])
+            self.append(copper)
+        self.extend([village, festival, chapel])
         self.shuffle()
 
     def addCardOnTop(self, card):
-        self.deck.insert(0, card)
+        self.insert(0, card)
 
     def addCards(self,cards):
-        self.deck.extend(cards)
+        self.extend(cards)
 
     def draw(self):
-        if (len(self.deck) == 0): 
+        if (len(self) == 0):
             return False
-        return self.deck.pop(0)
+        return self.pop(0)
 
     def shuffle(self):
-        shuffle(self.deck)
+        shuffle(self)
