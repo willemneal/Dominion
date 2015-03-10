@@ -37,17 +37,26 @@ def bureaucratAction(turn):
 				player.deck.addCardOnTop(player.hand.pop(cardindex))
 				break
 
-def cellarAction(turn):
+def cellarAction(turn,self):
 	turn.updateActions(1)
 	print "choose a card to discard"
-	cardIndex = turn.promptCardsIndex(turn.player.hand)
-	numCardsDiscarded = 0
-	while cardIndex is not None:
-		turn.player.discardCard(turn.player.hand.pop(cardindex))
-		numCardsDiscarded +=1
-		cardIndex = turn.promptCardsIndex(turn.player.hand)
-		print "choose a card to discard"
-	turn.player.drawToHand(numCardsDiscarded)
+	cardIndex = turn.promptCardsFromHand('callback',
+					num=len(turn.player.hand),
+					may=True,
+					prompt="Choose any number of cards to discard")
+
+	numDiscarded = 0
+	@self.listen('callback')
+	def reaction(card):
+		turn.player.discardFromHand(card)
+		numDiscarded+=1
+		@self.list('choice done')
+		def drawFromCellar():
+			turn.player.drawToHand(numDiscarded)
+		return
+	return
+
+
 
 def chancellorAction(turn):
 	turn.coins += 2

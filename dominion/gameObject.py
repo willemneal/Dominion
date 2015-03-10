@@ -1,35 +1,64 @@
-from listener import Listener
+from callMe import Listener
 
 class GameObject(object):
     def __init__(self):
         self.listener = Listener()
 
-    def hasEvent(self,name):
-        return name in self
+    def hasEvent(self, name):
+        return name in self.listener
 
-    def updateListener(self,GameObject):
-        self.listener.update(GameObject.listener)
+    def addListener(self, gameObject):
+        self.listener + gameObject.listener
 
-    def mergeListeners(self,listeners):
-        map(lambda listener: self.updateListener(listener),listeners)
+    def removeListener(self, gameObject):
+        self.listener - gameObject.listener
+
+
+    def mergeGameObjects(self,GameObjects):
+        map(lambda GO: self.addListener(GO.listener),GameObjects)
+
+    def trigger(self,*args, **kwargs):
+        return self.listener.trigger(*args, **kwargs)
+
+    def listen(self,*args, **kwargs):
+        return self.listener.listen(*args, **kwargs)
 
     def addSubscriber(self,name,callback):
-        self.listener.addListener(name, callback)
+        self.listener.addSub(name, callback)
+
+    def removeSubscriber(self,name,callback):
+        self.listener.removeSub(name, callback)
 
     def event(self,name,*args, **kwargs):
         if name in self.listener:
-            self.listener[name](*args,**kwargs)
+            self.listener(name,*args,**kwargs)
         return False
 
-TO = GameObject()
-GO = GameObject()
-def foo(x):
-    print x
+    def __add__(self,gameObject):
+        self.addListener(gameObject)
 
-def go(*args):
-    print "go"
-TO.addSubscriber('willem',foo)
-GO.listener.addListener("willem",go)
-GO.update(TO)
+    def __sub__(self,gameObject):
+        self.removeListener(gameObject)
 
-GO.event("willem",2)
+
+
+# TO = GameObject()
+# GO = GameObject()
+# @TO.listen('willem')
+# def foo(x):
+#     print x
+#
+# def go(*args):
+#     print "go"
+# #TO.addSubscriber('willem',foo)
+# GO.listener.addSub("willem",go)
+# GO + TO
+#
+# @GO.trigger('willem')
+# def faa(x):
+#     return x
+#
+# GO.willemEvent()
+# GO - TO
+# print GO.listener
+# faa(3)

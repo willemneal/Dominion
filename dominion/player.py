@@ -35,10 +35,15 @@ class Player():
     def discardDeck(self):
         self.discardList(self.played)
 
+    def discardFromHand(self, card):
+        assert card in self.hand
+        self.discardCard(card)
+        self.removeListener(card)
+        self.hand.remove(card)
+
     def discardHand(self):
-        self.discard.extend(self.hand)
-        self.hand = []
-        self.listener.clear()
+        map(lambda card: self.discardFromHand(card),self.hand)
+
 
     def discardList(self,pile):
         self.discard.extend(pile)
@@ -80,10 +85,13 @@ class Player():
     def playCard(self,card, turn):
         assert card in self.hand
         self.hand.remove(card)
+        self - card
         card.play(turn)
 
     def drawToHand(self,num):
-        self.hand.extend(self.drawCards(num))
+        cards = self.drawCards(num)
+        self.mergeGameObjects(cards)
+        self.hand.extend(cards)
 
     def getAllCards(self):
         return [card for Set in self.allCards for card in Set]
@@ -124,8 +132,10 @@ class Player():
     def setUpdate(self, Bool):
         self.update = Bool
 
+
     def trashCard(self,card):
         self.supply.trashCard(card)
+        self.event('trash',card)
 
     def trashCardFromHand(self,card):
         assert card in self.hand

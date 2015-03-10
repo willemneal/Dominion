@@ -46,13 +46,8 @@ class Turn(GameOject):
     def subscribeListeners(self):
         '''Check to see if there are cards that react and must listen
            For now this is just reaction cards'''
-        self.addSubcriber('Action Phase',self.startActionPhase)
-        self.addSubcriber('Clean Up Phase',self.endTurn)
-        self.addSubcriber('Buy', self.buyCard)
-        self.addSubcriber('Gain', self.gainCard)
         listeners = [self.supply,self.player] + self.otherPlayers
-        self.update(self.supply)
-        map(lambda player:self.update(player),self.players+self.otherPlayers)
+        self.mergeGameObjects(listeners)
 
 
 
@@ -79,24 +74,29 @@ class Turn(GameOject):
 
     def buyCard(self, card):
         ##TODO: react to buying cards
+        assert self.coins >= card.cost
         self.updateBuys(-1)
         self.coins -= card.cost
         self.log.append("%s bought a %s for $%d" % (self.currentPlayer, card.name, card.cost))
-        self.gainCard(card)
+        self.gainCard(card, buy=True)
         self.promptGain(self.coins, _type=buy)
 
-    def gainCard(self,card):
+    def gainCard(self,card, buy = False):
         card = self.player.supply.gainCard(card)
         if card is None:
             return False
+        if not buy:
+            self.event('gain',card)
+        else:
+            self.event('buy',card)
         self.player.discardCard(card, bu)
 
 
-    def trashCard(self,card,player=None):
+    def trashCardFromHand(self,card,player=None):
         if player is None:
             player = self.player
-        player.hand.remove(card)
-        player.supply.trashCard(card)
+        player.trashCardFromHand(card)
+
 
     def handleReactions(self,player):
         blocked = False
@@ -139,7 +139,8 @@ class Turn(GameOject):
                                         "callback":callback,
                                         "num":num,
                                         "may":may,
-                                        "prompt":prompt}
+                                        "prompt":prompt,
+                                        "cards":[]}
         #print "CHOICE", self.playerChoice[player.name]
 
     def promptOptions(self,options,player=None):
