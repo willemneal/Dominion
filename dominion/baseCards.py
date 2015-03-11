@@ -37,23 +37,20 @@ def bureaucratAction(turn):
 				player.deck.addCardOnTop(player.hand.pop(cardindex))
 				break
 
-def cellarAction(turn,self):
+def cellarAction(turn):
 	turn.updateActions(1)
 	print "choose a card to discard"
-	cardIndex = turn.promptCardsFromHand('callback',
-					num=len(turn.player.hand),
-					may=True,
-					prompt="Choose any number of cards to discard")
+	# cardIndex = turn.promptCardsFromHand('callback',
+	# 				num=len(turn.player.hand),
+	# 				may=True,
+	# 				prompt="Choose any number of cards to discard")
 
-	numDiscarded = 0
+	self.numDiscarded = 0
 	@self.listen('callback')
 	def reaction(card):
 		turn.player.discardFromHand(card)
 		numDiscarded+=1
-		@self.list('choice done')
-		def drawFromCellar():
-			turn.player.drawToHand(numDiscarded)
-		return
+
 	return
 
 

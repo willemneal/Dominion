@@ -1,7 +1,7 @@
-    getGameID function (){
+    getGameID = function (){
         var gameid = window.location.href.split('/').splice(-1)[0];
         if (gameid.indexOf("?") != -1){
-            gameid = gameid.substring(0,window.gameid.indexOf("?"));
+            gameid = gameid.substring(0,gameid.indexOf("?"));
         }
         return gameid
     }
@@ -36,6 +36,9 @@
             if ($scope.choice == null){
                 return;
             }
+            if ($scope.buyPhase()){
+              $scope.choice['type'] = 'buy';
+            }
             switch ($scope.choice['type']){
                 case 'gain':
                     gainCard(card);
@@ -47,19 +50,11 @@
                         return;
                     }
                     buyCard(card);
-                    console.log(card.name + " gained");
+                    console.log(card.name + " Bought");
                     break;
                 default:
                     console.log("nothing to do... Not right");
                     break;
-            }
-
-
-
-            if ($scope.phase == "buy" & $scope.choice['type'] != "gain"){
-
-
-                    );
             }
 
         };
@@ -68,6 +63,7 @@
                 | pileEmpty(card)){
                 return;
             }
+            console.log('in Buycard');
             $http.post('/buy/'+card.name + "/" + window.gameid).success(
                 function(data){
                     $scope.updateState();
@@ -170,15 +166,15 @@
             return $scope.choice['type'] == "options";
         };
 
-        pileEmpty function(card){
-            return $scope.supply[card.name].numberLeft > 0;
-        }
+        pileEmpty = function(card){
+            return $scope.supply[card.name].numberLeft == 0;
+        };
 
         $scope.skipChoice = function(){
             $http.post('/skip/'+window.gameid).success(
                 function(data){ $scope.updateState()});
 
-        }
+        };
 
         $scope.initialState = function(){
             $http.post('/state/'+window.gameid).success(
@@ -210,12 +206,12 @@
             socket.emit("PlayAllTreasures",{"time": new Date().toDateString()});
         }
 
-        correctKind function(card){
+        correctKind = function(card){
             if ($scope.choice['kind']==card.type){
                 return card.kind != $scope.choice.kind;
             }
             return true;
-        }
+        };
 
         $scope.playCard = function(card) {
             console.log(card.name + " clicked");

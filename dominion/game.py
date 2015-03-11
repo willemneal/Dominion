@@ -79,8 +79,7 @@ class Game(object):
                 self.log.append("%s scored %d Victory Points" % (player.name, player.numOfVictoryPoints()))
 
 
-
-playerList = ["Max","Willem"]
-
-#G = Game(playerList, [base])
-#G.playGame()
+#
+# playerList = ["Max","Willem"]
+#
+# G = Game(playerList, [base])

@@ -9,11 +9,12 @@ class Card(GameObject):
 	Todo: add potion cards
     """
     def __init__(self, name, cost, desc="", vp=0):
+        super(Card,self).__init__()
     	self.name = name
     	self.cost = cost
     	self.desc = desc
     	self.vp   = vp
-        self.type = self.getType()
+        self._type = self.getType()
         self.src  = self.getImageLocation()
 
     def __str__(self):
@@ -35,11 +36,15 @@ class Card(GameObject):
 		return isinstance(self, ActionCard)
 
     def getType(self):
-        return str(type(self)).split(".")[1][:-2]
+        t = str(type(self)).split(".")
+        if len(t)==0:
+            return t[0]
+        return t[1][:-2]
 
     def getAttr(self):
+        print self._type, "\t\ttype"
         return {"name":self.name,"src":self.src,
-                "type":self.type,"cost":self.cost,
+                "type":self._type,"cost":self.cost,
                 "desc":self.desc,"vp":self.vp}
 
     def __repr__(self):
@@ -58,15 +63,15 @@ class ActionCard(Card):
     def __init__(self, name, cost, desc, attack=False,
         isDefense = False, vp = 0,  action=(),
          reaction = False, actions=0, plusCards=0,listener = None):
-        Card.__init__(self,name,cost,desc,vp)
+        super(ActionCard,self).__init__(name,cost,desc,vp)
         self.isDefense          = isDefense
         self.attack             = attack
         self.reaction           = reaction
         self.actions            = plusCards
         self.action             = action
-        self.reactionAction     = reactionAction
         self.type = self.getType()
-        self.listener = listener
+        if listener is not None:
+            self.listener + listener
 
     def isAttack(self):
         return self.attack
@@ -89,7 +94,7 @@ class ActionCard(Card):
 class TreasureCard(Card):
     def __init__(self, name, cost, desc = "", vp = 0,
                 coin = 0,reaction=False):
-        Card.__init__(self, name, cost, desc=desc, vp=vp)
+        super(TreasureCard,self).__init__(name, cost, desc=desc, vp=vp)
         self.coin     = coin
         self.type = self.getType()
         self.reaction = reaction

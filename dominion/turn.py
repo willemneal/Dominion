@@ -2,15 +2,18 @@ from listener import Listener
 from gameObject import GameObject
 
 
-class Turn(GameOject):
-    gain = 'gain'
-    buy = 'buy'
-    fromHand = 'fromHand'
+class Turn(GameObject):
+
+
 
     def __init__(self, player, otherPlayers, roundNumber, log, game):
+        super(Turn,self).__init__()
         self.game = game
         self.player = player
         self.otherPlayers = otherPlayers
+        self.leftPlayer = otherPlayers[0]
+        self.rightPlayer = otherPlayers[-1]
+        self.supply = game.supply
         self.actions = 1
         self.buys = 1
         self.coins = 5
@@ -22,13 +25,14 @@ class Turn(GameOject):
         self.log.append("It is %s's turn" % self.player)
         self.playerDecision = {}
 
-        self.subscribePlayers()
+        self.subscribeListeners()
         self.event('Start Turn',self)
+        Turn.listener = self.listener
 
 
         for player in otherPlayers:
             self.playerChoice[player.name] = None
-        self.event('Action Phase')
+        self.startActionPhase()
 
     def startActionPhase(self):
         self.log.append("Action Phase")
@@ -48,7 +52,9 @@ class Turn(GameOject):
            For now this is just reaction cards'''
         listeners = [self.supply,self.player] + self.otherPlayers
         self.mergeGameObjects(listeners)
-
+        self.addSubscriber('buy',self.buyCard)
+        self.addSubscriber('gain',self.gainCard)
+        self.addSubscriber('play',self.playCard)
 
 
 
@@ -79,17 +85,18 @@ class Turn(GameOject):
         self.coins -= card.cost
         self.log.append("%s bought a %s for $%d" % (self.currentPlayer, card.name, card.cost))
         self.gainCard(card, buy=True)
-        self.promptGain(self.coins, _type=buy)
+        self.promptGain(self.coins, _type='buy')
+
 
     def gainCard(self,card, buy = False):
         card = self.player.supply.gainCard(card)
         if card is None:
             return False
         if not buy:
-            self.event('gain',card)
+            self.event('gained', card)
         else:
-            self.event('buy',card)
-        self.player.discardCard(card, bu)
+            self.event('bought', card)
+        self.player.discardCard(card)
 
 
     def trashCardFromHand(self,card,player=None):
@@ -107,17 +114,18 @@ class Turn(GameOject):
         return blocked
 
     def promptAction(self):
-        self.promptCardFromHand("turn.playCard", kind="ActionCard", may=True)
+        self.promptCardFromHand("play", kind="ActionCard", may=True)
 
     def promptBuy(self):
-        self.promptCardFromHand('turn.playCard', kind="TreasureCard", may=True)
+        self.promptCardFromHand('play', kind="TreasureCard", may=True)
 
-    def promptGain(self, cost, kind = None, player=None, _type=gain):
+    def promptGain(self, cost, kind = None, player=None, _type='gain'):
         if player is None:
             player = self.currentPlayer
         prompt = "Pick a card from the supply costing %d or less" % cost
 
         self.playerChoice[player.name] = {"type":_type,
+                                          "callback":"gain",
                                           "cost":cost,
                                           "kind":str(kind),
                                           "prompt":prompt}
@@ -133,7 +141,7 @@ class Turn(GameOject):
                 prompt = "Pick a card from your hand"
             if cost is not None:
                 prompt += " costing %d or less" % cost
-        self.playerChoice[player.name] ={"type":fromHand,
+        self.playerChoice[player.name] ={"type":"fromHand",
                                         "kind":str(kind),
                                         "cost": cost,
                                         "callback":callback,
@@ -147,7 +155,10 @@ class Turn(GameOject):
         if player is None:
             player = self.currentPlayer
         prompt = "Pick one: "
-        self.playerChoice[player.name] = {"type":"options","options":options, "prompt":prompt}
+        self.playerChoice[player.name] = {"type":"options",
+                                        "callback":"options",
+                                       "options":options,
+                                        "prompt":prompt}
 
 
     def removePlayer(self, name):
@@ -164,7 +175,6 @@ class Turn(GameOject):
         self.player.drawHand()
         assert 5 == len(self.player.hand)
         self.player.played = []
-
 
     def playCard(self, card):
         if isinstance(card, basestring):

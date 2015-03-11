@@ -167,10 +167,7 @@ def play(card, gameid):
     print request.values.has_key('callback')
     if not request.values.has_key('callback'):
         return "No callback given"
-    func = eval(request.values['callback'])
-    res = func(card)
-    if res is None:
-        turn.updateTurn(session['username'])
+    turn.event(request.values['callback'], card)
     print "played %s" % card.name
     updateGame(gameid, game)
     return "%s was played" % (card.name)
@@ -249,7 +246,9 @@ def state(gameid):
 def choice(option, gameid):
     game = getCurrentGame(gameid)
     turn = game.currentTurn
-    turn.playerDecision[session['username']] = option
+    if not request.values.has_key('callback'):
+        return Flask.abort(201)
+    turn.event(request.values['callback'], option)
     updateGame(gameid, game)
 
 

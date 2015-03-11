@@ -1,8 +1,9 @@
 from baseCards import *
 from gameObject import GameObject
 
-class BaseSupply(GameOject):
+class BaseSupply(GameObject):
     def __init__(self,kingdomCards,numOfPlayers=4):
+        super(BaseSupply,self).__init__()
         numOfVictories =12
         if (numOfPlayers == 2):
             numOfVictories = 8

@@ -1,15 +1,16 @@
 from deck import Deck
 from card import Card
-
-class Player():
+from gameObject import GameObject
+class Player(GameObject):
     def __init__(self,name,supply):
+        super(Player,self).__init__()
         self.supply = supply
         self.name     = name
         self.deck       = Deck()
         self.played     = []
         self.discard    = []
         self.hand       = []
-        self.allCards   = [self.deck.deck,
+        self.allCards   = [self.deck,
                             self.played,
                             self.discard,
                             self.hand]
@@ -83,6 +84,7 @@ class Player():
         self.drawToHand(5)
 
     def playCard(self,card, turn):
+        print "hand:\t\t",self.hand
         assert card in self.hand
         self.hand.remove(card)
         self - card

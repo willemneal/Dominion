@@ -15,7 +15,7 @@ class GameObject(object):
 
 
     def mergeGameObjects(self,GameObjects):
-        map(lambda GO: self.addListener(GO.listener),GameObjects)
+        map(lambda GO: self.addListener(GO),GameObjects)
 
     def trigger(self,*args, **kwargs):
         return self.listener.trigger(*args, **kwargs)
