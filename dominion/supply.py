@@ -57,7 +57,6 @@ class BaseSupply(GameObject):
         self.trash.append(card)
 
     def toDict(self):
-
         dic = {"kingdomCards":[card.getAttr() for card in self.kingdomCards],
                 "treasureCards":[card.getAttr() for card in self.treasureCards],
                 "victoryCards":[card.getAttr() for card in self.victoryCards],

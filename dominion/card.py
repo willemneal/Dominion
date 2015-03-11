@@ -39,7 +39,7 @@ class Card(GameObject):
         t = str(type(self)).split(".")
         if len(t)==0:
             return t[0]
-        return t[1][:-2]
+        return t[-1][:-2]
 
     def getAttr(self):
         print self._type, "\t\ttype"
@@ -69,7 +69,6 @@ class ActionCard(Card):
         self.reaction           = reaction
         self.actions            = plusCards
         self.action             = action
-        self.type = self.getType()
         if listener is not None:
             self.listener + listener
 
@@ -96,7 +95,6 @@ class TreasureCard(Card):
                 coin = 0,reaction=False):
         super(TreasureCard,self).__init__(name, cost, desc=desc, vp=vp)
         self.coin     = coin
-        self.type = self.getType()
         self.reaction = reaction
 
     def isReaction(self):

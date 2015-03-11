@@ -1,4 +1,3 @@
-import pdb
 class GameState(object):
 	def __init__(self,game):
 		self.game = game
@@ -8,14 +7,13 @@ class GameState(object):
 
 class PlayerState(GameState):
 	def __init__(self,player,game):
-		GameState.__init__(self,game)
+		super(PlayerState,self).__init__(game)
 		self.player = player
 
 	def isCurrentPlayer(self):
 		return self.player == self.game.currentPlayer
 
 	def setState(self):
-		pdb.set_trace()
 		self.state["hand"] = [card.getAttr() for card in self.player.hand]
 		self.state["coinInHand"] = self.player.coinInHand()
 		self.state['choice'] = self.game.currentTurn.playerChoice[self.player.name]

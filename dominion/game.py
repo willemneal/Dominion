@@ -8,6 +8,7 @@ import logging
 from playerState import PlayerState
 
 
+
 ##logging.debug('This message should go to the log file')
 
 
@@ -24,6 +25,7 @@ class Game(object):
         #print self.supply
         self.players = [Player(name,self.supply) for name in playerList]
         shuffle(self.players)
+
         self.playerDict = dict()
         self.playerStates = dict()
         for player in self.players:
